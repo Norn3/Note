@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 import HomeView from '../views/HomeView.vue'
-import AboutView from '../views/AboutView.vue'
 
 // 配置信息中需要页面的相关配置，即路径代表的组件，页面对应关系
 const routes: Array<RouteRecordRaw> = [
@@ -10,9 +9,9 @@ const routes: Array<RouteRecordRaw> = [
 		component: HomeView                // 路径对应的组件
 	},
 	{
-		path: '/about',
-		name: 'about',
-		component: AboutView         
+		path: '/play',
+		name: 'play',
+		component: () => import('../views/PlayView.vue')    // 异步加载     
 	}
 ]
 
