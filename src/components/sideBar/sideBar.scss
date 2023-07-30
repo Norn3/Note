@@ -1,16 +1,20 @@
 .List{
     position: absolute;
     left: 0;
-    top: 7%;
-    width: 20%;
-    height: 85%;
+    top: 6em;
+    width: 10em;
+    height: 87.9vh;
+    margin: 0;
+    background-color: rgb(255, 251, 243);
     list-style-type: none;
-    margin-block-start: 0;
     padding-inline-start: 0;
 }
 .listItem{
-  padding: 0.25rem;
+  padding: 0.25em 0.5em;
   font-size: 1em;
+  overflow: hidden;
+  // 溢出显示省略号
+  text-overflow: ellipsis;
 
   &:nth-child(even) {
     background-color: rgb(255, 251, 243);
