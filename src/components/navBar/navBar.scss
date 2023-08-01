@@ -1,17 +1,17 @@
 .nav{
-    position: absolute;
-    display: flex;
-    float: left;
-    left: 0;
-    top: 3em;
-    width: 96em;
-    height: 3em;
-    background-color: rgb(227, 242, 255);
-    list-style-type: none;
-    margin-block-start: 0;
-    padding-inline-start: 0;
+  position: absolute;
+  left: 0;
+  top: 3em;
+  width: 106.5em;
+  height: 3em;
+  background-color: rgb(227, 242, 255);
+  list-style-type: none;
+  margin-block-start: 0;
+  padding-inline-start: 0;
 }
 .navItem{
+  display: inline;
+  float: left;
   min-width: 100px;
   height: 20px;
   margin-top: 10px;

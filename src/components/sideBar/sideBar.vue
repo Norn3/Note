@@ -5,7 +5,7 @@ import './sideBar.scss';
 
 // 通过defineProps接收父组件的值
 const father = defineProps({
-  // 接收传值   此处的listLength就是父组件的自定义名称
+  // 接收传值   此处的itemNum就是父组件的自定义名称
   itemNum: {
     type: Number, // 数据类型
     default: 0, // 未传值时的默认值
