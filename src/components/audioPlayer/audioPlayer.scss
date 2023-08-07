@@ -1,0 +1,36 @@
+@import '../../mainStyle.scss';
+
+.audioPlayer{
+    position: absolute;
+    display: flex;
+    float: left;
+    left: 0;
+    bottom: 0;
+    width: 100%-$sideBarWidth;
+    height: 10%;
+    background-color: $brandColor;
+    list-style-type: none;
+    margin-block-start: 0;
+    padding-inline-start: 0;
+}
+.audio{
+    width: 50%;
+    height: 80%;
+}
+.play_button{
+    width: 500px;
+    height: 500px;
+    background: url('../../assets/play.svg') no-repeat;
+
+}
+.progress{
+    width: 1000px;
+    height: 10px;
+    background-color: red;
+
+    .current{
+        width: 50%;
+        height: 100%;
+        background-color: black;
+    }
+}

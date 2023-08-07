@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router';
 
 import sideBar from '../components/sideBar/sideBar.vue';
 import navBar from '../components/navBar/navBar.vue';
+import audioPlayer from '../components/audioPlayer/audioPlayer.vue';
 
 // const route = useRoute()
 $(document).on('click', '#title', () => {
@@ -31,17 +32,26 @@ const listItem = reactive([
 </script>
 
 <template>
-  <!-- <h1 id="title">PlayView</h1> -->
-  <header></header>
-  <article>
-    <nav>
-      <nav-bar></nav-bar>
-    </nav>
-    <aside>
-      <side-bar :itemNum="itemNum" :listItem="listItem"></side-bar>
-    </aside>
-    <section></section>
-  </article>
-  <footer></footer>
+  <div class="play_view">
+    <header></header>
+    <article>
+      <nav>
+        <nav-bar></nav-bar>
+      </nav>
+      <aside>
+        <side-bar :itemNum="itemNum" :listItem="listItem"></side-bar>
+      </aside>
+      <section></section>
+    </article>
+    <footer>
+      <audio-player></audio-player>
+    </footer>
+  </div>
 </template>
-<style scoped></style>
+<style lang="scss" scoped>
+.play_view {
+  position: relative;
+  width: 98vw;
+  height: 100vh;
+}
+</style>
