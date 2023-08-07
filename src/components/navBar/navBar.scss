@@ -1,13 +1,16 @@
+@import '../../mainStyle.scss';
+
 .nav{
   position: absolute;
-  left: 0;
-  top: 3em;
-  width: 106.5em;
+  left: $sideBarWidth;
+  top: $headerHeight;
+  width: 100%-$sideBarWidth;
   height: 3em;
   background-color: rgb(227, 242, 255);
   list-style-type: none;
   margin-block-start: 0;
   padding-inline-start: 0;
+  overflow: hidden;
 }
 .navItem{
   display: inline;
