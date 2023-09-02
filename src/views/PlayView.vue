@@ -54,4 +54,10 @@ const listItem = reactive([
   width: 98vw;
   height: 100vh;
 }
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 10%;
+}
 </style>
