@@ -3,6 +3,8 @@ import $ from 'jquery';
 import { ref } from 'vue';
 import './audioPlayer.scss';
 
+import audioFile from '../../assets/music/Biscuits - i hate u i love u.mp3';
+
 // 获取响应式audio对象
 const audioRef = ref<HTMLAudioElement | null>(null);
 
@@ -181,14 +183,8 @@ const handleVolumeDragEnd = () => {
       @timeupdate="updateProgress"
       @volumechange="updateVolume"
     >
-      <source
-        src="../../assets/music/Biscuits - i hate u i love u.mp3"
-        type="audio/mp3"
-      />
-      <source
-        src="../../assets/music/Biscuits - i hate u i love u.mp3"
-        type="audio/ogg"
-      />
+      <source :src="audioFile" type="audio/mp3" />
+      <source :src="audioFile" type="audio/ogg" />
       Your browser does not support this audio format.
     </audio>
     <div id="playButton" class="play_button pause"></div>
