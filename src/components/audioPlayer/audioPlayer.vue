@@ -25,7 +25,7 @@ get<Song[]>(`/song/url/v1?id=${songId}&level=exhigh`)
 $(document).on('click', '#playButton', () => {
   if (audioRef.value) {
     // 图标切换
-    const playButton = $('#playButton')[0] as HTMLElement;
+    const playButton = $('#playButton')[0];
     playButton.classList.toggle('playing');
     playButton.classList.toggle('pause');
     // 状态切换
@@ -56,7 +56,7 @@ const dragStartX = ref(0);
 const dragStartTime = ref(0);
 
 const handleDragStart = (event: MouseEvent) => {
-  const progressBar = $('#progressControl')[0] as HTMLElement;
+  const progressBar = $('#progressControl')[0];
   const progressBarWidth = progressBar.offsetWidth;
   const progressBarLeft = progressBar.offsetLeft;
 
@@ -73,7 +73,7 @@ const handleDragStart = (event: MouseEvent) => {
 };
 const handleDragMove = (event: MouseEvent) => {
   if (isDragging.value) {
-    const progressBar = $('#progressControl')[0] as HTMLElement;
+    const progressBar = $('#progressControl')[0];
     const deltaX = event.clientX - dragStartX.value;
 
     const progressBarWidth = progressBar.offsetWidth;
@@ -128,12 +128,12 @@ $(document).on('click', '#volumeIcon', () => {
 const updateVolume = () => {
   if (audioRef.value) {
     if (audioRef.value.muted || audioRef.value.volume == 0) {
-      const volumeButton = $('#volumeIcon')[0] as HTMLElement;
+      const volumeButton = $('#volumeIcon')[0];
       volumeButton.classList.remove('not_muted');
       volumeButton.classList.add('muted');
       volumeHeight.value = '0%';
     } else {
-      const volumeButton = $('#volumeIcon')[0] as HTMLElement;
+      const volumeButton = $('#volumeIcon')[0];
       volumeButton.classList.add('not_muted');
       volumeButton.classList.remove('muted');
       const currentVolume = audioRef.value.volume;
@@ -143,7 +143,7 @@ const updateVolume = () => {
 };
 
 const handleVolumeDragStart = (event: MouseEvent) => {
-  const volumeBar = $('#volumeControl')[0] as HTMLElement;
+  const volumeBar = $('#volumeControl')[0];
   const volumeBarHeight = volumeBar.offsetHeight; // 获取元素总的高度
   const volumeBarTop = volumeBar.offsetTop; // 获取元素相对父级的顶端位置
   isDraggingVolume.value = true;
@@ -158,7 +158,7 @@ const handleVolumeDragStart = (event: MouseEvent) => {
 };
 const handleVolumeDragMove = (event: MouseEvent) => {
   if (isDraggingVolume.value) {
-    const volumeBar = $('#volumeControl')[0] as HTMLElement;
+    const volumeBar = $('#volumeControl')[0];
     const deltaY = 100 - event.offsetY + (100 - volumeDragStartY.value); // 计算拖动距离
     const volumeBarHeight = volumeBar.offsetHeight; // 获得元素高度
 
