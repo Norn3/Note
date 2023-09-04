@@ -3,10 +3,23 @@ import $ from 'jquery';
 import { ref } from 'vue';
 import './audioPlayer.scss';
 
-import audioFile from '../../assets/music/Biscuits - i hate u i love u.mp3';
+import { get } from '../../axios/insatance';
+import Song from '../../class/Song';
 
 // 获取响应式audio对象
 const audioRef = ref<HTMLAudioElement | null>(null);
+let songId = 3389431;
+let songItem: string | undefined;
+
+get<Song[]>(`/song/url/v1?id=${songId}&level=exhigh`)
+  .then((song) => {
+    // 处理返回的用户数据
+    songItem = `https://music.163.com/song/media/outer/url?id=${song[0].id}.mp3`;
+  })
+  .catch((error) => {
+    // 处理请求错误
+    console.log(error);
+  });
 
 // 点击播放按钮，播放状态与图标切换
 $(document).on('click', '#playButton', () => {
@@ -17,6 +30,7 @@ $(document).on('click', '#playButton', () => {
     playButton.classList.toggle('pause');
     // 状态切换
     if (audioRef.value.paused) {
+      audioRef.value.load();
       audioRef.value.play();
     } else {
       audioRef.value.pause();
@@ -132,18 +146,13 @@ const handleVolumeDragStart = (event: MouseEvent) => {
   const volumeBar = $('#volumeControl')[0] as HTMLElement;
   const volumeBarHeight = volumeBar.offsetHeight; // 获取元素总的高度
   const volumeBarTop = volumeBar.offsetTop; // 获取元素相对父级的顶端位置
-  console.log('volumeBar.offsetHeight' + volumeBar.offsetHeight);
-  console.log('volumeBar.offsetTop' + volumeBar.offsetTop);
   isDraggingVolume.value = true;
   volumeDragStartY.value = event.offsetY; // 获取拖动开始时相对文档的垂直坐标，在#volumeControl元素长度为100时，event.offsetY为0~99
-  console.log('event.offsetY' + event.offsetY);
 
   if (audioRef.value) {
     // 若audio存在
     audioRef.value.volume =
       1 - (event.offsetY - volumeBarTop) / volumeBarHeight; // 将音量变为拖动开始时的音量
-    console.log('audioRef.value.volume' + audioRef.value.volume);
-
     volumeDragStartVolume.value = audioRef.value.volume; // 获得初始音量
   }
 };
@@ -151,11 +160,6 @@ const handleVolumeDragMove = (event: MouseEvent) => {
   if (isDraggingVolume.value) {
     const volumeBar = $('#volumeControl')[0] as HTMLElement;
     const deltaY = 100 - event.offsetY + (100 - volumeDragStartY.value); // 计算拖动距离
-    console.log('event.offsetY' + event.offsetY);
-    console.log('volumeDragStartY' + volumeDragStartY.value);
-
-    console.log('deltaY' + deltaY);
-
     const volumeBarHeight = volumeBar.offsetHeight; // 获得元素高度
 
     if (audioRef.value) {
@@ -163,14 +167,12 @@ const handleVolumeDragMove = (event: MouseEvent) => {
       // 更新音频的音量
       audioRef.value.volume =
         1 - (volumeDragStartVolume.value + (1 - newVolume));
-      console.log('audioRef.value.volume' + audioRef.value.volume);
     }
   }
 };
 
 const handleVolumeDragEnd = () => {
   isDraggingVolume.value = false;
-  console.log(isDraggingVolume.value);
 };
 </script>
 
@@ -183,8 +185,8 @@ const handleVolumeDragEnd = () => {
       @timeupdate="updateProgress"
       @volumechange="updateVolume"
     >
-      <source :src="audioFile" type="audio/mp3" />
-      <source :src="audioFile" type="audio/ogg" />
+      <source :src="songItem" type="audio/mp3" />
+      <source :src="songItem" type="audio/ogg" />
       Your browser does not support this audio format.
     </audio>
     <div id="playButton" class="play_button pause"></div>
