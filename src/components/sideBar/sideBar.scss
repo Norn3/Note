@@ -5,7 +5,7 @@
     left: 0;
     top: $headerHeight;
     width: $sideBarWidth;
-    height: 87.9vh;
+    height: 100%;
     margin: 0;
     background-color: rgb(255, 251, 243);
     list-style-type: none;
@@ -19,7 +19,7 @@
   text-overflow: ellipsis;
 
   &:nth-child(even) {
-    background-color: #ffffb2;
+    background-color: #f8f8ce;
   }
 
   &:nth-child(odd) {

@@ -14,6 +14,7 @@ let songItem: string | undefined;
 get<Song[]>(`/song/url/v1?id=${songId}&level=exhigh`)
   .then((song) => {
     // 处理返回的用户数据
+    console.log(song);
     songItem = `https://music.163.com/song/media/outer/url?id=${song[0].id}.mp3`;
   })
   .catch((error) => {
