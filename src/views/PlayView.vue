@@ -69,8 +69,10 @@ $(document).on('mouseout', 'footer', () => {
   height: 100vh;
 }
 header {
+  position: relative;
   height: 8%;
   width: 100%;
+  background-color: #ffffee;
 }
 article {
   position: relative;
