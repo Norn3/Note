@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router';
 import sideBar from '../components/sideBar/sideBar.vue';
 import navBar from '../components/navBar/navBar.vue';
 import audioPlayer from '../components/audioPlayer/audioPlayer.vue';
+import searchFrame from '../components/header/search/searchFrame.vue';
 
 // const route = useRoute()
 $(document).on('click', '#title', () => {
@@ -44,7 +45,9 @@ $(document).on('mouseout', 'footer', () => {
 
 <template>
   <div class="play_view">
-    <header></header>
+    <header>
+      <search-frame></search-frame>
+    </header>
     <article>
       <nav>
         <nav-bar></nav-bar>
@@ -65,6 +68,10 @@ $(document).on('mouseout', 'footer', () => {
   width: 100vw;
   height: 100vh;
 }
+header {
+  height: 8%;
+  width: 100%;
+}
 article {
   position: relative;
   height: 100%;
@@ -73,7 +80,7 @@ aside {
   height: 100%;
 }
 footer {
-  position: relative;
+  position: fixed;
   bottom: 0;
   width: 100%;
   height: 8%;
