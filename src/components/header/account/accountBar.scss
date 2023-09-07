@@ -1,0 +1,38 @@
+@import '../../../mainStyle.scss';
+
+.account{
+    position: absolute;
+    top: 20%;
+    right: 3%;
+    width: 150px;
+    height: 150px;
+    z-index: 100;
+
+    .avatar{
+        height: 40px;
+        width: 40px;
+        margin: auto;
+        border-radius: 50%;
+        background: url(../../../assets/icons/avatar.svg) no-repeat;
+    }
+
+    .accountMenu{
+        display: none;
+        border-radius: 10px;
+        background-color: rgb(255, 234, 225);
+        ul{
+            list-style-type: none;
+            padding: 3%;
+            margin-block-start: 3%;
+            margin-block-end: 3%;
+            padding-inline-start: 15%;
+            padding-inline-end: 15%;
+
+            li{
+                padding: 5%;
+                border-bottom: 1px solid rgb(223, 204, 135);
+            }
+        }
+    }
+    
+}
