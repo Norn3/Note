@@ -2,25 +2,33 @@
 import $ from 'jquery';
 import { useRouter } from 'vue-router';
 
-$(document).on('click', '.house', () => {
-  jumpPage();
-});
+import navBar from '../../components/article/HomeView/navBar/navBar.vue';
+import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.vue';
 
-const router = useRouter();
-const jumpPage = () => {
-  router.push({
-    name: 'play',
-  });
-};
+// $(document).on('click', '#navBar', () => {
+//   jumpPage();
+// });
+
+// const router = useRouter();
+// const jumpPage = () => {
+//   router.push({
+//     name: 'play',
+//   });
+// };
 </script>
 
 <template>
-  <div class="background">
-    <div class="tree">
-      <div class="leaf"></div>
-    </div>
-    <div class="house"></div>
-    <div class="ground"></div>
+  <div class="home_view">
+    <article>
+      <nav>
+        <nav-bar id="navBar"></nav-bar>
+      </nav>
+      <section>
+        <main-banner></main-banner>
+        <recommend-play-list></recommend-play-list>
+        <recommend-play-list id="personal"></recommend-play-list>
+      </section>
+    </article>
   </div>
 </template>
 <style scoped>

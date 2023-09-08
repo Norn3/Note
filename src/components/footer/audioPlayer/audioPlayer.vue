@@ -3,8 +3,8 @@ import $ from 'jquery';
 import { ref } from 'vue';
 import './audioPlayer.scss';
 
-import { get } from '../../axios/insatance';
-import Song from '../../class/Song';
+import { get } from '../../../axios/insatance';
+import Song from '../../../class/Song';
 
 // 获取响应式audio对象
 const audioRef = ref<HTMLAudioElement | null>(null);

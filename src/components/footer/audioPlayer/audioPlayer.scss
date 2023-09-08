@@ -1,4 +1,4 @@
-@import '../../mainStyle.scss';
+@import '../../../mainStyle.scss';
 
 .audioPlayer{
     display: flex;
@@ -33,10 +33,10 @@
     margin-right: $audioPlayerIconSize;
 }
 .playing{
-    background: url('../../assets/icons/pause.svg') no-repeat;
+    background: url('../../../assets/icons/pause.svg') no-repeat;
 }
 .pause{
-    background: url('../../assets/icons/play.svg') no-repeat;
+    background: url('../../../assets/icons/play.svg') no-repeat;
 }
 .progressControl{
     position: relative;
@@ -93,7 +93,6 @@
         }
     }
 
-    
 }
 .volumeIcon{
     position: absolute;
@@ -103,8 +102,8 @@
     cursor: pointer; 
 }
 .not_muted{
-    background: url('../../assets/icons/volume.svg') no-repeat;
+    background: url('../../../assets/icons/volume.svg') no-repeat;
 }
 .muted{
-    background: url('../../assets/icons/muted.svg') no-repeat;
+    background: url('../../../assets/icons/muted.svg') no-repeat;
 }
