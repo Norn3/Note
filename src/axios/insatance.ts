@@ -17,9 +17,8 @@ instance.interceptors.request.use((config: AxiosRequestConfig) => {
     
 })
 // 响应拦截器
-instance.interceptors.response.use((response: AxiosResponse) => {
-    
-    return response.data;
+instance.interceptors.response.use((response: any) => {
+    return response.data ? response.data : response.result;
 }, (error: any) => {
     // 这里用来处理http常见错误，进行全局提示
     let message = "";
@@ -79,12 +78,12 @@ instance.interceptors.response.use((response: AxiosResponse) => {
 
 // 封装 GET 请求
 export function get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return instance.get<T>(url, config).then((response) => response.data);
+    return instance.get<T>(url, config).then((response: any) => response.data ? response.data : response.result);
   }
   
   // 封装 POST 请求
   export function post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return instance.post<T>(url, data, config).then((response) => response.data);
+    return instance.post<T>(url, data, config).then((response: any) => response.data ? response.data : response.result);
   }
 
 // 发送请求
