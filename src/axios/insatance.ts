@@ -9,7 +9,6 @@ const instance: AxiosInstance = axios.create({
 // 配置拦截器
 // 请求拦截器
 instance.interceptors.request.use((config: AxiosRequestConfig) => {
-    console.log("拦截成功")
     return config;
 }, (error: any) => {
     console.log(error);
@@ -17,8 +16,8 @@ instance.interceptors.request.use((config: AxiosRequestConfig) => {
     
 })
 // 响应拦截器
-instance.interceptors.response.use((response: any) => {
-    return response.data ? response.data : response.result;
+instance.interceptors.response.use((response: AxiosResponse) => {
+  return response;
 }, (error: any) => {
     // 这里用来处理http常见错误，进行全局提示
     let message = "";
@@ -78,13 +77,12 @@ instance.interceptors.response.use((response: any) => {
 
 // 封装 GET 请求
 export function get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return instance.get<T>(url, config).then((response: any) => response.data ? response.data : response.result);
-  }
-  
+    return instance.get<T>(url, config).then((response: AxiosResponse) => response.data);
+}
   // 封装 POST 请求
-  export function post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return instance.post<T>(url, data, config).then((response: any) => response.data ? response.data : response.result);
-  }
+export function post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  return instance.post<T>(url, data, config).then((response: AxiosResponse) => response.data);
+}
 
 // 发送请求
 export default instance;
