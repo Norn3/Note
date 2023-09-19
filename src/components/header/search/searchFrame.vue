@@ -27,13 +27,13 @@ const formatter = (item: SourceItemObj) => {
 //trem：input输入内容
 const searchFn = async (trem: string) => {
   await get<any>(`/search/suggest?keywords=${trem}`)
-    .then((song) => {
-      // 处理返回的用户数据
+    .then((response) => {
+      // 处理返回的查询结果
+      const result = response.result;
       let arr: Array<SourceItemObj> = [];
       let id = 0;
-
-      if (song.songs) {
-        song.songs.forEach((element: SourceItemObj) => {
+      if (result.songs) {
+        result.songs.forEach((element: SourceItemObj) => {
           let item: SourceItemObj = {
             category: '单曲',
             name: element.name,
@@ -43,9 +43,9 @@ const searchFn = async (trem: string) => {
         });
       }
 
-      if (song.artists) {
+      if (result.artists) {
         id = 0;
-        song.artists.forEach((element: SourceItemObj) => {
+        result.artists.forEach((element: SourceItemObj) => {
           let item: SourceItemObj = {
             category: '歌手',
             name: element.name,
@@ -55,9 +55,9 @@ const searchFn = async (trem: string) => {
         });
       }
 
-      if (song.albums) {
+      if (result.albums) {
         id = 0;
-        song.albums.forEach((element: SourceItemObj) => {
+        result.albums.forEach((element: SourceItemObj) => {
           let item: SourceItemObj = {
             category: '专辑',
             name: element.name,
@@ -67,9 +67,9 @@ const searchFn = async (trem: string) => {
         });
       }
 
-      if (song.playlists) {
+      if (result.playlists) {
         id = 0;
-        song.playlists.forEach((element: SourceItemObj) => {
+        result.playlists.forEach((element: SourceItemObj) => {
           let item: SourceItemObj = {
             category: '歌单',
             name: element.name,
@@ -85,6 +85,7 @@ const searchFn = async (trem: string) => {
       // 处理请求错误
       console.log(error);
     });
+
   return mySource.value;
 };
 const selectValue = (e: Event) => {

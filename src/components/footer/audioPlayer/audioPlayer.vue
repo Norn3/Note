@@ -11,10 +11,10 @@ const audioRef = ref<HTMLAudioElement | null>(null);
 let songId = 3389431;
 let songItem: string | undefined;
 
-get<Song[]>(`/song/url/v1?id=${songId}&level=exhigh`)
-  .then((song) => {
+get<any>(`/song/url/v1?id=${songId}&level=exhigh`)
+  .then((response) => {
     // 处理返回的用户数据
-    console.log(song);
+    const song: Song = response.data;
     songItem = `https://music.163.com/song/media/outer/url?id=${song[0].id}.mp3`;
   })
   .catch((error) => {
