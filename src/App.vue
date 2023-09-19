@@ -45,18 +45,27 @@ $(document).on('mouseout', 'footer', () => {
 .mainView {
   position: relative;
   width: 100vw;
-  height: 100vh;
-}
-header {
-  position: relative;
-  height: 8%;
-  width: 100%;
-  background-color: #ffffee;
-}
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 8%;
+  min-height: 100vh;
+  height: auto;
+
+  header {
+    position: relative;
+    height: 8vh;
+    width: 100%;
+    background-color: #ffffee;
+  }
+  article {
+    position: relative;
+    margin: auto;
+    width: 80vw;
+    min-height: 92vh;
+    height: 100%;
+  }
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 8vh;
+  }
 }
 </style>
