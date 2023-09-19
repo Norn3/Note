@@ -4,12 +4,13 @@
     position: absolute;
     left: 0;
     // top: $headerHeight;
-    width: $sideBarWidth;
-    height: 100%;
+    width: 100%;
+    min-height: 100%;
     margin: 0;
     background-color: rgb(255, 251, 243);
     list-style-type: none;
     padding-inline-start: 0;
+    overflow: auto;
 }
 .listItem{
   padding: 0.25em 0.5em;

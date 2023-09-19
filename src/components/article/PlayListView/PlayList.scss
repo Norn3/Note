@@ -1,0 +1,96 @@
+@import '../../../mainStyle.scss';
+
+.play-list-container{
+    position: relative;
+    width: 140px;
+    height: 180px;
+    margin: 0 30px;
+
+    .image{
+        position: relative;
+        width: 100%;
+        height: 78%;
+        border-radius: 2px;
+        
+
+        .mask{
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 20%;
+            background-color: rgba(0, 0, 0, 0.2);
+            display: flex;
+            padding: 2% 2.5% 0;
+
+            .play-count{
+                width: 80%;
+                height: 100%;
+                display: flex;
+
+                .icon{
+                    width: 25%;
+                    margin: 0 2.5%;
+                    height: 100%;
+                    background: url('../../../assets/icons/audience.svg') no-repeat;
+                    opacity: 0.7;
+                }
+                .number{
+                    height: 100%;
+                    padding: 4px;
+                    color: white;
+                    opacity: 0.7;
+
+                }
+            }
+
+            .play-button{
+                width: 20%;
+                height: 100%;
+                background: url('../../../assets/icons/play_list.svg') no-repeat;
+                opacity: 0.7;
+
+            }
+        }
+    }
+
+    .description{
+        position: relative;
+        width: 100%;
+        height: 22%;
+        .title{
+            width: 100%;
+            height: 50%;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: black;
+            font-size: 1.05em;
+            &:hover{
+                text-decoration: underline;
+            }
+
+        }
+        .creatorTitle{
+            display: none;
+            justify-content: center;
+            width: 100%;
+            height: 50%;
+            font-size: 0.2em;
+            color: gray;
+
+            .creator{
+                margin-left: 7px;
+                overflow: hidden;
+                white-space: nowrap;
+                color: black;
+                font-size: 0.7em;
+                &:hover{
+                    text-decoration: underline;
+                }
+            }
+        }
+        
+    }
+    
+}
