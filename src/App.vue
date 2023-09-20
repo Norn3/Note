@@ -49,13 +49,15 @@ $(document).on('mouseout', 'footer', () => {
   height: auto;
 
   header {
-    position: relative;
+    position: fixed;
     height: 8vh;
     width: 100%;
     background-color: #ffffee;
+    z-index: 1;
   }
   article {
     position: relative;
+    top: 8vh;
     margin: auto;
     width: 80vw;
     min-height: 92vh;

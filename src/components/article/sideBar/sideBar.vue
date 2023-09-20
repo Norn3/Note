@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import $ from 'jquery';
-import { onMounted, ref, nextTick, reactive } from 'vue';
+import { onMounted, ref, nextTick, reactive, watch } from 'vue';
 import './sideBar.scss';
 
 // 通过defineProps接收父组件的值
@@ -11,23 +11,27 @@ const father = defineProps({
     default: 0, // 未传值时的默认值
   },
   listItem: {
-    type: Array,
-    default: () => ['Item1', 'Item2', 'Item3', 'Item4'],
+    type: Array<number>,
+    default: () => [1, 2, 3, 4],
   },
 });
 const listItem = reactive(father.listItem);
+watch(listItem, (newListItem) => {
+  createItem(newListItem);
+});
 // 列表项，可以通过导入实现
 // const listItem = ref(['Item1','Item2','Item3','Item4']);
 // let current = 0;
 
 // const List = ref<HTMLElement>();
 
-const createItem = () => {
+const createItem = (listItem: Array<number>) => {
   // 使用 $() 将目标元素包装为 jQuery 对象
   const $List = $('.List');
 
   listItem.forEach((element) => {
     // 创建新的子元素并设置其内容
+
     const $li = $('<li>').text(String(element));
     // $li.attr('id','"listItem'+ (father.itemNum - current) +'"');
     $li.addClass('listItem');
@@ -39,7 +43,6 @@ const createItem = () => {
 onMounted(async () => {
   // 等待页面加载结束，再调用createItem创建列表项
   await nextTick();
-  createItem();
   // console.log(father.itemNum);
 });
 </script>

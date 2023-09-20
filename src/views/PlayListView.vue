@@ -10,7 +10,6 @@ import PlayListItem from '../class/PlayListItem';
 import sideBar from '../components/article/sideBar/sideBar.vue';
 import PlayList from '../components/article/PlayListView/PlayList.vue';
 
-// const route = useRoute()
 $(document).on('click', '#title', () => {
   jumpPage();
 });
@@ -21,31 +20,36 @@ const jumpPage = () => {
     name: 'home',
   });
 };
-
+const listId = 887271959;
 const itemNum = ref(12);
-const listItem = reactive([
-  'Item1468854638/763548484854',
-  'Item2',
-  'Item3',
-  'Item4',
-  'Item5',
-  'Item6',
-]);
+let listItem: Array<number> = reactive([]);
+const getSideBar = () => {
+  get<any>(`/playlist/detail?id=${listId}`)
+    .then((response) => {
+      console.log(response);
+      response.playlist.trackIds.forEach((element: any) => {
+        listItem.push(element.id);
+      });
+    })
+    .catch((error) => {
+      // 处理请求错误
+      console.log('请求失败');
+      console.log(error);
+    });
+};
+
 let uid = 571024254;
-let info: PlayListItem = reactive({
-  id: 0,
-  name: '', // 播放音质等级
-  coverImgUrl: '',
-  playCount: 0,
-  userId: 0,
-});
+// let info: PlayListItem = reactive({
+//   id: 0,
+//   name: '', // 播放音质等级
+//   coverImgUrl: '',
+//   playCount: 0,
+//   userId: 0,
+// });
 const createItem = () => {
   get<any>(`/user/playlist?uid=${uid}`)
     .then((response) => {
       // 处理返回的用户数据
-      console.log('请求成功');
-      console.log(response);
-
       const playlist = response.playlist;
 
       // 插入元素
@@ -102,6 +106,7 @@ const createItem = () => {
 };
 
 onMounted(async () => {
+  getSideBar();
   // 等待页面加载结束，再调用createItem创建列表项
   await nextTick();
   createItem();
@@ -127,7 +132,7 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .play_view {
   position: relative;
-  width: 100%;
+  width: 80vw;
   min-height: 92vh;
   height: 100%;
   background-color: rgb(237, 250, 255);
@@ -136,17 +141,21 @@ article {
   position: relative;
   min-height: 100%;
   height: 100%;
+  width: 100%;
   display: flex;
 }
 aside {
-  position: relative;
+  position: fixed;
   min-height: 92vh;
-  width: 25%;
+  width: 20vw;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 section {
   position: relative;
   height: 100%;
-  width: 75%;
+  width: 60vw;
+  left: 25%;
   .playListTitle {
     margin: 20px;
     border-bottom: 2px solid rgb(255, 189, 189);
