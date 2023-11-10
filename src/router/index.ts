@@ -11,12 +11,12 @@ const routes: Array<RouteRecordRaw> = [
 			{
 				path: 'homeRecommend',
 				name: 'recommend',
-				component: () => import('../views/home/HomeRecommendView.vue'),    
+				component: () => import('../views/home/HomeRecommendView.vue'),      // 异步加载，路由懒加载 
 			},
 			{
-				path: 'homePlayList',
-				name: 'playList',
-				component: () => import('../views/home/HomePlayListView.vue'),    
+				path: 'homePlaylist',
+				name: 'playlist',
+				component: () => import('../views/home/HomePlaylistView.vue'),    
 			},
 			{
 				path: 'homeRank',
@@ -28,10 +28,12 @@ const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/play',
 		name: 'play',
-		component: () => import('../views/PlayListView.vue'),    // 异步加载     
-		children: [
-			
-		]
+		component: () => import('../views/MySongView.vue'),     
+	},
+	{
+		path: '/playlistInfo',
+		name: 'playlistInfo',
+		component: () => import('../views/PlaylistInfoView.vue'),     
 	},
 	{
 		path: '/account',
