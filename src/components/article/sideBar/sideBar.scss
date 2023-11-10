@@ -1,30 +1,92 @@
 @import '../../../mainStyle.scss';
 
-.List{
-    position: absolute;
+.sideBar{
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  background-color: #dbe6ec3f;
+
+  .sideBarTitle{
+    position: relative;
+    height: 30px;
+    padding: 5px;
+    background-color: $subBrandColor;
+
+    &:hover{
+      background-color: #ffec407e;
+    }
+
+    h3{
+      position: absolute;
+      padding-left: 20px;
+      left: 10px;
+      margin: 0;
+      
+      
+      &::before{
+        content: url(../../../assets/icons/triangle.svg);
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-right: 5px;
+        transform: rotate(90deg);
+        transition: all 0.5s;
+      }
+
+      
+    }
+    .open{
+
+      &::before{
+        content: url(../../../assets/icons/triangle.svg);
+        transform: rotate(0deg);
+        margin-right: 5px;
+  
+      }
+    }
+  }
+
+  
+
+  .List{
+    position: relative;
     left: 0;
-    // top: $headerHeight;
     width: 100%;
-    min-height: 100%;
+    height: auto;
     margin: 0;
-    background-color: rgb(255, 251, 243);
     list-style-type: none;
     padding-inline-start: 0;
-    overflow: auto;
-}
-.listItem{
-  padding: 0.25em 0.5em;
-  font-size: 1em;
-  overflow: hidden;
-  // 溢出显示省略号
-  text-overflow: ellipsis;
+    overflow: hidden;
 
-  &:nth-child(even) {
-    background-color: #f8f8ce;
-  }
-
-  &:nth-child(odd) {
-    background-color: #fbfbe1;
-  }
-}
+    .listItem{
+      box-sizing: content-box;
+      padding: 0.5em 0.7em;
+      height: 50px;
+      cursor: pointer;
   
+      // &:nth-child(even) {
+      //   background-color: #ffffff;
+      // }
+  
+      // &:nth-child(odd) {
+      //   background-color: #fcfeff;
+      // }
+      &:hover{
+        background-color: #eaf5fc;
+      }
+      &.check{
+        background-color: #dbecf7bb;
+      }
+  
+
+    }
+
+    
+  }
+
+  .fold{
+    height: 0px;
+  }
+  
+    
+}
