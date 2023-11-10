@@ -1,39 +1,41 @@
 <script setup lang="ts">
-import $ from 'jquery';
+import $, { event } from 'jquery';
 import { onMounted, nextTick } from 'vue';
-import PlayListItem from '../../../class/PlayListItem';
+import router from '../../../router/index';
+import PlaylistItem from '../../../class/PlaylistItemClass';
 // import { get } from '../../../axios/insatance';
 
 import './PlayList.scss';
 
 const props = defineProps({
-  src: String,
-  info: PlayListItem,
+  info: String,
 });
 
-// const createItem =  () => {
-//     const $image = $('#image');
-//     let testObserver = new MutationObserver(() => {
-//         const newurl = $image.attr('src');
-//         $image.css('background', `url(${newurl}) no-repeat`)
-//         $image.css('background-size', '100%, 100%')
-//     });
-//     const image =  $image[0]
-//     testObserver.observe(image, {
-//         attributeFilter: ['src'], // 标签所带的属性都可添加，包括自定义属性
-//     });
-// }
+const jumpPage = () => {
+  console.log(router);
+
+  router.push({
+    name: 'playlistInfo',
+    query: { pid: props.info },
+  });
+};
 
 onMounted(async () => {
   // 等待页面加载结束，再调用createItem创建列表项
   await nextTick();
+
   // createItem();
 });
 </script>
 <!-- eslint-disable vue/no-useless-template-attributes -->
 <template>
-  <div id="playList" class="play-list-container" :info="info">
-    <div id="image" class="image" :src="src">
+  <div
+    id="playlist"
+    class="play-list-container"
+    :info="info"
+    @click="jumpPage()"
+  >
+    <div id="image" class="image">
       <div id="mask" class="mask">
         <div id="playCount" class="play-count">
           <div id="icon" class="icon"></div>
