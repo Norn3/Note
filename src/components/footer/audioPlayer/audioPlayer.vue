@@ -27,13 +27,17 @@ $(document).on('click', '#playButton', () => {
   if (audioRef.value) {
     // 图标切换
     const playButton = $('#playButton')[0];
-    playButton.classList.toggle('playing');
-    playButton.classList.toggle('pause');
     // 状态切换
     if (audioRef.value.paused) {
+      const time = audioRef.value.currentTime;
+      playButton.classList.add('playing');
+      playButton.classList.remove('pause');
       audioRef.value.load();
+      audioRef.value.currentTime = time;
       audioRef.value.play();
     } else {
+      playButton.classList.remove('playing');
+      playButton.classList.add('pause');
       audioRef.value.pause();
     }
   }
