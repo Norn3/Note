@@ -1,0 +1,33 @@
+@import '../../../mainStyle.scss';
+
+.header_nav{
+  position: relative;
+  display: flex;
+  justify-content: left;
+  height: 100%;
+  width: 60vw;
+  left: -12.8em;
+  list-style-type: none;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-inline-start: 20%;
+  overflow: hidden;
+  z-index: 1;
+
+
+  li.header_nav_item{
+    display: inline;
+    min-width: 100px;
+    height: 100%;
+    line-height: 100%;
+    font-size: 1.5em;
+    color: aliceblue;
+    padding: 1em 1em;
+    
+    cursor: pointer;
+  }
+    
+  .check{
+    background-color: $darkerBrandColor;
+  }
+}
