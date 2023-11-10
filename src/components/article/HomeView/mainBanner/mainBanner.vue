@@ -20,7 +20,6 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/scss';
 import 'swiper/scss/navigation';
 import 'swiper/scss/pagination';
-import 'swiper/scss/scrollbar';
 import 'swiper/scss/a11y';
 
 const onSwiper = (swiper: any) => {
@@ -55,7 +54,7 @@ $(document).on('click', '[id^="mySlide"]', (e) => {
   }
 });
 
-const modules = [Navigation, Pagination, Scrollbar, A11y, Autoplay];
+const modules = [Navigation, Pagination, A11y, Autoplay];
 let pictureList: Array<any>;
 </script>
 
@@ -69,7 +68,6 @@ let pictureList: Array<any>;
       :navigation="true"
       :rewind="true"
       :pagination="{ clickable: true }"
-      :scrollbar="{ draggable: true }"
       @swiper="onSwiper"
       @slideChange="onSlideChange"
       :autoplay="{

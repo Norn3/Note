@@ -31,6 +31,7 @@
     width: $audioPlayerIconSize;
     height: 55%;
     margin-right: $audioPlayerIconSize;
+    cursor: pointer;
 }
 .playing{
     background: url('../../../assets/icons/pause.svg') no-repeat;
@@ -49,12 +50,12 @@
     width: 700px;
     height: 10%;
     margin: 30px 0;
-    background-color: antiquewhite;
+    background-color: $subBrandColor;
     border-radius: $progressBorderRadius;
     
     .current{
         height: 100%;
-        background-color: pink;
+        background-color: $audioCurrentState;
         border-radius: $progressBorderRadius;
 
     }
@@ -80,14 +81,14 @@
             bottom: 0px;
             border-radius: 5px;
             margin-left:  12px;
-            background-color: antiquewhite;
+            background-color: $subBrandColor;
             transition: all .3s;
         
             .currentVolume{
                 position: absolute;
                 width: 100%;
                 bottom: 0px;
-                background-color: pink;
+                background-color: $audioCurrentState;
                 border-radius: 5px;
             }
         }

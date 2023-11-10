@@ -7,13 +7,17 @@
     display: flex;
     justify-content: center;
 
+
     .devui-dropdown-item{
         text-align: left;
+        z-index: 2;
+
     }
 }
 .search::before{
     display: inline-block;
     content: url(../../../assets/icons/search.svg);
-    width: 30px;
-    padding: 0 5px 0 0;   
+    width: 50px;
+    padding: 2px 0 0 0;   
+    
 }

@@ -2,8 +2,9 @@
 
 .brandIcon{
     position: relative;
-    left: 75px;
-    height: 55px;
+    left: 70px;
+    height: 45px;
     width: 165px;
-    background-color: rebeccapurple;
+    font-size: 3em;
+    color: $audioCurrentState;
 }

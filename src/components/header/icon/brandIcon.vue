@@ -3,5 +3,5 @@ import './brandIcon.scss';
 </script>
 
 <template>
-  <div id="brandIcon" class="brandIcon"></div>
+  <div id="brandIcon" class="brandIcon">LOGO</div>
 </template>

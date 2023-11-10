@@ -41,21 +41,26 @@ import './navBar.scss';
 //   createItem();
 // });
 
+// 创建导航栏内容
 const navItem = [
   { id: 0, text: '推荐', address: 'recommend' },
-  { id: 1, text: '歌单', address: 'playList' },
+  { id: 1, text: '歌单', address: 'playlist' },
   { id: 2, text: '排行榜', address: 'rank' },
 ];
-onMounted(() => {
-  $('#li0')[0].classList.add('check');
-});
 
+// 选择导航栏中的每一项，都会将改变router到对应路径，并且更改选中样式
 const router = useRouter();
 const jumpPage = (address: string, id: string) => {
   $('.navItem').removeClass('check');
   $(id)[0].classList.add('check');
-  router.push({});
+  router.push({ name: address });
 };
+
+// 加载时，选中第一项
+onMounted(() => {
+  $('#li0')[0].classList.add('check');
+  router.push({ name: 'recommend' });
+});
 </script>
 
 <template>

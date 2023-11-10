@@ -7,6 +7,7 @@ import brandIcon from './components/header/icon/brandIcon.vue';
 import searchFrame from './components/header/search/searchFrame.vue';
 import accountBar from './components/header/account/accountBar.vue';
 import audioPlayer from './components/footer/audioPlayer/audioPlayer.vue';
+import headerNav from './components/header/nav/headerNav.vue';
 
 // 鼠标在上方时audioPlayer出现
 $(document).on('mouseover', 'footer', () => {
@@ -27,12 +28,13 @@ $(document).on('mouseout', 'footer', () => {
   <div class="mainView">
     <header>
       <brand-icon></brand-icon>
+      <header-nav></header-nav>
       <search-frame></search-frame>
       <account-bar></account-bar>
     </header>
-    <article>
+    <section>
       <router-view></router-view>
-    </article>
+    </section>
     <footer>
       <audio-player id="audioPlayer"></audio-player>
     </footer>
@@ -42,24 +44,28 @@ $(document).on('mouseout', 'footer', () => {
 </template>
 
 <style lang="scss" scoped>
+@import './mainStyle.scss';
 .mainView {
   position: relative;
   width: 100vw;
   min-height: 100vh;
   height: auto;
+  background-color: #ffffff;
 
   header {
     position: fixed;
     height: 8vh;
     width: 100%;
-    background-color: #ffffee;
-    z-index: 1;
+    display: flex;
+    background-color: $brandColor;
+    z-index: 2;
+    box-shadow: 0 1px 2px 0px #00000024;
   }
-  article {
+  section {
     position: relative;
     top: 8vh;
     margin: auto;
-    width: 80vw;
+    width: 75vw;
     min-height: 92vh;
     height: 100%;
   }

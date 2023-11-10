@@ -4,28 +4,32 @@ ul.nav{
   position: relative;
   display: flex;
   justify-content: left;
-  height: 1.7em;
-  background-color: rgb(227, 242, 255);
+  height: 2.3em;
+  width: 100vw;
+  right: 12.5vw;
+  background-color: $subBrandColor;
   list-style-type: none;
   margin-block-start: 0;
   margin-block-end: 0;
-  padding-inline-start: 20%;
+  padding-inline-start: 25%;
   overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 1px 2px 0px #00000024;
 
 
   li{
     display: inline;
     min-width: 55px;
-    height: 1.2em;
+    height: 1.4em;
     line-height: 1.2em;
     font-size: 0.9em;
-    padding: 0.2em 0.2em;
-    margin: 0.15em 3em;
+    padding: 0.2em 0.4em;
+    margin: 0.6em 3em;
     cursor: pointer;
   }
     
   .check{
-    background-color: rgb(246, 253, 255);
+    background-color: rgb(255, 255, 255);
     border-radius: 20%;
   }
 }
