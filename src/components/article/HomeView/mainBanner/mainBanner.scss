@@ -5,53 +5,70 @@
     right: 12.5vw;
     display: flex;
     justify-content: space-around;
-    height: 280px;
+    height: 300px;
     width: 100vw;
     background-color: #f9f9f9;
-    z-index: 0;
+    z-index: 1;
     box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.051);
 
-
-    .swiper-button-prev, .swiper-button-next{
-      color: $brandColor;
-    }
-    // .swiper-scrollbar{
-
-    //   background: #f3f5dc;
-
-
-    //   .swiper-scrollbar-drag {
-    //     background: #6e92b9;
-    //   }
-    // }
-    .swiper-pagination-bullet{
-      background-color: white;
-    }
-
     .swiper {
-        width: 80%;
         height: 100%;
-
-      }
+        position: relative;
       
-      .swiper-slide {
-        text-align: center;
-        font-size: 18px;
-      
-        /* Center slide text vertically */
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      .swiper-wrapper{
 
+        .swiper-slide {
+          display: flex;
+          justify-content: center;
+          text-align: center;
+          /* Center slide text vertically */
+          align-items: center;
+          
 
+          .background{
+            width: 75.2%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            /* Center slide text vertically */
+            align-items: center;
+            overflow: hidden;
+            background-position: center center;
+
+            &::after{
+              content: '';
+              width: 75.2%;
+              height: 100%;
+              position: absolute;
+              overflow: hidden;
+              -webkit-backdrop-filter: blur(100px);
+              backdrop-filter: blur(100px);
+            }
+          }
+  
+          
+  
+          img{
+            display: block;
+            width: 70%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+          }
+        }
+        
       }
-      
-      .swiper-slide img {
-        display: block;
-        width: 60%;
-        height: 100%;
-        object-fit: cover;
-        z-index: 1;
 
+      .swiper-button-prev, .swiper-button-next{
+        color: $brandColor;
+        margin: 0 100px;
+        top: 45%;
       }
+  
+      .swiper-pagination-bullet{
+        background-color: white;
+      }
+  
+      
+    }
 }
