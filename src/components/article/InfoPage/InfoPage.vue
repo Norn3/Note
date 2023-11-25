@@ -57,7 +57,7 @@ import { get } from '../../../axios/insatance';
 import moment from 'moment';
 
 import './InfoPage.scss';
-import processValue from '../../../util/processValue';
+import processPlayCount from '../../../util/processPlayCount';
 
 const props = defineProps({
   target_id: String,
@@ -144,10 +144,10 @@ const getInfo = async () => {
         });
 
         if (playlist.playCount != undefined) {
-          playCountText.value = processValue(playlist.playCount);
+          playCountText.value = processPlayCount(playlist.playCount);
         }
         if (playlist.subscribedCount != undefined) {
-          subscribedText.value = processValue(playlist.subscribedCount);
+          subscribedText.value = processPlayCount(playlist.subscribedCount);
         }
       } else if (props.type == 'song') {
         // 多首歌情况未考虑
@@ -200,3 +200,4 @@ onMounted(() => {
   }
 });
 </script>
+../../../util/processPlayCount

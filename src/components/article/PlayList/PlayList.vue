@@ -2,9 +2,8 @@
 import $, { event } from 'jquery';
 import { onMounted, nextTick } from 'vue';
 import router from '../../../router/index';
-import PlaylistItem from '../../../class/PlaylistItemClass';
 // import { get } from '../../../axios/insatance';
-import processValue from '../../../util/processValue';
+import processPlayCount from '../../../util/processPlayCount';
 
 import './PlayList.scss';
 
@@ -54,7 +53,7 @@ onMounted(async () => {
         <div id="playCount" class="play-count">
           <div id="icon" class="icon"></div>
           <div id="number" class="number">
-            {{ processValue(props.playCount) }}
+            {{ processPlayCount(props.playCount) }}
           </div>
         </div>
         <div id="playButton" class="play-button"></div>
@@ -69,3 +68,4 @@ onMounted(async () => {
   </div>
 </template>
 <style lang="scss"></style>
+../../../util/processPlayCount

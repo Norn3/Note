@@ -109,7 +109,7 @@ import { useRoute } from 'vue-router';
 import PlayList from '../../components/article/PlayList/PlayList.vue';
 import selectCategory from '../../components/article/selectCategory/selectCategory.vue';
 
-import processValue from '../../util/processValue';
+import processPlayCount from '../../util/processPlayCount';
 
 const showCate = () => {
   $('#selectCategory').css('display', 'block');
@@ -173,26 +173,13 @@ const updateItem = async () => {
         const $li = $($li_list[current_li]);
 
         // 设置组件内容
-        $li
-          .find('#playlist')
-          .attr({
-            info: String(element.id),
-            imgUrl: element.coverImgUrl,
-            playCount: element.playCount,
-            title: element.name,
-            creator: element.creator.nickname,
-          });
-
-        const $image = $li.find('#image');
-
-        $image.css('background-image', `url(${element.coverImgUrl})`);
-
-        const $number = $image.find('#number');
-        const text = processValue(element.playCount);
-        $number.text(text);
-
-        $li.find('#title').text(element.name);
-        $li.find('#creator').text(`${element.creator.nickname}`);
+        $li.find('#playlist').attr({
+          info: String(element.id),
+          imgUrl: element.coverImgUrl,
+          playCount: element.playCount,
+          title: element.name,
+          creator: element.creator.nickname,
+        });
 
         current_li++;
       });
@@ -212,3 +199,4 @@ onBeforeUpdate(() => {
   updateItem();
 });
 </script>
+../../util/processPlayCount

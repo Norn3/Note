@@ -1,4 +1,4 @@
-export default function processValue(data: number): string {
+export default function processPlayCount(data: number): string {
     let bit = '';
     if (data >= 10000) {
       data /= 10000;
