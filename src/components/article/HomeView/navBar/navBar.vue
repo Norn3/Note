@@ -53,7 +53,14 @@ const router = useRouter();
 const jumpPage = (address: string, id: string) => {
   $('.navItem').removeClass('check');
   $(id)[0].classList.add('check');
-  router.push({ name: address });
+  if (address == 'playlist') {
+    router.push({
+      name: 'playlist',
+      query: { category: '全部' },
+    });
+  } else {
+    router.push({ name: address });
+  }
 };
 
 // 加载时，选中第一项

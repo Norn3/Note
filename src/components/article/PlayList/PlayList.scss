@@ -11,6 +11,8 @@
         width: 100%;
         height: 78%;
         border-radius: 2px;
+        background-repeat: no-repeat;
+        background-size: cover;
         &:hover{
             cursor: pointer;
         }
@@ -80,7 +82,6 @@
 
         }
         .creatorTitle{
-            display: none;
             justify-content: left;
             width: 100%;
             height: 40%;

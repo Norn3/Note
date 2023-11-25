@@ -29,10 +29,17 @@
       <div id="description" class="description">
         <strong class="text description_title">介绍：</strong>
         <div>
-          <p :style="{ '-webkit-line-clamp': showDescription ? '' : '5' }">
+          <p
+            ref="des_height"
+            :style="{ '-webkit-line-clamp': showDescription ? '' : '5' }"
+          >
             {{ description }}
           </p>
-          <div class="fold_description" @click="unfoldDescription">
+          <div
+            class="fold_description"
+            @click="unfoldDescription"
+            v-if="foldButton"
+          >
             {{ showDescription ? '收起' : '展开' }}
           </div>
         </div>
@@ -44,7 +51,7 @@
 <style lang="scss"></style>
 <script setup lang="ts">
 import $, { event } from 'jquery';
-import { reactive, ref } from 'vue';
+import { nextTick, onBeforeMount, onMounted, reactive, ref } from 'vue';
 import PlaylistItemClass from '../../../class/PlaylistItemClass';
 import { get } from '../../../axios/insatance';
 import moment from 'moment';
@@ -62,6 +69,7 @@ const props = defineProps({
 // let playlist = ref(new PlaylistItemClass('', ''));
 // let songs = ref();
 
+// 根据资源类型， 决定获取数据的地址
 const address = (type: string): string => {
   let addr = '';
   switch (type) {
@@ -77,6 +85,7 @@ const address = (type: string): string => {
   }
   return addr;
 };
+// 用于信息显示的数据
 let name = ref(''),
   coverImgUrl = ref(''),
   authors: Array<string> = reactive([]),
@@ -84,9 +93,24 @@ let name = ref(''),
   playCountText = ref(''),
   subscribedText = ref(''),
   tags: Array<string> = reactive([]),
-  description = ref(''),
-  showDescription = ref(false);
+  description = ref('');
 
+const showDescription = ref(true);
+const des_height = ref<HTMLElement | null>(null);
+const foldButton = ref(false);
+
+// 观察简介长度，判断是否需要显示展开/收起按钮
+const handleFoldButton = new MutationObserver(() => {
+  if (des_height.value) {
+    if (des_height.value.offsetHeight > 150) {
+      foldButton.value = true;
+      showDescription.value = false;
+    }
+    handleFoldButton.disconnect(); // 停止观察
+  }
+});
+
+// 展开简介
 const unfoldDescription = () => {
   showDescription.value = !showDescription.value;
   // 展开状态
@@ -99,6 +123,8 @@ const unfoldDescription = () => {
     window.scrollTo(0, 0); // 回到最顶端
   }
 };
+
+// 获取资源信息
 const getInfo = async () => {
   await get<any>(`${address(props.type)}`)
     .then((response) => {
@@ -139,9 +165,38 @@ const getInfo = async () => {
       console.log(error);
     });
 };
+
+// 获取歌曲列表
 const getSongList = async () => {
-  await get<any>(`/playlist/track/all?id=${props.target_id}&limit=20`);
+  await get<any>(`/playlist/track/all?id=${props.target_id}&limit=20`)
+    .then((response) => {
+      console.log(response);
+      const songs = response.songs;
+      songs.forEach((element: any) => {
+        name.value = element.name;
+      });
+    })
+    .catch((error) => {
+      // 处理请求错误
+      console.log('请求失败');
+      console.log(error);
+    });
 };
 
 getInfo();
+
+if (props.type == 'playlist') {
+  getSongList();
+}
+
+onMounted(() => {
+  // 观察简介长度
+  if (des_height.value) {
+    handleFoldButton.observe(des_height.value, {
+      attributes: false,
+      childList: true,
+      subtree: false,
+    });
+  }
+});
 </script>

@@ -1,7 +1,10 @@
 <template>
   <main class="playlist_info_view">
     <section>
-      <playlist-info :playlist_id="String(route.query.pid)"></playlist-info>
+      <info-page
+        :target_id="String(route.query.pid)"
+        type="playlist"
+      ></info-page>
     </section>
   </main>
 </template>
@@ -29,9 +32,8 @@ section {
 import $ from 'jquery';
 import { nextTick, onMounted, reactive, ref, h, render } from 'vue';
 import { useRoute } from 'vue-router';
-import { get } from '../axios/insatance';
 
-import PlaylistInfo from '../components/article/playlistInfo/playlistInfo.vue';
+import InfoPage from '../components/article/InfoPage/InfoPage.vue';
 
 // 获取路由参数pid，用于获取歌单详情渲染页面
 const route = useRoute();

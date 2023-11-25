@@ -2,8 +2,17 @@
   <div class="home_playlist_view">
     <main>
       <section>
-        <div id="playlistCategory" class="playlistCategory"><h1>全部</h1></div>
-        <ul id="categorizedPlaylists" class="categorizedPlaylists"></ul>
+        <div id="playlistCategory" class="playlist_category">
+          <h1>{{ route.query.category }}</h1>
+          <button id="selectCate" class="select_cate" @click="showCate">
+            选择分类
+          </button>
+          <select-category
+            id="selectCategory"
+            class="select_category"
+          ></select-category>
+        </div>
+        <ul id="categorizedPlaylists" class="categorized_playlists"></ul>
       </section>
     </main>
   </div>
@@ -35,7 +44,7 @@ section {
   min-height: 92vh;
   width: 100%;
   margin: 0 auto;
-  .playlistCategory {
+  .playlist_category {
     margin: 20px;
     border-bottom: 2px solid $audioCurrentState;
     display: flex;
@@ -46,43 +55,75 @@ section {
       margin-left: 40px;
       font-weight: 500;
     }
+    button.select_cate {
+      display: flex;
+      justify-content: center;
+      height: 30px;
+      width: 90px;
+      padding: 4px;
+      margin: auto 10px auto;
+      border: 1px solid #665f4f33;
+      background-color: #faff9b72;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      &::after {
+        content: url('../../assets/icons/arrow.svg');
+        padding: 2px 0 0 5px;
+      }
+
+      &:hover {
+        background-color: #faff9b;
+      }
+
+      &:focus {
+        border: 1px solid #89723cad;
+        outline: 0;
+      }
+    }
+    .select_category {
+      top: 80px;
+      display: none;
+    }
   }
-  .categorizedPlaylists {
+  .categorized_playlists {
     box-sizing: border-box;
     height: auto;
     width: 100%;
     padding: 0 2%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: left;
+    justify-content: center;
     content-visibility: auto;
   }
 }
 </style>
 
 <script setup lang="ts">
-// import { useRoute } from 'vue-router'
 import $ from 'jquery';
-import {
-  nextTick,
-  onMounted,
-  reactive,
-  ref,
-  h,
-  render,
-  onBeforeMount,
-} from 'vue';
+import { h, render, onBeforeMount, onUpdated, onBeforeUpdate, ref } from 'vue';
 import { get } from '../../axios/insatance';
+import { useRoute } from 'vue-router';
 
-import PlayList from '../../components/article/PlayListView/PlayList.vue';
+import PlayList from '../../components/article/PlayList/PlayList.vue';
+import selectCategory from '../../components/article/selectCategory/selectCategory.vue';
+
 import processValue from '../../util/processValue';
 
-let uid = 571024254;
-const createItem = () => {
-  get<any>(`/top/playlist`)
-    .then((response) => {
-      console.log(response);
+const showCate = () => {
+  $('#selectCategory').css('display', 'block');
+};
 
+const route = useRoute();
+
+const createItem = async () => {
+  let address = '/top/playlist?limit=50';
+  if (route.query.category != '全部') {
+    address += `&cat=${route.query.category}`;
+  }
+  await get<any>(address)
+    .then((response) => {
       // 处理返回的用户数据
       const playlist = response.playlists;
 
@@ -93,25 +134,18 @@ const createItem = () => {
 
         const li = $li[0];
         $ul.append(li);
-        render(h(PlayList, { info: String(element.id) }), li); // 渲染playList组件
+        render(
+          h(PlayList, {
+            info: String(element.id),
+            imgUrl: element.coverImgUrl,
+            playCount: element.playCount,
+            title: element.name,
+            creator: element.creator.nickname,
+            showCreator: true,
+          }),
+          li
+        ); // 渲染playList组件
 
-        // 设置组件内容
-        const $image = $li.find('#image');
-
-        $image.css('background', `url(${element.coverImgUrl}) no-repeat`);
-        $image.css('background-size', 'cover');
-
-        const $number = $image.find('#number');
-        const text = processValue(element.playCount);
-        $number.text(text);
-
-        const $name = $li.find('#title');
-        $name.text(element.name);
-        const $creator = $li.find('#creator');
-        if (element.userId != uid) {
-          $li.find('#creatorTitle').css('display', 'flex');
-          $creator.text(`${element.creator.nickname}`);
-        }
         $li.css('margin', '10px');
       });
     })
@@ -121,13 +155,60 @@ const createItem = () => {
       console.log(error);
     });
 };
-onBeforeMount(async () => {
+
+const offset = 0;
+const updateItem = async () => {
+  let address = `/top/playlist?limit=50&offset=${offset}`;
+  if (route.query.category != '全部') {
+    address += `&cat=${route.query.category}`;
+  }
+  await get<any>(address)
+    .then((response) => {
+      // 处理返回的用户数据
+      const playlist = response.playlists;
+      // 插入元素
+      let $li_list = $('#categorizedPlaylists li');
+      let current_li = 0;
+      playlist.forEach((element: any) => {
+        const $li = $($li_list[current_li]);
+
+        // 设置组件内容
+        $li
+          .find('#playlist')
+          .attr({
+            info: String(element.id),
+            imgUrl: element.coverImgUrl,
+            playCount: element.playCount,
+            title: element.name,
+            creator: element.creator.nickname,
+          });
+
+        const $image = $li.find('#image');
+
+        $image.css('background-image', `url(${element.coverImgUrl})`);
+
+        const $number = $image.find('#number');
+        const text = processValue(element.playCount);
+        $number.text(text);
+
+        $li.find('#title').text(element.name);
+        $li.find('#creator').text(`${element.creator.nickname}`);
+
+        current_li++;
+      });
+    })
+    .catch((error) => {
+      // 处理请求错误
+      console.log('请求失败');
+      console.log(error);
+    });
+};
+onBeforeMount(() => {
   createItem();
 });
-// onMounted(async () => {
-//   // 等待页面加载结束，再调用createItem创建列表项
-//   await nextTick();
-//   createItem();
-//   // console.log(father.itemNum);
-// });
+
+onBeforeUpdate(() => {
+  $('#selectCategory').css('display', 'none');
+  updateItem();
+});
 </script>
