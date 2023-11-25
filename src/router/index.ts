@@ -31,9 +31,9 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('../views/MySongView.vue'),     
 	},
 	{
-		path: '/playlistInfo',
-		name: 'playlistInfo',
-		component: () => import('../views/PlaylistInfoView.vue'),     
+		path: '/Info',
+		name: 'Info',
+		component: () => import('../views/InfoView.vue'),     
 	},
 	{
 		path: '/account',

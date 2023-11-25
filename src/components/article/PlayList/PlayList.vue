@@ -27,8 +27,8 @@ const jumpPage = () => {
   console.log(router);
 
   router.push({
-    name: 'playlistInfo',
-    query: { pid: props.info },
+    name: 'Info',
+    query: { id: props.info },
   });
 };
 

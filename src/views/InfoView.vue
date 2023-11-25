@@ -2,7 +2,7 @@
   <main class="playlist_info_view">
     <section>
       <info-page
-        :target_id="String(route.query.pid)"
+        :target_id="String(route.query.id)"
         type="playlist"
       ></info-page>
     </section>
