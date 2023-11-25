@@ -1,0 +1,63 @@
+@import '../../../mainStyle.scss';
+
+.category_container{
+    position: absolute;
+    padding: 30px 35px 20px;
+    z-index: 1;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.237);
+    background-color: #ffffff;
+
+    &::before{
+        content: '';
+        position: absolute;
+        top: -18px;
+        left: 150px;
+        width: 0;
+        height: 0; 
+        z-index: inherit;
+        border: 10px solid transparent; 
+        border-bottom-color: #ffffff;
+        filter: drop-shadow(0 -2px 1px rgba(0, 0, 0, 0.067));
+    }
+
+    .all{
+        position: absolute;
+        top: 20px;
+        right: 35px;
+        cursor: pointer;
+
+        &:hover{
+            color: #599bd5;
+        }
+
+    }
+
+    dl.cate_list{
+        display: flex;
+        flex-wrap: nowrap;
+        
+
+        dt{
+            white-space: nowrap;
+            margin-right: 20px;
+        }
+
+        dd{
+            display: flex;
+            flex-wrap: wrap;
+            width: 400px;
+            margin-inline-start: 0;
+
+            a{
+                margin-inline-start: 20px;
+                white-space: nowrap;
+                color: #0000008e;
+                cursor: pointer;
+
+                &:hover{
+                    color: #599bd5;
+                }
+            }
+        }
+    }
+}
