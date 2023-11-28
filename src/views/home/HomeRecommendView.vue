@@ -1,5 +1,21 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.vue';
+import recommendPlaylist from '../../components/article/HomeView/recommendPlaylist/recommendPlaylist.vue';
+import router from '../../router';
+
+onMounted(() => {
+  const lastPathName = sessionStorage.getItem('lastPathName');
+  const lastPathQuery = sessionStorage.getItem('lastPathQuery');
+
+  if (lastPathName && lastPathName != '/') {
+    if (lastPathQuery != null) {
+      router.push({ name: lastPathName, query: JSON.parse(lastPathQuery) });
+    } else {
+      router.push({ name: lastPathName });
+    }
+  }
+});
 </script>
 
 <template>
@@ -10,10 +26,23 @@ import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.
       </nav>
       <section>
         <main-banner></main-banner>
-        <recommend-play-list></recommend-play-list>
-        <recommend-play-list id="personal"></recommend-play-list>
+        <div id="mianInfo" class="main_info">
+          <recommend-playlist></recommend-playlist>
+          <!-- <recommend-play-list id="personal"></recommend-play-list> -->
+        </div>
       </section>
     </main>
   </div>
 </template>
-<style scoped></style>
+<style scoped>
+.main_info {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 92vh;
+  height: 100%;
+  z-index: 0;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 3px 0 #4e53548d;
+}
+</style>

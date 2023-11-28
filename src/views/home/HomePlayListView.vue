@@ -99,17 +99,51 @@ section {
   }
 }
 </style>
+<!-- <script lang="ts">
+export default {
+   beforeRouteEnter(to: any, from: any) {
+     console.log("salesOrder beforeRouteEnter",to ,from)
+    //  next(vm=>{
+    //   vm.tabbarList.filter((item,index)=>{
+    //     if(item.path===to.fullPath){
+    //       vm.currentItem = index
+    //       vm.currentPath = to.fullPath
+    //     }
+    //   })
+    // })
+    if(to.path == from.path){
+      console.log('same');
+      return false;
+      
+    }
+    return false;
+   },
+  //  beforeRouteLeave(to: any, from: any) {
+  //    console.log("salesOrder beforeRouteLeave",to ,from)
+  //  },
+}
 
+</script> -->
 <script setup lang="ts">
 import $ from 'jquery';
-import { h, render, onBeforeMount, onUpdated, onBeforeUpdate, ref } from 'vue';
+import {
+  h,
+  render,
+  onBeforeMount,
+  onUpdated,
+  onBeforeUpdate,
+  ref,
+  onBeforeUnmount,
+  onMounted,
+} from 'vue';
 import { get } from '../../axios/insatance';
-import { useRoute } from 'vue-router';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 
 import PlayList from '../../components/article/PlayList/PlayList.vue';
 import selectCategory from '../../components/article/selectCategory/selectCategory.vue';
 
 import processPlayCount from '../../util/processPlayCount';
+import router from '../../router';
 
 const showCate = () => {
   $('#selectCategory').css('display', 'block');
@@ -172,7 +206,7 @@ const updateItem = async () => {
       playlist.forEach((element: any) => {
         const $li = $($li_list[current_li]);
 
-        // 设置组件内容
+        // 设置组件内容(需要动态props)
         $li.find('#playlist').attr({
           info: String(element.id),
           imgUrl: element.coverImgUrl,
@@ -180,6 +214,18 @@ const updateItem = async () => {
           title: element.name,
           creator: element.creator.nickname,
         });
+        $li.find('#playlist').attr('info', String(element.id));
+
+        const $image = $li.find('#image');
+
+        $image.css('background-image', `url(${element.coverImgUrl})`);
+
+        const $number = $image.find('#number');
+        const text = processPlayCount(element.playCount);
+        $number.text(text);
+
+        $li.find('#title').text(element.name);
+        $li.find('#creator').text(`${element.creator.nickname}`);
 
         current_li++;
       });
@@ -190,6 +236,7 @@ const updateItem = async () => {
       console.log(error);
     });
 };
+
 onBeforeMount(() => {
   createItem();
 });
@@ -198,5 +245,37 @@ onBeforeUpdate(() => {
   $('#selectCategory').css('display', 'none');
   updateItem();
 });
+
+const handleBeforeUnload = (event: any) => {
+  event.preventDefault();
+  // Chrome需要返回一个值
+  event.returnValue = '';
+  console.log(window.location.pathname);
+
+  // 将当前路径存储在sessionStorage中
+  sessionStorage.setItem('lastPathName', route.name as string);
+};
+
+onBeforeRouteUpdate((to, from) => {
+  console.log(to, from);
+  console.log(route.name);
+  console.log(route.query);
+
+  sessionStorage.setItem('lastPathName', route.name as string);
+  if (route.query) {
+    sessionStorage.setItem('lastPathQuery', JSON.stringify(route.query));
+  }
+});
+
+// onMounted(() => {
+//   // 检查sessionStorage中是否存储了上次的路径
+
+//   // 添加事件监听
+//   window.addEventListener('beforeunload', handleBeforeUnload);
+// });
+
+// onBeforeUnmount(() => {
+//   // 移除事件监听
+//   window.removeEventListener('beforeunload', handleBeforeUnload);
+// });
 </script>
-../../util/processPlayCount
