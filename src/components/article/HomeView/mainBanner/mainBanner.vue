@@ -71,9 +71,6 @@ const getPicture = async () => {
   await get<any>('/banner')
     .then((response) => {
       // 处理返回的用户数据
-      console.log('请求成功');
-      console.log(response);
-
       response.banners.forEach((element: any) => {
         const picture: Picture = {
           src: element.imageUrl,

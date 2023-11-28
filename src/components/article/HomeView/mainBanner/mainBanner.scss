@@ -33,6 +33,7 @@
             /* Center slide text vertically */
             align-items: center;
             overflow: hidden;
+            background-size: 200%;
             background-position: center center;
 
             &::after{
@@ -41,8 +42,8 @@
               height: 100%;
               position: absolute;
               overflow: hidden;
-              -webkit-backdrop-filter: blur(100px);
-              backdrop-filter: blur(100px);
+              -webkit-backdrop-filter: blur(70px);
+              backdrop-filter: blur(70px);
             }
           }
   
