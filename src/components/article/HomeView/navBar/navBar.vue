@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import $ from 'jquery';
-import { onMounted, ref, nextTick, reactive } from 'vue';
+import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import './navBar.scss';
 
@@ -50,6 +50,7 @@ const navItem = [
 
 // 选择导航栏中的每一项，都会将改变router到对应路径，并且更改选中样式
 const router = useRouter();
+const route = useRoute();
 const jumpPage = (address: string, id: string) => {
   // 选中对应项
   $('.navItem').removeClass('check');
@@ -71,7 +72,7 @@ const jumpPage = (address: string, id: string) => {
   }
 };
 
-// 加载时，选中第一项
+// 加载时，选中第一项，用onMounted才能给选中项添加样式
 onMounted(() => {
   // 上次最后到哪
   let path_name = sessionStorage.getItem('lastPathName') as string;
@@ -80,26 +81,22 @@ onMounted(() => {
   let check_item = navItem.findIndex((item) => item.address == path_name);
 
   // 如果没有找到对应路径，比如初次打开，则打开推荐页
-  if (check_item == -1) {
+  if (route.name == 'home' && path_name == null) {
     check_item = 0;
     path_name = 'recommend';
   }
   $(`#li${check_item}`).addClass('check');
-  console.log(check_item);
 
-  // 若打开的是歌单页，则要连参数一起传递（后续加入其他带参页需要修改此处）
-  if (check_item == 1) {
-    const path_query = sessionStorage.getItem('lastPathQuery') as string;
-    console.log(path_query);
+  // 若有参数，则要连参数一起传递
+  const path_query = sessionStorage.getItem('lastPathQuery') as string;
 
-    if (path_query) {
-      router.push({ name: 'playlist', query: JSON.parse(path_query) });
-    } else {
-      router.push({ name: 'playlist', query: { category: '全部' } });
-    }
+  if (path_query) {
+    router.push({ name: path_name, query: JSON.parse(path_query) });
   }
-  // 若不是歌单页则直接打开
-  else {
+  // 如果点击navBar跳转，或初次打开歌单页，则默认选择‘全部’
+  else if (check_item == 1) {
+    router.push({ name: path_name, query: { category: '全部' } });
+  } else {
     router.push({ name: path_name });
   }
 });

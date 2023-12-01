@@ -23,8 +23,8 @@ const props = defineProps({
 });
 
 const jumpPage = () => {
-  console.log(router);
-
+  sessionStorage.setItem('lastPathName', 'Info');
+  sessionStorage.setItem('lastPathQuery', JSON.stringify({ id: props.info }));
   router.push({
     name: 'Info',
     query: { id: props.info },
@@ -68,4 +68,3 @@ onMounted(async () => {
   </div>
 </template>
 <style lang="scss"></style>
-../../../util/processPlayCount
