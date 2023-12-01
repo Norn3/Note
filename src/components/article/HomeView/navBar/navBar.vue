@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import $ from 'jquery';
 import { onMounted, ref, nextTick, reactive } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import './navBar.scss';
 
 // // 通过defineProps接收父组件的值
@@ -51,22 +51,57 @@ const navItem = [
 // 选择导航栏中的每一项，都会将改变router到对应路径，并且更改选中样式
 const router = useRouter();
 const jumpPage = (address: string, id: string) => {
+  // 选中对应项
   $('.navItem').removeClass('check');
   $(id)[0].classList.add('check');
+  // 根据地址，在sessionStorage中更改最后所在路径，并进行跳转
   if (address == 'playlist') {
+    sessionStorage.setItem('lastPathName', 'playlist');
+    sessionStorage.setItem(
+      'lastPathQuery',
+      JSON.stringify({ category: '全部' })
+    );
     router.push({
       name: 'playlist',
       query: { category: '全部' },
     });
   } else {
+    sessionStorage.setItem('lastPathName', address);
     router.push({ name: address });
   }
 };
 
 // 加载时，选中第一项
 onMounted(() => {
-  $('#li0')[0].classList.add('check');
-  router.push({ name: 'recommend' });
+  // 上次最后到哪
+  let path_name = sessionStorage.getItem('lastPathName') as string;
+
+  // 选中对应项
+  let check_item = navItem.findIndex((item) => item.address == path_name);
+
+  // 如果没有找到对应路径，比如初次打开，则打开推荐页
+  if (check_item == -1) {
+    check_item = 0;
+    path_name = 'recommend';
+  }
+  $(`#li${check_item}`).addClass('check');
+  console.log(check_item);
+
+  // 若打开的是歌单页，则要连参数一起传递（后续加入其他带参页需要修改此处）
+  if (check_item == 1) {
+    const path_query = sessionStorage.getItem('lastPathQuery') as string;
+    console.log(path_query);
+
+    if (path_query) {
+      router.push({ name: 'playlist', query: JSON.parse(path_query) });
+    } else {
+      router.push({ name: 'playlist', query: { category: '全部' } });
+    }
+  }
+  // 若不是歌单页则直接打开
+  else {
+    router.push({ name: path_name });
+  }
 });
 </script>
 

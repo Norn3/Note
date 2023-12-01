@@ -62,6 +62,7 @@ const jumpPage = (cate: string) => {
     name: 'playlist',
     query: { category: cate },
   });
+  sessionStorage.setItem('lastPathQuery', JSON.stringify({ category: cate }));
 };
 onBeforeMount(() => {
   createItem();
