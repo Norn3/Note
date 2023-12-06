@@ -11,14 +11,19 @@
       <p id="createTime" class="create_time text">{{ createTime }}</p>
       <div id="buttons" class="buttons">
         <button id="pressToPlay" class="press_to_play">
+          <img src="../../../assets/icons/play_infoPage.svg" alt="" />
           播放
-          <p id="playCount" class="play_count">{{ playCountText }}</p>
+          <p id="playCount" class="play_count">（{{ playCountText }}）</p>
         </button>
         <button id="like" class="like_playlist">
+          <img src="../../../assets/icons/favorites.svg" alt="" />
           收藏
-          <p id="likeCount" class="like_count">{{ subscribedText }}</p>
+          <p id="likeCount" class="like_count">（{{ subscribedText }}）</p>
         </button>
-        <button id="sharePlaylist" class="share_playist">分享</button>
+        <button id="sharePlaylist" class="share_playist">
+          <img src="../../../assets/icons/share.svg" alt="" />
+          分享
+        </button>
       </div>
       <div id="label" class="label text">
         标签：
@@ -55,9 +60,11 @@ import { nextTick, onBeforeMount, onMounted, reactive, ref } from 'vue';
 import PlaylistItemClass from '../../../class/PlaylistItemClass';
 import { get } from '../../../axios/insatance';
 import moment from 'moment';
+import { useRoute } from 'vue-router';
 
 import './InfoPage.scss';
 import processPlayCount from '../../../util/processPlayCount';
+import processSongDuration from '../../../util/processSongDuration';
 
 const props = defineProps({
   target_id: String,
@@ -173,7 +180,8 @@ const getSongList = async () => {
       console.log(response);
       const songs = response.songs;
       songs.forEach((element: any) => {
-        name.value = element.name;
+        // name.value = element.name;
+        console.log(processSongDuration(element.dt));
       });
     })
     .catch((error) => {
@@ -189,6 +197,8 @@ if (props.type == 'playlist') {
   getSongList();
 }
 
+const route = useRoute();
+
 onMounted(() => {
   // 观察简介长度
   if (des_height.value) {
@@ -198,6 +208,6 @@ onMounted(() => {
       subtree: false,
     });
   }
+  console.log(route.fullPath);
 });
 </script>
-../../../util/processPlayCount
