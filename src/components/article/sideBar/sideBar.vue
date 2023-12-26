@@ -49,7 +49,7 @@ const createItem = (listItem: Array<PlaylistItem>) => {
 
   listItem.forEach((element) => {
     // 创建新的子元素并设置其内容
-    // console.log(element);
+    console.log(element);
 
     if (element.userId != uid) {
       $List = $('#like');
@@ -60,11 +60,15 @@ const createItem = (listItem: Array<PlaylistItem>) => {
     // 将新创建的子元素添加为目标元素的子节点
     const li = $li[0];
     $List.append(li);
-    render(h(SideBarItem), li);
-
-    $li.find('#name').text(String(element.name));
-    $li.find('#cover').attr('src', element.coverImgUrl);
-    $li.find('#number').text(String(element.trackCount) + '首');
+    render(
+      h(SideBarItem, {
+        pid: element.id,
+        name: element.name,
+        coverImgUrl: element.coverImgUrl,
+        trackCount: element.trackCount,
+      }),
+      li
+    );
   });
   if ($('#create').children(':first') != undefined) {
     $('#create').children(':first').addClass('check');

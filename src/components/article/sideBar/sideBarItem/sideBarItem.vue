@@ -1,6 +1,21 @@
 <script setup lang="ts">
 import $ from 'jquery';
 import { onMounted, ref, nextTick, reactive, watch } from 'vue';
+import router from '../../../../router/index';
+
+const props = defineProps({
+  pid: Number,
+  name: String,
+  coverImgUrl: String,
+  trackCount: Number,
+});
+
+const jumpPage = () => {
+  router.push({
+    name: 'myPlaylistInfo',
+    query: { id: props.pid },
+  });
+};
 
 onMounted(async () => {
   // 等待页面加载结束，再调用createItem创建列表项
@@ -10,10 +25,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div id="sideBarItem" class="sideBarItem">
-    <img src="" alt="" id="cover" class="cover" />
-    <div id="name" class="name"></div>
-    <div id="number" class="number"></div>
+  <div id="sideBarItem" class="sideBarItem" @click="jumpPage">
+    <img :src="coverImgUrl" alt="" id="cover" class="cover" />
+    <div id="name" class="name">{{ name }}</div>
+    <div id="number" class="number">{{ trackCount + '首' }}</div>
   </div>
 </template>
 <style lang="scss" scoped>
