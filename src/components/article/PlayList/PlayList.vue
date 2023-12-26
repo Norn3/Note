@@ -8,6 +8,7 @@ import processPlayCount from '../../../util/processPlayCount';
 import './PlayList.scss';
 
 const props = defineProps({
+  type: String,
   info: String,
   imgUrl: String,
   playCount: {
@@ -24,10 +25,13 @@ const props = defineProps({
 
 const jumpPage = () => {
   sessionStorage.setItem('lastPathName', 'Info');
-  sessionStorage.setItem('lastPathQuery', JSON.stringify({ id: props.info }));
+  sessionStorage.setItem(
+    'lastPathQuery',
+    JSON.stringify({ type: 'playlist', id: props.info })
+  );
   router.push({
     name: 'Info',
-    query: { id: props.info },
+    query: { type: 'playlist', id: props.info },
   });
 };
 
