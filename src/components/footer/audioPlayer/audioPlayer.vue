@@ -1,47 +1,134 @@
+<template>
+  <div class="audioPlayer">
+    <audio
+      class="audio"
+      ref="audioRef"
+      controls
+      @timeupdate="updateProgress"
+      @volumechange="updateVolume"
+    >
+      <source :src="songItem" type="audio/mp3" />
+      <source :src="songItem" type="audio/ogg" />
+      Your browser does not support this audio format.
+    </audio>
+    <div
+      id="playButton"
+      class="play_button pause"
+      ref="playButton"
+      @click="pressPlayButton"
+    ></div>
+    <div
+      id="progressControl"
+      class="progressControl"
+      @mousedown="handleDragStart"
+      @mousemove="handleDragMove"
+      @mouseup="handleDragEnd"
+      @mouseleave="handleDragEnd"
+    >
+      <div id="progress" class="progress">
+        <div class="current" :style="{ width: progressWidth }"></div>
+      </div>
+    </div>
+
+    <div id="volume" class="volume">
+      <!-- 音量控制条 -->
+      <div
+        id="volumeControl"
+        class="volumeControl"
+        ref="volumeBar"
+        @mousedown="handleVolumeDragStart"
+        @mousemove="handleVolumeDragMove"
+        @mouseup="handleVolumeDragEnd"
+        @mouseleave="handleVolumeDragEnd"
+      >
+        <!-- 音量条及内部音量大小 -->
+        <div id="volumeProgress" class="volumeProgress" ref="volumeProgress">
+          <!-- 点击调节音量时点到，容易导致eventTarget从volumeControl变成currentVolume，所以要加上pointerEvents: 'none' -->
+          <div
+            class="currentVolume"
+            :style="{ height: volumeHeight, pointerEvents: 'none' }"
+          ></div>
+        </div>
+      </div>
+      <!-- 音量图标 -->
+      <div
+        id="volumeIcon"
+        class="volumeIcon not_muted"
+        ref="volumeButton"
+      ></div>
+    </div>
+  </div>
+</template>
 <script setup lang="ts">
 import $ from 'jquery';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import './audioPlayer.scss';
 
 import { get } from '../../../axios/insatance';
 import Song from '../../../class/Song';
 
+import { useCurrentSongStore } from '../../../stores/currentPlayingSong';
+
+// ref引用的元素
+const playButton = ref<HTMLElement | null>(null);
+const volumeButton = ref<HTMLElement | null>(null);
+const volumeBar = ref<HTMLElement | null>(null);
+const volumeProgress = ref<HTMLElement | null>(null);
+
+let songStore = useCurrentSongStore();
+let songId = 0;
+// 通过 $subscribe 订阅状态， subscribe()即可停止订阅
+const subscribe = songStore.$subscribe((mutation, state) => {
+  console.log('songUrl has changed:', state.songUrl);
+  songId = state.songUrl;
+  getSong();
+});
 // 获取响应式audio对象
 const audioRef = ref<HTMLAudioElement | null>(null);
-let songId = 3389431;
-let songItem: string | undefined;
+let songItem = ref('');
 
-get<any>(`/song/url/v1?id=${songId}&level=exhigh`)
-  .then((response) => {
-    // 处理返回的用户数据
-    const song: Song = response.data;
-    songItem = `https://music.163.com/song/media/outer/url?id=${song[0].id}.mp3`;
-  })
-  .catch((error) => {
-    // 处理请求错误
-    console.log(error);
-  });
+const getSong = async () => {
+  await get<any>(`/song/url/v1?id=${songId}&level=exhigh`)
+    .then((response) => {
+      // 处理返回的用户数据
+      const song: Song = response.data;
+      songItem.value = `https://music.163.com/song/media/outer/url?id=${song[0].id}.mp3`;
+      console.log(songId);
+      console.log(songItem.value);
+      if (audioRef.value) {
+        if (playButton.value) {
+          playButton.value.classList.add('playing');
+          playButton.value.classList.remove('pause');
+        }
+        audioRef.value.load();
+        audioRef.value.currentTime = 0;
+        audioRef.value.play();
+      }
+    })
+    .catch((error) => {
+      // 处理请求错误
+      console.log(error);
+    });
+};
 
-// 点击播放按钮，播放状态与图标切换
-$(document).on('click', '#playButton', () => {
-  if (audioRef.value) {
-    // 图标切换
-    const playButton = $('#playButton')[0];
+// 点击播放图标，切换图标及播放状态
+const pressPlayButton = () => {
+  if (audioRef.value && playButton.value) {
     // 状态切换
     if (audioRef.value.paused) {
       const time = audioRef.value.currentTime;
-      playButton.classList.add('playing');
-      playButton.classList.remove('pause');
+      playButton.value.classList.add('playing');
+      playButton.value.classList.remove('pause');
       audioRef.value.load();
       audioRef.value.currentTime = time;
       audioRef.value.play();
     } else {
-      playButton.classList.remove('playing');
-      playButton.classList.add('pause');
+      playButton.value.classList.remove('playing');
+      playButton.value.classList.add('pause');
       audioRef.value.pause();
     }
   }
-});
+};
 
 // 进度显示
 const progressWidth = ref('0%');
@@ -98,13 +185,15 @@ const handleDragEnd = () => {
 
 // 鼠标悬浮于上方时出现音量
 $(document).on('mouseover', '#volume', () => {
-  const volumeProgress = $('#volumeProgress')[0];
-  volumeProgress.style.height = '100px';
+  if (volumeProgress.value) {
+    volumeProgress.value.style.height = '100px';
+  }
 });
 // 鼠标移开时音量消失
 $(document).on('mouseout', '#volume', () => {
-  const volumeProgress = $('#volumeProgress')[0];
-  volumeProgress.style.height = '0px';
+  if (volumeProgress.value) {
+    volumeProgress.value.style.height = '0px';
+  }
 });
 
 // 音量控制
@@ -131,16 +220,14 @@ $(document).on('click', '#volumeIcon', () => {
 });
 // 音量改变时，静音与否以及音量大小将同步显示
 const updateVolume = () => {
-  if (audioRef.value) {
+  if (audioRef.value && volumeButton.value) {
     if (audioRef.value.muted || audioRef.value.volume == 0) {
-      const volumeButton = $('#volumeIcon')[0];
-      volumeButton.classList.remove('not_muted');
-      volumeButton.classList.add('muted');
+      volumeButton.value.classList.remove('not_muted');
+      volumeButton.value.classList.add('muted');
       volumeHeight.value = '0%';
     } else {
-      const volumeButton = $('#volumeIcon')[0];
-      volumeButton.classList.add('not_muted');
-      volumeButton.classList.remove('muted');
+      volumeButton.value.classList.add('not_muted');
+      volumeButton.value.classList.remove('muted');
       const currentVolume = audioRef.value.volume;
       volumeHeight.value = `${currentVolume * 100}%`;
     }
@@ -148,24 +235,24 @@ const updateVolume = () => {
 };
 
 const handleVolumeDragStart = (event: MouseEvent) => {
-  const volumeBar = $('#volumeControl')[0];
-  const volumeBarHeight = volumeBar.offsetHeight; // 获取元素总的高度
-  const volumeBarTop = volumeBar.offsetTop; // 获取元素相对父级的顶端位置
-  isDraggingVolume.value = true;
-  volumeDragStartY.value = event.offsetY; // 获取拖动开始时相对文档的垂直坐标，在#volumeControl元素长度为100时，event.offsetY为0~99
+  if (volumeBar.value) {
+    const volumeBarHeight = volumeBar.value.offsetHeight; // 获取元素总的高度
+    const volumeBarTop = volumeBar.value.offsetTop; // 获取元素相对父级的顶端位置
+    isDraggingVolume.value = true;
+    volumeDragStartY.value = event.offsetY; // 获取拖动开始时相对文档的垂直坐标，在#volumeControl元素长度为100时，event.offsetY为0~99
 
-  if (audioRef.value) {
-    // 若audio存在
-    audioRef.value.volume =
-      1 - (event.offsetY - volumeBarTop) / volumeBarHeight; // 将音量变为拖动开始时的音量
-    volumeDragStartVolume.value = audioRef.value.volume; // 获得初始音量
+    if (audioRef.value) {
+      // 若audio存在
+      audioRef.value.volume =
+        1 - (event.offsetY - volumeBarTop) / volumeBarHeight; // 将音量变为拖动开始时的音量
+      volumeDragStartVolume.value = audioRef.value.volume; // 获得初始音量
+    }
   }
 };
 const handleVolumeDragMove = (event: MouseEvent) => {
-  if (isDraggingVolume.value) {
-    const volumeBar = $('#volumeControl')[0];
+  if (isDraggingVolume.value && volumeBar.value) {
     const deltaY = 100 - event.offsetY + (100 - volumeDragStartY.value); // 计算拖动距离
-    const volumeBarHeight = volumeBar.offsetHeight; // 获得元素高度
+    const volumeBarHeight = volumeBar.value.offsetHeight; // 获得元素高度
 
     if (audioRef.value) {
       const newVolume = deltaY / volumeBarHeight; // 获得移动比例,即音量变化
@@ -180,59 +267,3 @@ const handleVolumeDragEnd = () => {
   isDraggingVolume.value = false;
 };
 </script>
-
-<template>
-  <div class="audioPlayer">
-    <audio
-      class="audio"
-      ref="audioRef"
-      controls
-      @timeupdate="updateProgress"
-      @volumechange="updateVolume"
-    >
-      <source :src="songItem" type="audio/mp3" />
-      <source :src="songItem" type="audio/ogg" />
-      Your browser does not support this audio format.
-    </audio>
-    <div id="playButton" class="play_button pause"></div>
-    <div
-      id="progressControl"
-      class="progressControl"
-      @mousedown="handleDragStart"
-      @mousemove="handleDragMove"
-      @mouseup="handleDragEnd"
-      @mouseleave="handleDragEnd"
-    >
-      <div id="progress" class="progress">
-        <div class="current" :style="{ width: progressWidth }"></div>
-      </div>
-    </div>
-
-    <div id="volume" class="volume">
-      <!-- 音量控制条 -->
-      <div
-        id="volumeControl"
-        class="volumeControl"
-        @mousedown="handleVolumeDragStart"
-        @mousemove="handleVolumeDragMove"
-        @mouseup="handleVolumeDragEnd"
-        @mouseleave="handleVolumeDragEnd"
-      >
-        <!-- 音量条及内部音量大小 -->
-        <div id="volumeProgress" class="volumeProgress">
-          <!-- 点击调节音量时点到，容易导致eventTarget从volumeControl变成currentVolume，所以要加上pointerEvents: 'none' -->
-          <div
-            class="currentVolume"
-            :style="{ height: volumeHeight, pointerEvents: 'none' }"
-          ></div>
-        </div>
-      </div>
-      <!-- 音量图标 -->
-      <div
-        id="volumeIcon"
-        class="volumeIcon not_muted"
-        ref="volumeButton"
-      ></div>
-    </div>
-  </div>
-</template>

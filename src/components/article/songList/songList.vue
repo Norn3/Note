@@ -15,16 +15,18 @@
 <style lang="scss"></style>
 <script setup lang="ts">
 import $, { event } from 'jquery';
-import { onMounted, nextTick, ref, render, h } from 'vue';
+import { onMounted, nextTick, ref, render, h, watch } from 'vue';
 import router from '../../../router/index';
 import { get } from '../../../axios/insatance';
-
-import processSongDuration from '../../../util/processSongDuration'; // 处理时长
 
 import './songList.scss';
 import SongListItem from './songListItem/songListItem.vue';
 
 const props = defineProps({
+  type: {
+    type: String,
+    default: 'playlist',
+  },
   targetId: Number,
 });
 
@@ -39,12 +41,28 @@ const jumpPage = () => {
   });
 };
 
+// 根据资源类型， 决定获取数据的地址
+const address = (type: string): string => {
+  let addr = '';
+  switch (type) {
+    case 'playlist':
+      addr = `/playlist/track/all?id=${props.targetId}`;
+      break;
+    case 'album':
+      addr = `/album?id=${props.targetId}`;
+      break;
+  }
+  return addr;
+};
+
 // 获取包含的所有歌曲
 const getSongs = async () => {
-  await get<any>(`/playlist/track/all?id=${props.targetId}`)
+  await get<any>(`${address(props.type)}`)
     .then((response) => {
       console.log(response);
+
       const $ul = $('#songList').find('#songs');
+      $ul.empty();
       let id = 1;
       response.songs.forEach((song: any) => {
         const $li = $('<li>');
@@ -55,14 +73,23 @@ const getSongs = async () => {
         song.ar.forEach((singer: any) => {
           singers.push(singer.name);
         });
+        // 此处还可以优化减少判断
+        let album = '';
+        let albumId = 0;
+        if (props.type != 'album') {
+          album = song.al.name;
+          albumId = song.al.id;
+        }
         render(
           h(SongListItem, {
+            type: props.type,
             listId: id++,
             songId: song.id,
             name: song.name,
             durationTime: song.dt,
             singer: singers,
-            album: song.al.name,
+            album: album,
+            albumId: albumId,
           }),
           li
         );
@@ -78,6 +105,17 @@ const getSongs = async () => {
 onMounted(async () => {
   // 等待页面加载结束，再调用createItem创建列表项
   await nextTick();
-  getSongs();
+  if (props.type != 'song') {
+    getSongs();
+  }
 });
+
+// 当页面的路由改变，马上重新获取信息
+watch(
+  () => props.targetId,
+  (newId, oldId) => {
+    console.log(newId, oldId);
+    getSongs();
+  }
+);
 </script>

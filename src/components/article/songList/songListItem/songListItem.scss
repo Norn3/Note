@@ -1,0 +1,67 @@
+@import '../../../../mainStyle.scss';
+
+.song_list_item{
+    width: 90%;
+    margin: 0 auto;
+  
+    ul{
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      height: 30px;
+      li{
+        text-align: left;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 50px 0 0;
+        align-items: center;
+  
+        &.serial_num{
+          max-width: 5%;
+        }
+  
+        &.click_to_play{
+          width: 5%;
+          img{
+            height: 20px;
+            margin: 5px 0;
+
+            &:hover{
+              cursor: pointer;
+              filter: contrast(0%);
+            }
+          }
+        }
+  
+        &.name{
+          width: 35%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+
+          &:hover{
+            cursor: pointer;
+            color: $brandColor;
+          }
+        }
+        
+        &.duration{
+          width: 10%;
+        }
+  
+        &.singer, &.album{
+          width: 22.5%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+
+          &:hover{
+            cursor: pointer;
+            color: $brandColor;
+          }
+        }
+  
+  
+      }
+    }
+  }
