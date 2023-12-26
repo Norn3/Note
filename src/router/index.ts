@@ -16,25 +16,40 @@ const routes: Array<RouteRecordRaw> = [
 			{
 				path: 'homePlaylist',
 				name: 'playlist',
-				component: () => import('../views/home/HomePlaylistView.vue'),    
+				component: () => import('../views/home/HomePlaylistView.vue'), 
+				// beforeEnter: (to, from, next)  =>{
+				// 	if (sessionStorage.getItem("token")) {
+				// 		next()
+				// 	} else {
+				// 		next("login")
+				// 	}
+				// },
 			},
 			{
 				path: 'homeRank',
 				name: 'rank',
 				component: () => import('../views/home/HomeRankView.vue'),    
 			},
+			{
+				path: 'Info',
+				name: 'Info',
+				component: () => import('../views/InfoView.vue'),     
+			},
 		]
 	},
 	{
 		path: '/play',
 		name: 'play',
-		component: () => import('../views/MySongView.vue'),     
+		component: () => import('../views/mySong/MySongView.vue'),     
+		children:[
+			{
+				path: 'myPlaylistInfo',
+				name: 'myPlaylistInfo',
+				component: () => import('../views/mySong/MyPlayListInfoView.vue'),     
+			},
+		]
 	},
-	{
-		path: '/Info',
-		name: 'Info',
-		component: () => import('../views/InfoView.vue'),     
-	},
+	
 	{
 		path: '/account',
 		name: 'account',

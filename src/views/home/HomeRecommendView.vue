@@ -1,21 +1,6 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
 import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.vue';
 import recommendPlaylist from '../../components/article/HomeView/recommendPlaylist/recommendPlaylist.vue';
-import router from '../../router';
-
-onMounted(() => {
-  const lastPathName = sessionStorage.getItem('lastPathName');
-  const lastPathQuery = sessionStorage.getItem('lastPathQuery');
-
-  if (lastPathName && lastPathName != '/') {
-    if (lastPathQuery != null) {
-      router.push({ name: lastPathName, query: JSON.parse(lastPathQuery) });
-    } else {
-      router.push({ name: lastPathName });
-    }
-  }
-});
 </script>
 
 <template>

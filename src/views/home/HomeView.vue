@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import $ from 'jquery';
-import { useRouter } from 'vue-router';
-
 import navBar from '../../components/article/HomeView/navBar/navBar.vue';
 </script>
 
