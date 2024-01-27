@@ -61,13 +61,15 @@
 </template>
 <script setup lang="ts">
 import $ from 'jquery';
-import { onMounted, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import './audioPlayer.scss';
 
 import { get } from '../../../axios/insatance';
 import Song from '../../../class/Song';
 
 import { useCurrentSongStore } from '../../../stores/currentPlayingSong';
+import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
+import SongListItem from '../../article/songList/songListItem/songListItem.vue';
 
 // ref引用的元素
 const playButton = ref<HTMLElement | null>(null);
@@ -75,35 +77,68 @@ const volumeButton = ref<HTMLElement | null>(null);
 const volumeBar = ref<HTMLElement | null>(null);
 const volumeProgress = ref<HTMLElement | null>(null);
 
+let playingList: Array<number> = reactive([]);
+
+let playMode = ref('sequential');
+
+let listStore = useCurrentPlayingListStore();
 let songStore = useCurrentSongStore();
-let songId = 0;
+let currentSongId = 0;
+
 // 通过 $subscribe 订阅状态， subscribe()即可停止订阅
-const subscribe = songStore.$subscribe((mutation, state) => {
+// 当前正在播放的歌曲改变，重新获取歌曲并播放
+const subscribeCurrentSong = songStore.$subscribe((mutation, state) => {
   console.log('songUrl has changed:', state.songUrl);
-  songId = state.songUrl;
+  currentSongId = state.songUrl;
   getSong();
+  play(0);
 });
+
+// 播放列表被改变，重新获取播放列表并存入localStorage
+const subscribeCurrentPlaylist = listStore.$subscribe((mutation, state) => {
+  console.log('playingListIds has changed:', state.playingListIds);
+  // 点击了歌单详情页的播放按钮，替换整个播放列表
+  if (state.patchState == true) {
+    playingList = reactive([]);
+    state.playingListIds.forEach((element: number) => {
+      playingList.push(element);
+    });
+    playList();
+  }
+  // 在原播放列表基础上进行编辑，没有替换整个播放列表
+
+  localStorage.setItem('currentPlayingList', state.playingListIds.toString());
+});
+
 // 获取响应式audio对象
 const audioRef = ref<HTMLAudioElement | null>(null);
 let songItem = ref('');
 
+// 播放操作
+const play = (time: number) => {
+  if (audioRef.value) {
+    if (playButton.value) {
+      playButton.value.classList.add('playing');
+      playButton.value.classList.remove('pause');
+    }
+    audioRef.value.load();
+    audioRef.value.currentTime = time;
+    audioRef.value.play();
+  }
+};
+
+// 获取某首歌曲
 const getSong = async () => {
-  await get<any>(`/song/url/v1?id=${songId}&level=exhigh`)
+  await get<any>(`/song/url/v1?id=${currentSongId}&level=standard`)
     .then((response) => {
+      console.log(response);
+
       // 处理返回的用户数据
       const song: Song = response.data;
-      songItem.value = `https://music.163.com/song/media/outer/url?id=${song[0].id}.mp3`;
-      console.log(songId);
+      songItem.value = song[0].url;
+      console.log(currentSongId);
       console.log(songItem.value);
-      if (audioRef.value) {
-        if (playButton.value) {
-          playButton.value.classList.add('playing');
-          playButton.value.classList.remove('pause');
-        }
-        audioRef.value.load();
-        audioRef.value.currentTime = 0;
-        audioRef.value.play();
-      }
+      // 调用播放方法，从头播放
     })
     .catch((error) => {
       // 处理请求错误
@@ -117,17 +152,55 @@ const pressPlayButton = () => {
     // 状态切换
     if (audioRef.value.paused) {
       const time = audioRef.value.currentTime;
-      playButton.value.classList.add('playing');
-      playButton.value.classList.remove('pause');
-      audioRef.value.load();
-      audioRef.value.currentTime = time;
-      audioRef.value.play();
+      // 调用播放方法，从当前进度开始播放
+      play(time);
     } else {
       playButton.value.classList.remove('playing');
       playButton.value.classList.add('pause');
       audioRef.value.pause();
     }
   }
+};
+
+const playList = async () => {
+  if (playingList.length > 0) {
+    let nextSong = 0;
+    currentSongId = playingList[nextSong];
+    await getSong();
+    play(0);
+    if (audioRef.value) {
+      // 通过触发loadedmetadata识别上一首歌曲已加载，可以开始加载下一首歌曲，减少等待
+      audioRef.value.addEventListener('loadedmetadata', () => {
+        if (playMode.value == 'sequential') {
+          if (nextSong < playingList.length - 1) {
+            nextSong++;
+          } else {
+            nextSong = 0;
+          }
+          getNextSong(playingList[nextSong]);
+        }
+      });
+      audioRef.value.addEventListener('ended', () => {
+        play(0);
+      });
+    }
+  }
+};
+
+const getNextSong = async (id: number) => {
+  await get<any>(`/song/url/v1?id=${id}&level=standard`)
+    .then((response) => {
+      console.log(response);
+
+      // 处理返回的用户数据
+      const song: Song = response.data;
+      songItem.value = song[0].url;
+      // 调用播放方法，从头播放
+    })
+    .catch((error) => {
+      // 处理请求错误
+      console.log(error);
+    });
 };
 
 // 进度显示
@@ -218,6 +291,7 @@ $(document).on('click', '#volumeIcon', () => {
     }
   }
 });
+
 // 音量改变时，静音与否以及音量大小将同步显示
 const updateVolume = () => {
   if (audioRef.value && volumeButton.value) {
@@ -234,6 +308,7 @@ const updateVolume = () => {
   }
 };
 
+// 改变音量
 const handleVolumeDragStart = (event: MouseEvent) => {
   if (volumeBar.value) {
     const volumeBarHeight = volumeBar.value.offsetHeight; // 获取元素总的高度

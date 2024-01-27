@@ -68,22 +68,12 @@ import { nextTick, onMounted, reactive, ref, h, render } from 'vue';
 import { useRouter } from 'vue-router';
 import { get } from '../../axios/insatance';
 
-import PlayList from '../../components/article/PlayListView/PlayList.vue';
+import PlayList from '../../components/article/PlayList/PlayList.vue';
 
 let uid = 571024254;
-// let info: PlaylistItem = reactive({
-//   id: 0,
-//   name: '', // 播放音质等级
-//   coverImgUrl: '',
-//   playCount: 0,
-//   userId: 0,
-// });
 const createItem = () => {
   get<any>(`/user/playlist?uid=${uid}`)
     .then((response) => {
-      // 处理返回的用户数据
-      // console.log(response);
-
       const playlist = response.playlist;
 
       // 插入元素

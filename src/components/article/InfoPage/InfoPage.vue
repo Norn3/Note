@@ -40,7 +40,7 @@
       </div>
 
       <div id="buttons" class="buttons">
-        <button id="pressToPlay" class="press_to_play">
+        <button id="pressToPlay" class="press_to_play" @click="playList">
           <img src="../../../assets/icons/play_infoPage.svg" alt="" />
           播放
           <p id="playCount" class="play_count">{{ playCountText }}</p>
@@ -90,6 +90,7 @@ import {
   onUpdated,
   reactive,
   ref,
+  renderSlot,
   watch,
 } from 'vue';
 import PlaylistItemClass from '../../../class/PlaylistItemClass';
@@ -99,7 +100,7 @@ import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 
 import './InfoPage.scss';
 import processPlayCount from '../../../util/processPlayCount';
-import processSongDuration from '../../../util/processSongDuration';
+import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
 
 const router = useRouter();
 
@@ -137,13 +138,16 @@ let name = ref(''),
   playCountText = ref(''),
   subscribedText = ref(''),
   tags: Array<string> = reactive([]),
-  description = ref('');
+  description = ref(''),
+  trackIds: Array<number> = reactive([]);
 
 // song
 let albumOfSong = ref('');
 
 // album
 let company = ref('');
+
+let listStore = useCurrentPlayingListStore();
 
 // 简介状态控制
 const showDescription = ref(true); // 是否完全展示简介
@@ -186,9 +190,11 @@ const getInfo = async () => {
   await get<any>(`${address(props.type)}`)
     .then((response) => {
       console.log(response);
-
       if (props.type == 'playlist') {
         let playlist = response.playlist;
+        playlist.trackIds.forEach((track: any) => {
+          trackIds.push(Number(track.id));
+        });
         coverImgUrl.value = playlist.coverImgUrl;
         name.value = playlist.name;
         creatorName = reactive([]);
@@ -298,6 +304,15 @@ const getLyrics = async () => {
 };
 
 getInfo();
+
+const playList = () => {
+  listStore.playingListIds = trackIds;
+  listStore.$patch({ playingListIds: trackIds, patchState: true });
+};
+// // 通过 $subscribe 订阅状态， subscribe()即可停止订阅
+// const subscribe = listStore.$subscribe((mutation, state) => {
+//   console.log('Ids has changed:', state.playingListIds);
+// });
 
 // 点击歌单标签，跳转到歌单分类页面
 const jumpCategory = (tag: string) => {
