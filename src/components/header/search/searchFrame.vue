@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { get } from '../../../axios/insatance';
+import { useRouter, useRoute } from 'vue-router';
 
 import './searchFrame.scss';
 
-const value = ref('');
+let keyword = ref('');
 const allowEmptyValueSearch = ref(false);
+let chosen_category = '';
+const router = useRouter();
 
 interface SourceItemObj {
   category: string;
@@ -20,12 +23,15 @@ const mySource = ref<SourceType>([
     index: 0,
   },
 ]);
+
 const formatter = (item: SourceItemObj) => {
-  if (item.index == 0) return `${item.category}：${item.name}`;
-  else return `\u3000\u3000\u3000${item.name}`;
+  chosen_category = item.category;
+  return item.name;
 };
+
 //trem：input输入内容
 const searchFn = async (trem: string) => {
+  keyword.value = trem;
   await get<any>(`/search/suggest?keywords=${trem}`)
     .then((response) => {
       // 处理返回的查询结果
@@ -88,7 +94,21 @@ const searchFn = async (trem: string) => {
 
   return mySource.value;
 };
-const selectValue = (e: Event) => {
+
+const jumpResult = (event: any) => {
+  let value = event.target.value;
+  router.push({
+    name: 'search',
+    query: { keyword: value },
+  });
+  keyword.value = value;
+};
+
+// 点击搜索联想结果，打开页面
+const selectValue = (e: string) => {
+  console.log(e);
+  console.log(chosen_category);
+
   get<any>(`/search/suggest?keywords=${e}`)
     .then((song) => {
       // 处理返回的用户数据
@@ -99,6 +119,7 @@ const selectValue = (e: Event) => {
       console.log(error);
     });
 };
+
 const transInputFocusEmit = () => {
   // console.log('transInputFocusEmit');
 };
@@ -108,12 +129,13 @@ const position = ref(['bottom']);
 <template>
   <div id="search" class="search">
     <d-auto-complete
-      :delay="500"
-      :formatter="formatter"
+      :delay="200"
       :source="mySource"
       :search-fn="searchFn"
+      :formatter="formatter"
       is-searching
-      v-model="value"
+      v-model="keyword"
+      @keyup.enter="jumpResult"
       :allow-empty-value-search="allowEmptyValueSearch"
       :select-value="selectValue"
       :trans-input-focus-emit="transInputFocusEmit"
@@ -121,6 +143,20 @@ const position = ref(['bottom']);
       :width="200"
       :append-to-body="false"
     >
+      <template #item="slotProps">
+        <div>
+          <span v-if="slotProps.item.index == 0">{{
+            slotProps.item.category + '\u3000'
+          }}</span>
+          <span v-else>{{ '\u3000\u3000\u3000' }}</span>
+          <span>{{ slotProps.item.name }}</span>
+        </div>
+      </template>
+      <template #nothing="slotProps">
+        <div>
+          {{ `没有匹配项: ${slotProps}` }}
+        </div>
+      </template>
       <template #searching="slotProps">
         <div>
           {{ `searching: ${slotProps}` }}

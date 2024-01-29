@@ -71,6 +71,13 @@ const routes: Array<RouteRecordRaw> = [
 				component: () => import('../views/account/accountSettingView.vue'),	
 			},
 		]
+	},
+
+	{
+		path: '/search',
+		name: 'search',
+		component: () => import('../views/SearchResultPage.vue'),
+		
 	}
 ]
 
