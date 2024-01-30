@@ -6,6 +6,7 @@ import { useRouter, useRoute } from 'vue-router';
 import './searchFrame.scss';
 
 let keyword = ref('');
+let search_word = '';
 const allowEmptyValueSearch = ref(false);
 let chosen_category = '';
 const router = useRouter();
@@ -31,7 +32,6 @@ const formatter = (item: SourceItemObj) => {
 
 //trem：input输入内容
 const searchFn = async (trem: string) => {
-  keyword.value = trem;
   await get<any>(`/search/suggest?keywords=${trem}`)
     .then((response) => {
       // 处理返回的查询结果
@@ -84,7 +84,6 @@ const searchFn = async (trem: string) => {
           arr.push(item);
         });
       }
-      console.log(arr);
       mySource.value = arr;
     })
     .catch((error) => {
@@ -95,20 +94,24 @@ const searchFn = async (trem: string) => {
   return mySource.value;
 };
 
+const saveKeyword = (e: any) => {
+  if (e.keyCode != 13) {
+    search_word = keyword.value;
+  }
+};
+
 const jumpResult = (event: any) => {
-  let value = event.target.value;
+  keyword.value = search_word;
   router.push({
     name: 'search',
-    query: { keyword: value },
+    query: { keyword: search_word },
   });
-  keyword.value = value;
 };
 
 // 点击搜索联想结果，打开页面
 const selectValue = (e: string) => {
-  console.log(e);
-  console.log(chosen_category);
-
+  // console.log(chosen_category);
+  // console.log(e);
   get<any>(`/search/suggest?keywords=${e}`)
     .then((song) => {
       // 处理返回的用户数据
@@ -135,6 +138,7 @@ const position = ref(['bottom']);
       :formatter="formatter"
       is-searching
       v-model="keyword"
+      @keyup="saveKeyword"
       @keyup.enter="jumpResult"
       :allow-empty-value-search="allowEmptyValueSearch"
       :select-value="selectValue"
