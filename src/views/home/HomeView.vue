@@ -14,4 +14,19 @@ import navBar from '../../components/article/HomeView/navBar/navBar.vue';
     </main>
   </div>
 </template>
-<style scoped></style>
+<style scoped>
+.home_view {
+  width: 100%;
+
+  main {
+    width: 100%;
+
+    nav {
+      width: 100%;
+    }
+    section {
+      width: 100%;
+    }
+  }
+}
+</style>

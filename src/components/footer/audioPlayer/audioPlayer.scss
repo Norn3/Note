@@ -45,6 +45,10 @@
     width: 700px;
     height: 100%;
     cursor: pointer;
+    
+    @media (max-width: 1000px) {
+        display: none; // 窗口宽度小于1000px隐藏组件
+      }
 }
 .progress{
     width: 700px;

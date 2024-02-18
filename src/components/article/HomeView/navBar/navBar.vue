@@ -1,3 +1,16 @@
+<template>
+  <ul class="nav" ref="nav">
+    <li
+      v-for="item in navItem"
+      :key="item.id"
+      :id="'li' + item.id"
+      class="navItem"
+      @click="jumpPage(item.address, `#li${item.id}`)"
+    >
+      {{ item.text }}
+    </li>
+  </ul>
+</template>
 <script setup lang="ts">
 import $ from 'jquery';
 import { onMounted } from 'vue';
@@ -102,17 +115,4 @@ onMounted(() => {
 });
 </script>
 
-<template>
-  <ul class="nav" ref="nav">
-    <li
-      v-for="item in navItem"
-      :key="item.id"
-      :id="'li' + item.id"
-      class="navItem"
-      @click="jumpPage(item.address, `#li${item.id}`)"
-    >
-      {{ item.text }}
-    </li>
-  </ul>
-</template>
 <style lang="scss" scoped></style>

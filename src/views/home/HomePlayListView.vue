@@ -166,6 +166,7 @@ const updateItem = async () => {
     .then((response) => {
       // 处理返回的用户数据
       const playlist = response.playlists;
+
       // 插入元素
       let $li_list = $('#categorizedPlaylists li');
       let current_li = 0;

@@ -49,7 +49,6 @@ const createItem = (listItem: Array<PlaylistItem>) => {
 
   listItem.forEach((element) => {
     // 创建新的子元素并设置其内容
-    console.log(element);
 
     if (element.userId != uid) {
       $List = $('#like');

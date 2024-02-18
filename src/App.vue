@@ -72,8 +72,12 @@ $(document).on('mouseout', 'footer', () => {
   footer {
     position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%;
     height: 8vh;
+    // 随着缩小，消失顺序：进度条、音量调节、封面、上一首、下一首，最后只剩播放图标
+    min-height: 50px;
+    min-width: 50px;
   }
 }
 </style>
