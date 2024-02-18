@@ -29,7 +29,7 @@ $(document).on('mouseout', 'footer', () => {
     <header>
       <brand-icon></brand-icon>
       <header-nav></header-nav>
-      <search-frame></search-frame>
+      <search-frame popper_class="popper upper"></search-frame>
       <account-bar></account-bar>
     </header>
     <section>
@@ -58,7 +58,7 @@ $(document).on('mouseout', 'footer', () => {
     width: 100%;
     display: flex;
     background-color: $brandColor;
-    z-index: 2;
+    z-index: 20;
     box-shadow: 0 1px 2px 0px #00000024;
   }
   section {

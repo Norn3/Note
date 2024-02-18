@@ -1,9 +1,40 @@
+<template>
+  <div id="search" class="search">
+    <el-autocomplete
+      v-model="keyword"
+      class="search_frame"
+      :popper-class="popper_class"
+      :fetch-suggestions="querySearch"
+      :trigger-on-focus="false"
+      clearable
+      placeholder="音乐/用户"
+      @select="handleSelect"
+      @keyup.enter="jumpResult"
+    >
+      <template #default="{ item }">
+        <div>
+          <span v-if="item.index == 0" class="category">{{
+            item.category + '\u3000'
+          }}</span>
+          <span v-else class="category">{{ '\u3000\u3000\u3000' }}</span>
+          <span class="name">{{ item.name }}</span>
+        </div>
+      </template>
+    </el-autocomplete>
+  </div>
+</template>
+
 <script setup lang="ts">
+import $ from 'jquery';
 import { onMounted, ref } from 'vue';
 import { get } from '../../../axios/insatance';
 import { useRouter, useRoute } from 'vue-router';
 
 import './searchFrame.scss';
+
+const props = defineProps({
+  popper_class: String,
+});
 
 let keyword = ref('');
 const router = useRouter();
@@ -108,27 +139,8 @@ const jumpResult = () => {
 const handleSelect = (item: string) => {
   console.log(item);
 };
-</script>
 
-<template>
-  <div id="search" class="search">
-    <el-autocomplete
-      v-model="keyword"
-      :fetch-suggestions="querySearch"
-      popper-class="my-autocomplete"
-      :trigger-on-focus="false"
-      clearable
-      placeholder="音乐/用户"
-      @select="handleSelect"
-      @keyup.enter="jumpResult"
-    >
-      <template #default="{ item }">
-        <div>
-          <span v-if="item.index == 0">{{ item.category + '\u3000' }}</span>
-          <span v-else>{{ '\u3000\u3000\u3000' }}</span>
-          <span>{{ item.name }}</span>
-        </div>
-      </template>
-    </el-autocomplete>
-  </div>
-</template>
+// onMounted(() => {
+//   changeStyle();
+// })
+</script>

@@ -9,4 +9,4 @@ import 'element-plus/dist/index.css'
 
 const pinia = createPinia()
 
-createApp(App).use(router).use(pinia).use($).use(ElementPlus, { size: 'small', zIndex: 3000 }).mount('#app')
+createApp(App).use(router).use(pinia).use($).use(ElementPlus, { size: 'default'}).mount('#app')
