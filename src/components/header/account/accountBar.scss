@@ -2,18 +2,19 @@
 
 .account{
     position: absolute;
-    top: 20%;
-    right: 3%;
-    width: 150px;
+    right: calc((100vw - $sectionWidth) / 4 - 4.5vw);
+    width: 10vw;
+    min-width: 100px;
     height: 150px;
     z-index: 100;
 
     .avatar{
-        height: 40px;
+        height: 8vh;
+        min-height: 40px;
         width: 40px;
         margin: auto;
         border-radius: 50%;
-        background: url(../../../assets/icons/avatar.svg) no-repeat;
+        background: url(../../../assets/icons/avatar.svg) no-repeat center;
     }
 
     .accountMenu{
@@ -29,10 +30,16 @@
             padding-inline-end: 15%;
 
             li{
-                padding: 5%;
+                padding: 1vh 0.1vw;
                 border-bottom: 1px solid rgb(223, 204, 135);
+                cursor: pointer;
             }
         }
     }
+
+    @media screen and (max-width:920px) {
+        display: none;
+      }
+        
     
 }

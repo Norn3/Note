@@ -6,6 +6,10 @@
         class="new_search"
         popper_class="popper lower"
       ></search-frame>
+      <div id="searchResult" class="search_result">
+        <div id="searchCategory" class="search_category"></div>
+        <div id="searchList" class="search_list"></div>
+      </div>
     </section>
   </main>
 </template>
@@ -34,6 +38,10 @@
       width: 70%;
       height: 70px;
     }
+
+    .search_result {
+      display: flex;
+    }
   }
 }
 </style>
@@ -44,7 +52,6 @@ import $ from 'jquery';
 import { nextTick, onMounted, reactive, ref, h, render, onUpdated } from 'vue';
 import { useRoute } from 'vue-router';
 
-import InfoPage from '../components/article/InfoPage/InfoPage.vue';
 import songList from '../components/article/songList/songList.vue';
 import searchFrame from '../components/header/search/searchFrame.vue';
 // 获取路由参数pid，用于获取歌单详情渲染页面

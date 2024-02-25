@@ -10,105 +10,111 @@
     background-color: $brandColor;
     margin-block-start: 0;
     padding-inline-start: 0;
-    // overflow: hidden; 
     transition: height .5s ease-out;
     
+    
+    .audio{
+        width: 50%;
+        height: 50%;
+        display: none;
+    }
+    .play_button{
+        position: relative;
+        top: $audioPlayerIconTop;
+        width: $audioPlayerIconSize;
+        height: 55%;
+        margin-right: $audioPlayerIconSize;
+        cursor: pointer;
+    }
+    .playing{
+        background: url('../../../assets/icons/pause.svg') no-repeat;
+    }
+    .pause{
+        background: url('../../../assets/icons/play.svg') no-repeat;
+    }
+    .progressControl{
+        position: relative;
+        top: 0;
+        width: 700px;
+        height: 100%;
+        cursor: pointer;
+        
+        @media (max-width: 1000px) {
+            display: none; // 窗口宽度小于1000px隐藏组件
+        }
+    }
+    .progress{
+        width: 700px;
+        height: 10%;
+        margin: 30px 0;
+        background-color: $subBrandColor;
+        border-radius: $progressBorderRadius;
+        
+        .current{
+            height: 100%;
+            background-color: $audioCurrentState;
+            border-radius: $progressBorderRadius;
+
+        }
+    }
+    .volume{
+        position: relative;
+        top: -$volumeHandlerHeight + $audioPlayerIconTop + $audioPlayerIconSize;
+        margin-left: $audioPlayerIconSize;
+        width: $audioPlayerIconSize;
+        height: 250%;
+
+
+        .volumeControl{
+            position: relative;
+            height: 70%;
+            top: 0px;
+            cursor: pointer;
+
+            .volumeProgress{
+                position: absolute;
+                width: $progressWidth;
+                height: 0px;
+                bottom: 0px;
+                border-radius: 5px;
+                margin-left:  12px;
+                background-color: $subBrandColor;
+                transition: all .3s;
+            
+                &.active{
+                    height: 100px;
+                    transform-origin: bottom;
+                }
+
+                .currentVolume{
+                    position: absolute;
+                    width: 100%;
+                    bottom: 0px;
+                    background-color: $audioCurrentState;
+                    border-radius: 5px;
+                }
+            }
+            
+        }
+
+    }
+    .volumeIcon{
+        position: absolute;
+        top: 97px;
+        width: $audioPlayerIconSize;
+        height: 32%;
+        cursor: pointer; 
+    }
+    .not_muted{
+        background: url('../../../assets/icons/volume.svg') no-repeat;
+    }
+    .muted{
+        background: url('../../../assets/icons/muted.svg') no-repeat;
+    }
+
 
 }
 .active {
     height: 100%;
     transform-origin: bottom;
-}
-
-.audio{
-    width: 50%;
-    height: 50%;
-    display: none;
-}
-.play_button{
-    position: relative;
-    top: $audioPlayerIconTop;
-    width: $audioPlayerIconSize;
-    height: 55%;
-    margin-right: $audioPlayerIconSize;
-    cursor: pointer;
-}
-.playing{
-    background: url('../../../assets/icons/pause.svg') no-repeat;
-}
-.pause{
-    background: url('../../../assets/icons/play.svg') no-repeat;
-}
-.progressControl{
-    position: relative;
-    top: 0;
-    width: 700px;
-    height: 100%;
-    cursor: pointer;
-    
-    @media (max-width: 1000px) {
-        display: none; // 窗口宽度小于1000px隐藏组件
-      }
-}
-.progress{
-    width: 700px;
-    height: 10%;
-    margin: 30px 0;
-    background-color: $subBrandColor;
-    border-radius: $progressBorderRadius;
-    
-    .current{
-        height: 100%;
-        background-color: $audioCurrentState;
-        border-radius: $progressBorderRadius;
-
-    }
-}
-.volume{
-    position: relative;
-    top: -$volumeHandlerHeight + $audioPlayerIconTop + $audioPlayerIconSize;
-    margin-left: $audioPlayerIconSize;
-    width: $audioPlayerIconSize;
-    height: 250%;
-
-
-    .volumeControl{
-        position: relative;
-        height: 70%;
-        top: 0px;
-        cursor: pointer;
-
-        .volumeProgress{
-            position: absolute;
-            width: $progressWidth;
-
-            bottom: 0px;
-            border-radius: 5px;
-            margin-left:  12px;
-            background-color: $subBrandColor;
-            transition: all .3s;
-        
-            .currentVolume{
-                position: absolute;
-                width: 100%;
-                bottom: 0px;
-                background-color: $audioCurrentState;
-                border-radius: 5px;
-            }
-        }
-    }
-
-}
-.volumeIcon{
-    position: absolute;
-    top: 97px;
-    width: $audioPlayerIconSize;
-    height: 32%;
-    cursor: pointer; 
-}
-.not_muted{
-    background: url('../../../assets/icons/volume.svg') no-repeat;
-}
-.muted{
-    background: url('../../../assets/icons/muted.svg') no-repeat;
 }

@@ -2,34 +2,39 @@
 
 .search{
     position: absolute;
-    top: 15%;
-    right: 15%;
-    height: 80%;
-    width: 20%;
+    right: calc((100vw - $sectionWidth) / 2);
+    height: 100%;
+    width: $searchIconSize;
+    max-width: 300px;
     display: flex;
-    z-index: 10;
-    justify-content: center;
     align-items: center;
+    transition: all 0.5s;
 
     .search_frame{
-      width: 50%;
-      height: 50%;
-
-      
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    &:hover{
+      width: 30vw;
     }
 
-    
-}
-.search::before{
-    display: inline-block;
-    content: url(../../../assets/icons/search.svg);
-    width: 50px;
-    padding: 2px 0 0 0;   
+    &::before{
+      display: inline-block;
+      content: url(../../../assets/icons/search.svg);
+      vertical-align: middle;
+      width: 50px;
+      height: 35px;
+      
+  }
+
+  &.focus{
+    width: 30vw;
+  }
     
 }
 
 .popper {
-
   li {
     line-height: normal;
     padding: 7px;
@@ -49,28 +54,31 @@
       bottom: 7px;
     }
   }
+
+  &.lower{
+    z-index: $lowerSearchFrameZIndex !important;
+    max-width: 700px;
+  
+    li { 
+
+      .name {
+        margin-left: 10px;
+        max-width: 620px;
+      }
+    }
+  }
+
+  &.upper{
+    max-width: 300px;
+  
+    li {
+
+      .name {
+        max-width: 220px;
+      }
+    }
+  }
+  
 } 
 
-.lower{
-  z-index: 10 !important;
-  max-width: 700px;
 
-  li {
-
-    .name {
-      margin-left: 10px;
-      max-width: 620px;
-    }
-  }
-}
-
-.upper{
-  max-width: 300px;
-
-  li {
-
-    .name {
-      max-width: 220px;
-    }
-  }
-}

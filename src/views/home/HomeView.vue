@@ -5,7 +5,7 @@ import navBar from '../../components/article/HomeView/navBar/navBar.vue';
 <template>
   <div class="home_view">
     <main>
-      <nav>
+      <nav class="nav_hidden">
         <nav-bar id="navBar"></nav-bar>
       </nav>
       <section>
@@ -14,7 +14,8 @@ import navBar from '../../components/article/HomeView/navBar/navBar.vue';
     </main>
   </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
+@import '../../mainStyle.scss';
 .home_view {
   width: 100%;
 
@@ -22,10 +23,21 @@ import navBar from '../../components/article/HomeView/navBar/navBar.vue';
     width: 100%;
 
     nav {
-      width: 100%;
+      position: relative;
+      left: -12.5vw;
+      width: 100vw;
+      height: 5vh;
+      z-index: $navbarZIndex;
+      background-color: $subBrandColor;
+      box-shadow: 0 3px 3px 0px #00000007;
     }
     section {
       width: 100%;
+    }
+  }
+  @media screen and (max-height: 600px) {
+    .nav_hidden {
+      display: none;
     }
   }
 }

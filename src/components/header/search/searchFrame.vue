@@ -32,6 +32,18 @@ import { useRouter, useRoute } from 'vue-router';
 
 import './searchFrame.scss';
 
+onMounted(() => {
+  const search = $('.search');
+  const input = search.find('input')[0];
+  const searchElement = search[0];
+  input.addEventListener('focus', () => {
+    searchElement.classList.add('focus');
+  });
+  input.addEventListener('blur', () => {
+    searchElement.classList.remove('focus');
+  });
+});
+
 const props = defineProps({
   popper_class: String,
 });
@@ -139,8 +151,4 @@ const jumpResult = () => {
 const handleSelect = (item: string) => {
   console.log(item);
 };
-
-// onMounted(() => {
-//   changeStyle();
-// })
 </script>

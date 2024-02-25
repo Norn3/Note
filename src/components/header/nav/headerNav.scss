@@ -6,13 +6,11 @@
   justify-content: left;
   height: 100%;
   width: 60vw;
-  left: -12.8em;
+  left: calc((100vw - $sectionWidth) / 2 - $brandIconWidth);
   list-style-type: none;
   margin-block-start: 0;
   margin-block-end: 0;
-  padding-inline-start: 20%;
   overflow: hidden;
-  z-index: 1;
 
 
   li.header_nav_item{
@@ -27,5 +25,9 @@
     
   .check{
     background-color: $darkerBrandColor;
+  }
+
+  @media screen and (max-width:640px) {
+    display: none;
   }
 }

@@ -83,20 +83,24 @@ let playMode = ref('sequential');
 
 let listStore = useCurrentPlayingListStore();
 let songStore = useCurrentSongStore();
-let currentSongId = 0;
+
+// 获取响应式audio对象
+const audioRef = ref<HTMLAudioElement | null>(null);
+let songItem = ref('');
+let nextSong = 0;
+let nextSongItem = ''; // getSong的时候先获取到这里，再替换到songItem中
 
 // 通过 $subscribe 订阅状态， subscribe()即可停止订阅
 // 当前正在播放的歌曲改变，重新获取歌曲并播放
 const subscribeCurrentSong = songStore.$subscribe((mutation, state) => {
   console.log('songUrl has changed:', state.songUrl);
-  currentSongId = state.songUrl;
-  getSong();
+  getSong(state.songUrl);
+  songItem.value = nextSongItem;
   play(0);
 });
 
 // 播放列表被改变，重新获取播放列表并存入localStorage
 const subscribeCurrentPlaylist = listStore.$subscribe((mutation, state) => {
-  console.log('playingListIds has changed:', state.playingListIds);
   // 点击了歌单详情页的播放按钮，替换整个播放列表
   if (state.patchState == true) {
     playingList = reactive([]);
@@ -104,15 +108,12 @@ const subscribeCurrentPlaylist = listStore.$subscribe((mutation, state) => {
       playingList.push(element);
     });
     playList();
+
+    // 本地保存使得刷新页面后仍有记录（未解决，还需完善）
+    localStorage.setItem('currentPlayingList', state.playingListIds.toString());
   }
-  // 在原播放列表基础上进行编辑，没有替换整个播放列表
-
-  localStorage.setItem('currentPlayingList', state.playingListIds.toString());
+  // 在原播放列表基础上进行编辑，没有替换整个播放列表（未写）
 });
-
-// 获取响应式audio对象
-const audioRef = ref<HTMLAudioElement | null>(null);
-let songItem = ref('');
 
 // 播放操作
 const play = (time: number) => {
@@ -128,16 +129,17 @@ const play = (time: number) => {
 };
 
 // 获取某首歌曲
-const getSong = async () => {
-  await get<any>(`/song/url/v1?id=${currentSongId}&level=standard`)
+const getSong = async (songId: number) => {
+  await get<any>(`/song/url/v1?id=${songId}&level=standard`)
     .then((response) => {
       console.log(response);
 
       // 处理返回的用户数据
       const song: Song = response.data;
-      songItem.value = song[0].url;
-      console.log(currentSongId);
-      console.log(songItem.value);
+      nextSongItem = song[0].url;
+      console.log(songId);
+      console.log('下一首：' + nextSongItem);
+      console.log('当前歌曲：' + songItem.value);
       // 调用播放方法，从头播放
     })
     .catch((error) => {
@@ -164,44 +166,40 @@ const pressPlayButton = () => {
 
 const playList = async () => {
   if (playingList.length > 0) {
-    let nextSong = 0;
-    currentSongId = playingList[nextSong];
-    await getSong();
+    nextSong = 0;
+    await getSong(playingList[nextSong]);
+    songItem.value = nextSongItem;
     play(0);
-    if (audioRef.value) {
-      // 通过触发loadedmetadata识别上一首歌曲已加载，可以开始加载下一首歌曲，减少等待
-      audioRef.value.addEventListener('loadedmetadata', () => {
-        if (playMode.value == 'sequential') {
-          if (nextSong < playingList.length - 1) {
-            nextSong++;
-          } else {
-            nextSong = 0;
-          }
-          getNextSong(playingList[nextSong]);
-        }
-      });
-      audioRef.value.addEventListener('ended', () => {
-        play(0);
-      });
-    }
   }
 };
-
-const getNextSong = async (id: number) => {
-  await get<any>(`/song/url/v1?id=${id}&level=standard`)
-    .then((response) => {
-      console.log(response);
-
-      // 处理返回的用户数据
-      const song: Song = response.data;
-      songItem.value = song[0].url;
-      // 调用播放方法，从头播放
-    })
-    .catch((error) => {
-      // 处理请求错误
-      console.log(error);
+onMounted(() => {
+  if (audioRef.value) {
+    // 通过触发loadedmetadata识别上一首歌曲已加载，可以开始加载下一首歌曲，减少等待
+    audioRef.value.addEventListener('loadedmetadata', () => {
+      if (audioRef.value) {
+        // 根据播放时间判断是否初次加载完成
+        if (audioRef.value.currentTime == 0) {
+          // 根据播放模式判断下一首的序号
+          if (playMode.value == 'sequential') {
+            if (nextSong < playingList.length - 1) {
+              nextSong++;
+            } else {
+              nextSong = 0;
+            }
+            // 获取下一首的url
+            getSong(playingList[nextSong]);
+          }
+        }
+      }
     });
-};
+
+    // 结束后播放下一首
+    audioRef.value.addEventListener('ended', () => {
+      songItem.value = nextSongItem;
+      play(0);
+    });
+  }
+});
 
 // 进度显示
 const progressWidth = ref('0%');
@@ -259,13 +257,13 @@ const handleDragEnd = () => {
 // 鼠标悬浮于上方时出现音量
 $(document).on('mouseover', '#volume', () => {
   if (volumeProgress.value) {
-    volumeProgress.value.style.height = '100px';
+    volumeProgress.value.classList.add('active');
   }
 });
 // 鼠标移开时音量消失
 $(document).on('mouseout', '#volume', () => {
   if (volumeProgress.value) {
-    volumeProgress.value.style.height = '0px';
+    volumeProgress.value.classList.remove('active');
   }
 });
 

@@ -305,6 +305,7 @@ const getLyrics = async () => {
 
 getInfo();
 
+// 列表播放，此处可以优化为检测到要播放的props.target_id和props.type与state中的一致时，仅更新state中的replay值使监听方从头播放
 const playList = () => {
   listStore.playingListIds = trackIds;
   listStore.$patch({ playingListIds: trackIds, patchState: true });
