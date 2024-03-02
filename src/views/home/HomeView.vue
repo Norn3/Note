@@ -23,8 +23,8 @@ import navBar from '../../components/article/HomeView/navBar/navBar.vue';
     width: 100%;
 
     nav {
-      position: relative;
-      left: -12.5vw;
+      position: fixed;
+      left: 0;
       width: 100vw;
       height: 5vh;
       z-index: $navbarZIndex;
@@ -32,6 +32,8 @@ import navBar from '../../components/article/HomeView/navBar/navBar.vue';
       box-shadow: 0 3px 3px 0px #00000007;
     }
     section {
+      position: relative;
+      top: 5vh;
       width: 100%;
     }
   }
