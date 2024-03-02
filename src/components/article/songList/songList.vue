@@ -59,8 +59,6 @@ const address = (type: string): string => {
 const getSongs = async () => {
   await get<any>(`${address(props.type)}`)
     .then((response) => {
-      console.log(response);
-
       const $ul = $('#songList').find('#songs');
       $ul.empty();
       let id = 1;

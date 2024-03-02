@@ -32,31 +32,34 @@
     .pause{
         background: url('../../../assets/icons/play.svg') no-repeat;
     }
-    .progressControl{
+    .progress_control{
         position: relative;
         top: 0;
-        width: 700px;
+        width: 60vw;
+        min-width: 300px;
         height: 100%;
         cursor: pointer;
         
-        @media (max-width: 1000px) {
+        @media (max-width: 500px) {
             display: none; // 窗口宽度小于1000px隐藏组件
         }
-    }
-    .progress{
-        width: 700px;
-        height: 10%;
-        margin: 30px 0;
-        background-color: $subBrandColor;
-        border-radius: $progressBorderRadius;
-        
-        .current{
-            height: 100%;
-            background-color: $audioCurrentState;
-            border-radius: $progressBorderRadius;
 
+        .progress{
+            width: 100%;
+            height: 10%;
+            margin: 30px 0;
+            background-color: $subBrandColor;
+            border-radius: $progressBorderRadius;
+            
+            .current{
+                height: 100%;
+                background-color: $audioCurrentState;
+                border-radius: $progressBorderRadius;
+    
+            }
         }
     }
+    
     .volume{
         position: relative;
         top: -$volumeHandlerHeight + $audioPlayerIconTop + $audioPlayerIconSize;
@@ -111,8 +114,6 @@
     .muted{
         background: url('../../../assets/icons/muted.svg') no-repeat;
     }
-
-
 }
 .active {
     height: 100%;

@@ -93,7 +93,6 @@ import {
   renderSlot,
   watch,
 } from 'vue';
-import PlaylistItemClass from '../../../class/PlaylistItemClass';
 import { get } from '../../../axios/insatance';
 import moment from 'moment';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
@@ -185,11 +184,8 @@ const unfoldDescription = () => {
 
 // 获取资源信息
 const getInfo = async () => {
-  console.log(props.type);
-
   await get<any>(`${address(props.type)}`)
     .then((response) => {
-      console.log(response);
       if (props.type == 'playlist') {
         let playlist = response.playlist;
         playlist.trackIds.forEach((track: any) => {

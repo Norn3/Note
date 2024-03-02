@@ -19,7 +19,7 @@
     ></div>
     <div
       id="progressControl"
-      class="progressControl"
+      class="progress_control"
       @mousedown="handleDragStart"
       @mousemove="handleDragMove"
       @mouseup="handleDragEnd"
