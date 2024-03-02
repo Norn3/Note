@@ -48,6 +48,7 @@ section {
     margin: 20px;
     border-bottom: 2px solid $audioCurrentState;
     display: flex;
+
     h1 {
       position: relative;
       display: inline-block;
@@ -145,8 +146,6 @@ const createItem = async () => {
           }),
           li
         ); // 渲染playList组件
-
-        $li.css('margin', '10px');
       });
     })
     .catch((error) => {

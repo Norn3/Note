@@ -1,0 +1,36 @@
+@import '../../../../mainStyle.scss';
+
+.recommend_playlist{
+    margin: 0 auto;
+    
+    .rec_description{
+        display: flex;
+        margin: 0 $playlistMarginLeftRight;
+        border-bottom: 2px solid $brandColor;
+
+        .title{
+            margin-block: 0;
+            color: $titleTextColor;
+        }
+    }
+    .playlist_list{
+        display: flex;
+        justify-content: left;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    // 保证组件居中
+    @media screen and (min-width: 1160px){
+        width: 880px;
+    }
+    @media screen and (max-width: 1160px) and (min-width: 900px){
+        width: 660px;  
+    }
+    @media screen and (max-width: 900px) and (min-width: 600px){
+        width: 440px;
+    }
+    @media screen and (max-width: 600px){
+        width: 220px;
+    }
+}

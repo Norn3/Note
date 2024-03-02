@@ -9,7 +9,8 @@ import recommendPlaylist from '../../components/article/HomeView/recommendPlayli
       <section>
         <main-banner></main-banner>
         <div id="mianInfo" class="main_info">
-          <recommend-playlist></recommend-playlist>
+          <recommend-playlist type="hot"></recommend-playlist>
+          <recommend-playlist type="personal"></recommend-playlist>
         </div>
       </section>
     </main>
@@ -20,10 +21,10 @@ import recommendPlaylist from '../../components/article/HomeView/recommendPlayli
   width: 100%;
   .main_info {
     position: relative;
-    display: flex;
     width: 100%;
     min-height: 92vh;
     height: 100%;
+    padding-top: 40px;
     z-index: 0;
     background-color: rgb(255, 255, 255);
     box-shadow: 0 0 3px 0 #4e53548d;
