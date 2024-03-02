@@ -1,12 +1,12 @@
 @import '../../../mainStyle.scss';
 
-.sideBar{
+.sidebar{
   position: absolute;
   width: 100%;
   min-height: 100%;
   background-color: #dbe6ec3f;
 
-  .sideBarTitle{
+  .sidebar_title{
     position: relative;
     height: 30px;
     padding: 5px;
@@ -41,14 +41,11 @@
         content: url(../../../assets/icons/triangle.svg);
         transform: rotate(0deg);
         margin-right: 5px;
-  
       }
     }
   }
 
-  
-
-  .List{
+  .list{
     position: relative;
     left: 0;
     width: 100%;
@@ -58,19 +55,14 @@
     padding-inline-start: 0;
     overflow: hidden;
 
-    .listItem{
-      box-sizing: content-box;
-      padding: 0.5em 0.7em;
-      height: 50px;
-      cursor: pointer;
-  
-      // &:nth-child(even) {
-      //   background-color: #ffffff;
-      // }
-  
-      // &:nth-child(odd) {
-      //   background-color: #fcfeff;
-      // }
+    li{
+      .sideBar_item{
+        box-sizing: content-box;
+        padding: 0.5em 0.7em;
+        height: 50px;
+        cursor: pointer;
+      }
+
       &:hover{
         background-color: #eaf5fc;
       }

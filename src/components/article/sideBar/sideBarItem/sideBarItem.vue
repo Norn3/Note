@@ -7,7 +7,7 @@ const props = defineProps({
   pid: Number,
   name: String,
   coverImgUrl: String,
-  trackCount: Number,
+  description: String,
 });
 
 const jumpPage = () => {
@@ -25,14 +25,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div id="sideBarItem" class="sideBarItem" @click="jumpPage">
+  <div id="sideBarItem" class="sideBar_item" @click="jumpPage">
     <img :src="coverImgUrl" alt="" id="cover" class="cover" />
     <div id="name" class="name">{{ name }}</div>
-    <div id="number" class="number">{{ trackCount + '首' }}</div>
+    <div id="description" class="description">{{ description }}</div>
   </div>
 </template>
 <style lang="scss" scoped>
-.sideBarItem {
+.sideBar_item {
   width: 100%;
   height: auto;
   display: grid;
@@ -62,7 +62,7 @@ onMounted(async () => {
     text-overflow: ellipsis;
   }
 
-  .number {
+  .description {
     grid-column: 2 / 5;
     grid-row: 2;
     font-size: 0.7em;
