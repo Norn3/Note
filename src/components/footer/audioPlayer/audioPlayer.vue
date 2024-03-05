@@ -164,42 +164,48 @@ const pressPlayButton = () => {
   }
 };
 
+const preGetSong = () => {
+  if (audioRef.value) {
+    // 根据播放时间判断是否初次加载完成
+    if (audioRef.value.currentTime == 0) {
+      // 根据播放模式判断下一首的序号
+      if (playMode.value == 'sequential') {
+        if (nextSong < playingList.length - 1) {
+          nextSong++;
+        } else {
+          nextSong = 0;
+        }
+        // 获取下一首的url
+        getSong(playingList[nextSong]);
+      }
+    }
+  }
+};
+
+const playNextSong = () => {
+  songItem.value = nextSongItem;
+  play(0);
+};
+
+const addListener = () => {
+  if (audioRef.value) {
+    // 通过触发loadedmetadata识别上一首歌曲已加载，可以开始加载下一首歌曲，减少等待
+    audioRef.value.addEventListener('loadedmetadata', preGetSong);
+
+    // 结束后播放下一首
+    audioRef.value.addEventListener('ended', playNextSong);
+  }
+};
+
 const playList = async () => {
   if (playingList.length > 0) {
+    addListener();
     nextSong = 0;
     await getSong(playingList[nextSong]);
     songItem.value = nextSongItem;
     play(0);
   }
 };
-onMounted(() => {
-  if (audioRef.value) {
-    // 通过触发loadedmetadata识别上一首歌曲已加载，可以开始加载下一首歌曲，减少等待
-    audioRef.value.addEventListener('loadedmetadata', () => {
-      if (audioRef.value) {
-        // 根据播放时间判断是否初次加载完成
-        if (audioRef.value.currentTime == 0) {
-          // 根据播放模式判断下一首的序号
-          if (playMode.value == 'sequential') {
-            if (nextSong < playingList.length - 1) {
-              nextSong++;
-            } else {
-              nextSong = 0;
-            }
-            // 获取下一首的url
-            getSong(playingList[nextSong]);
-          }
-        }
-      }
-    });
-
-    // 结束后播放下一首
-    audioRef.value.addEventListener('ended', () => {
-      songItem.value = nextSongItem;
-      play(0);
-    });
-  }
-});
 
 // 进度显示
 const progressWidth = ref('0%');
