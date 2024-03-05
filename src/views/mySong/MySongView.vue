@@ -2,7 +2,7 @@
   <div class="play_view">
     <main>
       <aside>
-        <side-bar :listItem="listItem"></side-bar>
+        <side-bar :listItem="listItem" listType="playlist"></side-bar>
       </aside>
       <section>
         <router-view></router-view>
@@ -73,6 +73,8 @@ section {
 </style>
 
 <script setup lang="ts">
+// 展示歌单列表、排行榜列表等信息，有侧边栏
+
 import $ from 'jquery';
 import { reactive, onBeforeMount } from 'vue';
 import { get } from '../../axios/insatance';
@@ -80,6 +82,10 @@ import { get } from '../../axios/insatance';
 import PlaylistItemClass from '../../class/PlaylistItemClass';
 
 import SideBar from '../../components/article/sideBar/sideBar.vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const info_type = route.query.info_type;
 
 let listItem: Array<PlaylistItemClass> = reactive([]);
 const getSideBar = () => {

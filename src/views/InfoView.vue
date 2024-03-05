@@ -34,6 +34,8 @@ section {
 </style>
 
 <script setup lang="ts">
+// 展示歌曲、歌单等资源的信息，无侧边栏
+
 // import { useRoute } from 'vue-router'
 import $ from 'jquery';
 import { nextTick, onMounted, reactive, ref, h, render, onUpdated } from 'vue';
