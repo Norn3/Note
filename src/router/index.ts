@@ -28,7 +28,14 @@ const routes: Array<RouteRecordRaw> = [
 			{
 				path: 'homeRank',
 				name: 'rank',
-				component: () => import('../views/home/HomeRankView.vue'),    
+				component: () => import('../views/home/HomeRankView.vue'), 
+				children:[
+					{
+						path: 'rankInfo',
+						name: 'rankInfo',
+						component: () => import('../views/mySong/MyPlayListInfoView.vue'),   
+					},
+				]   
 			},
 			{
 				path: 'Info',

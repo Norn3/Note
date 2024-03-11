@@ -58,7 +58,7 @@ import './navBar.scss';
 const navItem = [
   { id: 0, text: '推荐', address: 'recommend' },
   { id: 1, text: '歌单', address: 'playlist' },
-  { id: 2, text: '排行榜', address: 'rank' },
+  { id: 2, text: '排行榜', address: 'rankInfo' },
 ];
 
 // 选择导航栏中的每一项，都会将改变router到对应路径，并且更改选中样式
@@ -69,8 +69,9 @@ const jumpPage = (address: string, id: string) => {
   $('.navItem').removeClass('check');
   $(id)[0].classList.add('check');
   // 根据地址，在sessionStorage中更改最后所在路径，并进行跳转
+  sessionStorage.setItem('lastPathName', address);
+
   if (address == 'playlist') {
-    sessionStorage.setItem('lastPathName', 'playlist');
     sessionStorage.setItem(
       'lastPathQuery',
       JSON.stringify({ category: '全部' })
@@ -79,8 +80,13 @@ const jumpPage = (address: string, id: string) => {
       name: 'playlist',
       query: { category: '全部' },
     });
+  } else if (address == 'rankInfo') {
+    sessionStorage.setItem('lastPathQuery', JSON.stringify({ id: 19723756 }));
+    router.push({
+      name: 'rankInfo',
+      query: { id: 19723756 },
+    });
   } else {
-    sessionStorage.setItem('lastPathName', address);
     router.push({ name: address });
   }
 };
@@ -103,14 +109,27 @@ onMounted(() => {
   // 若有参数，则要连参数一起传递
   const path_query = sessionStorage.getItem('lastPathQuery') as string;
 
-  if (path_query) {
-    router.push({ name: path_name, query: JSON.parse(path_query) });
-  }
-  // 如果点击navBar跳转，或初次打开歌单页，则默认选择‘全部’
-  else if (check_item == 1) {
-    router.push({ name: path_name, query: { category: '全部' } });
-  } else {
+  // 如果是recommend，不需要考虑参数
+  if (check_item == 0) {
     router.push({ name: path_name });
+  }
+  // 如果不是recommend，则区分有参数和无参数的情况
+  else if (path_query) {
+    // 如果参数不为空，则直接跳转至sessionStroage中存好的路径
+    router.push({ name: path_name, query: JSON.parse(path_query) });
+    console.log(path_name, path_query);
+  } else {
+    // 如果参数为空：初次打开歌单页，则默认选择‘全部’；初次打开排行榜页，则选择ranklist
+    if (check_item == 1) {
+      router.push({ name: path_name, query: { category: '全部' } });
+    }
+    if (check_item == 2) {
+      router.push({ name: path_name, query: { id: 19723756 } });
+    }
+    // 如果既不是歌单页也不是排行榜页，则跳转至对应路径
+    else {
+      router.push({ name: path_name });
+    }
   }
 });
 </script>

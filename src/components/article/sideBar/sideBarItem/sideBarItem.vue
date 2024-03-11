@@ -14,6 +14,10 @@ import router from '../../../../router/index';
 import './sideBarItem.scss';
 
 const props = defineProps({
+  listType: {
+    type: String,
+    default: 'playlist',
+  },
   pid: Number,
   name: String,
   coverImgUrl: String,
@@ -21,8 +25,9 @@ const props = defineProps({
 });
 
 const jumpPage = () => {
+  $(window).scrollTop(0);
   router.push({
-    name: 'myPlaylistInfo',
+    name: props.listType == 'playlist' ? 'myPlaylistInfo' : 'rankInfo',
     query: { id: props.pid },
   });
 };
