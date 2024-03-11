@@ -8,7 +8,7 @@
       <song-list
         v-if="String(route.query.type) != 'song'"
         :type="String(route.query.type)"
-        :targetId="Number(route.query.id)"
+        :target_id="String(route.query.id)"
       ></song-list>
     </section>
   </main>
