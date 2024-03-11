@@ -158,10 +158,8 @@ const des_height = ref<HTMLElement | null>(null); // 显示简介内容的p标�
 const foldButton = ref(false); // 是否显示展开/收起按钮
 
 // 观察简介长度，判断是否需要显示展开/收起按钮
-const handleFoldButton = new MutationObserver(() => {
+const handleFoldButton = () => {
   if (des_height.value) {
-    console.log(des_height.value.offsetHeight);
-
     if (des_height.value.offsetHeight > 150) {
       foldButton.value = true;
       showDescription.value = false;
@@ -169,9 +167,8 @@ const handleFoldButton = new MutationObserver(() => {
       foldButton.value = false;
       showDescription.value = true;
     }
-    handleFoldButton.disconnect(); // 停止观察
   }
-});
+};
 
 // 点击展开按钮
 const unfoldDescription = () => {
@@ -304,48 +301,31 @@ const getLyrics = async () => {
   });
 };
 
-getInfo();
-
 // 列表播放，此处可以优化为检测到要播放的props.target_id和props.type与state中的一致时，仅更新state中的replay值使监听方从头播放
 const playList = () => {
   listStore.playingListIds = trackIds;
   listStore.$patch({ playingListIds: trackIds, patchState: true });
 };
-// // 通过 $subscribe 订阅状态， subscribe()即可停止订阅
-// const subscribe = listStore.$subscribe((mutation, state) => {
-//   console.log('Ids has changed:', state.playingListIds);
-// });
 
 // 点击歌单标签，跳转到歌单分类页面
 const jumpCategory = (tag: string) => {
   router.push({ name: 'playlist', query: { category: tag } });
 };
 
-onMounted(() => {
-  // 观察简介长度
-  if (des_height.value) {
-    handleFoldButton.observe(des_height.value, {
-      attributes: false,
-      childList: true,
-      subtree: false,
-    });
-  }
+onMounted(async () => {
+  await getInfo();
+  // 判断简介长度
+  handleFoldButton();
 });
 
 // 当页面的路由改变，马上重新获取信息
 watch(
   () => props.target_id,
-  (newId, oldId) => {
+  async (newId, oldId) => {
     console.log(newId, oldId);
-    getInfo();
-    // 观察简介长度
-    if (des_height.value) {
-      handleFoldButton.observe(des_height.value, {
-        attributes: false,
-        childList: true,
-        subtree: false,
-      });
-    }
+    await getInfo();
+    // 判断简介长度
+    handleFoldButton();
   }
 );
 </script>
