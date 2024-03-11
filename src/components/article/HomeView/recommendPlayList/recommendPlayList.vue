@@ -4,7 +4,9 @@
       <h2 class="title">{{ category }}</h2>
       <ul class="category_list"></ul>
     </div>
-
+    <el-text v-if="loading" v-loading="loading" class="loading"
+      >Loading...</el-text
+    >
     <ul :id="props.type + 'PlaylistList'" class="playlist_list"></ul>
   </div>
 </template>
@@ -30,6 +32,8 @@ import PlayList from '../../PlayList/PlayList.vue';
 const props = defineProps({
   type: String,
 });
+
+const loading = ref(true);
 
 const playlist_num = computed(() => {
   if (props.type == 'hot') return 8;
@@ -78,6 +82,7 @@ const createItem = async () => {
       console.log('请求失败');
       console.log(error);
     });
+  loading.value = false;
 };
 
 onBeforeMount(async () => {

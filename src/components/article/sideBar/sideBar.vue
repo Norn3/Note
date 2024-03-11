@@ -8,6 +8,9 @@
       <h3>{{ list_title2 }}</h3>
     </div>
     <ul id="like" class="list"></ul>
+    <el-text v-if="loading" v-loading="loading" class="loading"
+      >Loading...</el-text
+    >
   </div>
 </template>
 
@@ -32,10 +35,13 @@ import SideBarItem from './sideBarItem/sideBarItem.vue';
 
 import PlaylistItem from '../../../class/PlaylistItemClass';
 
+const loading = ref(true);
+
 // 通过defineProps接收父组件的值
 const props = defineProps({
   // 接收传值   此处的itemNum就是父组件的自定义名称
   listType: {
+    // 为了让侧边菜单项知道被点击后应该跳转至myPlaylistInfo还是rankInfo
     type: String,
     default: 'playlist',
   },
@@ -60,9 +66,12 @@ const list_title2 = computed(() => {
 });
 
 watch(listItem, (newListItem) => {
+  loading.value = true;
   addItemToList(newListItem);
+  loading.value = false;
 });
 
+//
 const addItemToList = (listItem: Array<PlaylistItem>) => {
   let slice = 4;
   if (props.listType == 'playlist') {
@@ -89,6 +98,7 @@ const createItem = (
 ) => {
   // 使用 $() 将目标元素包装为 jQuery 对象
   let $list = $(listId);
+  $list.empty();
   $list.css('display', 'none');
   for (let i = start; i < end; i++) {
     // 创建新的子元素并设置其内容
@@ -100,7 +110,7 @@ const createItem = (
     $list.append(li);
     render(
       h(SideBarItem, {
-        type: props.listType,
+        listType: props.listType,
         pid: listItem[i].id,
         name: listItem[i].name,
         coverImgUrl: listItem[i].coverImgUrl,
@@ -115,7 +125,7 @@ const createItem = (
   $list.css('display', 'block');
 };
 
-onMounted(async () => {
+onMounted(() => {
   // 点击收起或展开列表
   $(document).on('click', '.sidebar_title', (element) => {
     const $title = $(element.currentTarget);

@@ -1,6 +1,9 @@
 <template>
   <div id="playlistInfoContainer" class="info_container">
-    <main id="playlistBasicInfo" class="basic_info">
+    <el-text v-if="loading" v-loading="loading" class="loading"
+      >Loading...</el-text
+    >
+    <main id="playlistBasicInfo" class="basic_info" v-show="!loading">
       <img id="cover" class="cover" alt="封面" :src="coverImgUrl" />
       <title id="title" class="title">{{ name }}</title>
       <div id="creator" class="creator text">
@@ -77,7 +80,6 @@
         </div>
       </div>
     </main>
-    <ol id="songsList" class="songs_list text"></ol>
   </div>
 </template>
 <style lang="scss"></style>
@@ -128,6 +130,8 @@ const address = (type: string): string => {
   return addr;
 };
 // 用于信息显示的数据
+const loading = ref(true);
+
 // playlist
 let name = ref(''),
   coverImgUrl = ref(''),
@@ -249,6 +253,7 @@ const getInfo = async () => {
       console.log('请求失败');
       console.log(error);
     });
+  loading.value = false;
 };
 
 // 获取歌词信息

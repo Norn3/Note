@@ -11,6 +11,18 @@
     z-index: 1;
     box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.051);
 
+    .loading{
+      display: block;
+      height: 100%;
+      width: 100%;
+      line-height: 300px;
+
+      .el-loading-spinner{
+        top: 0;
+        margin-top: $loadingMarginTop;
+      }
+    }
+
     .swiper {
         height: 100%;
         position: relative;

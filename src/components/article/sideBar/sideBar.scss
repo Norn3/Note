@@ -4,7 +4,7 @@
   position: absolute;
   width: 100%;
   min-height: 100%;
-  background-color: #dbe6ec3f;
+  background-color: #f4f9fe;
 
   .sidebar_title{
     position: relative;
@@ -83,6 +83,17 @@
 
   .fold{
     height: 0px;
+  }
+  .loading{
+    display: block;
+    width: 100%;
+    height: 430px;
+    line-height: 430px;
+
+    .el-loading-spinner{
+        top: 0;
+        margin-top: $loadingMarginTop;
+    }
   }
   
     

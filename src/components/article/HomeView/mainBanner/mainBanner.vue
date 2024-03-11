@@ -1,6 +1,10 @@
 <template>
   <div id="mainBanner" class="mainBanner">
+    <el-text v-if="loading" v-loading="loading" class="loading"
+      >Loading...</el-text
+    >
     <swiper
+      v-if="!loading"
       id="mySwiper"
       :modules="modules"
       :slides-per-view="1"
@@ -40,7 +44,7 @@ import $ from 'jquery';
 import './mainBanner.scss';
 
 import { get } from '../../../../axios/insatance';
-import { onBeforeMount, reactive } from 'vue';
+import { onBeforeMount, reactive, ref } from 'vue';
 
 // import Swiper core and required modules
 import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
@@ -66,7 +70,8 @@ interface Picture {
     default: 0;
   };
 }
-let pictureList: Array<Picture> = reactive([]);
+const pictureList: Array<Picture> = reactive([]);
+const loading = ref(true);
 const getPicture = async () => {
   await get<any>('/banner')
     .then((response) => {
@@ -85,6 +90,7 @@ const getPicture = async () => {
       console.log('请求失败');
       console.log(error);
     });
+  loading.value = false;
 };
 
 onBeforeMount(async () => {
