@@ -11,7 +11,7 @@
   </div>
 </template>
 <style scoped>
-.play_view {
+.home_rank_view {
   position: relative;
   width: 75vw;
   min-height: 92vh;
@@ -79,10 +79,9 @@ import PlaylistItemClass from '../../class/PlaylistItemClass';
 import SideBar from '../../components/article/sideBar/sideBar.vue';
 
 let listItem: Array<PlaylistItemClass> = reactive([]);
-const getSideBar = () => {
+const getSideBar = async () => {
   get<any>(`/toplist`)
     .then((response) => {
-      console.log(response);
       response.list.forEach((element: PlaylistItemClass) => {
         listItem.push(element);
       });
@@ -94,7 +93,6 @@ const getSideBar = () => {
     });
 };
 
-let uid = 571024254;
 onBeforeMount(() => {
   getSideBar();
 });
