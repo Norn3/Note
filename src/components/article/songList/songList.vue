@@ -29,31 +29,18 @@ import { get } from '../../../axios/insatance';
 import './songList.scss';
 import SongListItem from './songListItem/songListItem.vue';
 
+// import { address } from '../../../util/getSongListAddress';
+
 const props = defineProps({
   type: {
     type: String,
     default: 'playlist',
   },
-  target_id: Number,
+  target_id: String,
 });
 
 let current_song_id = 0;
 const already_getting = ref(false);
-
-// 根据资源类型， 决定获取数据的地址
-// 只要调整limit就可以控制每次请求的歌曲数量，offset会根据列表项的渲染，所引起的current_song_id的自增，自动变化
-const address = (type: string): string => {
-  let addr = '';
-  switch (type) {
-    case 'playlist':
-      addr = `/playlist/track/all?id=${props.target_id}&limit=50&offset=${current_song_id}`;
-      break;
-    case 'album':
-      addr = `/album?id=${props.target_id}&limit=50&offset=${current_song_id}`;
-      break;
-  }
-  return addr;
-};
 
 const firstGetSongs = async () => {
   const $ul = $('#songList').find('#songs');
@@ -62,9 +49,27 @@ const firstGetSongs = async () => {
   await getSongs();
 };
 
+const address = (type: string, target_id: string, offset: number): string => {
+  let addr = '';
+  switch (type) {
+    case 'playlist':
+      addr = `/playlist/track/all?id=${target_id}&limit=50&offset=${offset}`;
+      break;
+    case 'album':
+      addr = `/album?id=${target_id}&limit=50&offset=${offset}`;
+      break;
+  }
+  return addr;
+};
+
 // 获取歌单中的歌曲
 const getSongs = async () => {
-  await get<any>(`${address(props.type)}`)
+  console.log(props.target_id);
+  const addr = address(props.type, props.target_id as string, current_song_id);
+  console.log(
+    `${address(props.type, props.target_id as string, current_song_id)}`
+  );
+  await get<any>(`${addr}`)
     .then((response) => {
       const $ul = $('#songList').find('#songs');
       response.songs.forEach((song: any) => {
