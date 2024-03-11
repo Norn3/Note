@@ -2,7 +2,7 @@
   <main class="info_view">
     <section>
       <info-page :target_id="String(route.query.id)"></info-page>
-      <song-list :targetId="Number(route.query.id)"></song-list>
+      <song-list :target_id="Number(route.query.id)"></song-list>
     </section>
   </main>
 </template>
@@ -27,6 +27,8 @@ section {
 </style>
 
 <script setup lang="ts">
+// 展示歌单列表、排行榜列表等信息
+
 // import { useRoute } from 'vue-router'
 import $ from 'jquery';
 import {

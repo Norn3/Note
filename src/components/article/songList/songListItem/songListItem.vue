@@ -60,7 +60,7 @@ onMounted(async () => {
 </script>
 <!-- eslint-disable vue/no-useless-template-attributes -->
 <template>
-  <div id="songListItem" class="song_list_item">
+  <div id="songListItem" class="song_list_item" :key="listId">
     <ul>
       <li id="serialNum" class="serial_num">{{ listId }}</li>
       <li id="clickToPlay" class="click_to_play" @click="playSong">

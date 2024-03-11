@@ -60,6 +60,8 @@
   </div>
 </template>
 <script setup lang="ts">
+// TODO 刷新页面导致播放重播
+
 import $ from 'jquery';
 import { onMounted, reactive, ref } from 'vue';
 import './audioPlayer.scss';
@@ -165,19 +167,17 @@ const pressPlayButton = () => {
 };
 
 const preGetSong = () => {
-  if (audioRef.value) {
-    // 根据播放时间判断是否初次加载完成
-    if (audioRef.value.currentTime == 0) {
-      // 根据播放模式判断下一首的序号
-      if (playMode.value == 'sequential') {
-        if (nextSong < playingList.length - 1) {
-          nextSong++;
-        } else {
-          nextSong = 0;
-        }
-        // 获取下一首的url
-        getSong(playingList[nextSong]);
+  // 根据播放时间判断是否初次加载完成
+  if (audioRef.value && audioRef.value.currentTime == 0) {
+    // 根据播放模式判断下一首的序号
+    if (playMode.value == 'sequential') {
+      if (nextSong < playingList.length - 1) {
+        nextSong++;
+      } else {
+        nextSong = 0;
       }
+      // 获取下一首的url
+      getSong(playingList[nextSong]);
     }
   }
 };
