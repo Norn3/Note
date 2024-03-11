@@ -69,6 +69,7 @@
   }
 
   &.upper{
+    z-index: $upperSearchFrameZIndex  !important;
     max-width: 300px;
   
     li {
