@@ -12,97 +12,26 @@
             class="select_category"
           ></select-category>
         </div>
+        <el-text v-if="loading" v-loading="loading" class="loading"
+          >Loading...</el-text
+        >
         <ul id="categorizedPlaylists" class="categorized_playlists"></ul>
       </section>
     </main>
   </div>
 </template>
-<style lang="scss" scoped>
-@import '../../mainStyle.scss';
-.home_playlist_view {
-  position: relative;
-  width: 100%;
-  min-height: 92vh;
-  height: 100%;
-  background-color: rgb(255, 255, 255);
-}
-main {
-  position: relative;
-  min-height: 100%;
-  height: 100%;
-  display: flex;
-  box-shadow: 0 0 3px 0 #4e53548d;
-}
-aside {
-  position: relative;
-  min-height: 92vh;
-  width: 25%;
-}
-section {
-  position: relative;
-  height: 100%;
-  min-height: 92vh;
-  width: 100%;
-  margin: 0 auto;
-  .playlist_category {
-    margin: 20px;
-    border-bottom: 2px solid $audioCurrentState;
-    display: flex;
-
-    h1 {
-      position: relative;
-      display: inline-block;
-      margin: 10px;
-      margin-left: 40px;
-      font-weight: 500;
-    }
-    button.select_cate {
-      display: flex;
-      justify-content: center;
-      height: 30px;
-      width: 90px;
-      padding: 4px;
-      margin: auto 10px auto;
-      border: 1px solid #665f4f33;
-      background-color: #faff9b72;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-
-      &::after {
-        content: url('../../assets/icons/arrow.svg');
-        padding: 2px 0 0 5px;
-      }
-
-      &:hover {
-        background-color: #faff9b;
-      }
-
-      &:focus {
-        border: 1px solid #89723cad;
-        outline: 0;
-      }
-    }
-    .select_category {
-      top: 80px;
-      display: none;
-    }
-  }
-  .categorized_playlists {
-    box-sizing: border-box;
-    height: auto;
-    width: 100%;
-    padding: 0 2%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    content-visibility: auto;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
 <script setup lang="ts">
 import $ from 'jquery';
-import { h, render, onBeforeMount, onBeforeUpdate } from 'vue';
+import {
+  h,
+  render,
+  onBeforeMount,
+  onBeforeUpdate,
+  onUnmounted,
+  onBeforeUnmount,
+  ref,
+} from 'vue';
 import { get } from '../../axios/insatance';
 import { useRoute } from 'vue-router';
 
@@ -110,6 +39,10 @@ import PlayList from '../../components/article/PlayList/PlayList.vue';
 import selectCategory from '../../components/article/selectCategory/selectCategory.vue';
 
 import processPlayCount from '../../util/processPlayCount';
+
+import './HomePlaylistView.scss';
+
+const loading = ref(true);
 
 const showCate = () => {
   $('#selectCategory').css('display', 'block');
@@ -153,6 +86,7 @@ const createItem = async () => {
       console.log('请求失败');
       console.log(error);
     });
+  loading.value = false;
 };
 
 const offset = 0;
@@ -205,6 +139,18 @@ const updateItem = async () => {
 
 onBeforeMount(() => {
   createItem();
+  $(document).on('click', (event) => {
+    const $selectCategory = $('#selectCategory');
+    const $button = $('#selectCate');
+
+    if (
+      !$selectCategory.is(event.target as unknown as HTMLElement) &&
+      !$button.is(event.target as unknown as HTMLElement) &&
+      !$selectCategory.has(event.target as unknown as HTMLElement).length
+    ) {
+      $selectCategory.css('display', 'none');
+    }
+  });
 });
 
 onBeforeUpdate(() => {
