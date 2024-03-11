@@ -10,9 +10,6 @@
       <li id="album" class="album">专辑</li>
     </ul>
     <ul id="songs" class="songs"></ul>
-    <!-- <el-table v-if="already_getting" v-loading="already_getting" :data="tableData">
-      <el-table-column prop="title"/>
-    </el-table> -->
     <el-text v-if="already_getting" v-loading="already_getting" class="loading"
       >Loading...</el-text
     >
@@ -29,7 +26,7 @@ import { get } from '../../../axios/insatance';
 import './songList.scss';
 import SongListItem from './songListItem/songListItem.vue';
 
-// import { address } from '../../../util/getSongListAddress';
+import { address } from '../../../util/getSongListAddress';
 
 const props = defineProps({
   type: {
@@ -49,27 +46,11 @@ const firstGetSongs = async () => {
   await getSongs();
 };
 
-const address = (type: string, target_id: string, offset: number): string => {
-  let addr = '';
-  switch (type) {
-    case 'playlist':
-      addr = `/playlist/track/all?id=${target_id}&limit=50&offset=${offset}`;
-      break;
-    case 'album':
-      addr = `/album?id=${target_id}&limit=50&offset=${offset}`;
-      break;
-  }
-  return addr;
-};
-
 // 获取歌单中的歌曲
 const getSongs = async () => {
-  console.log(props.target_id);
-  const addr = address(props.type, props.target_id as string, current_song_id);
-  console.log(
-    `${address(props.type, props.target_id as string, current_song_id)}`
-  );
-  await get<any>(`${addr}`)
+  await get<any>(
+    `${address(props.type, props.target_id as string, 50, current_song_id)}`
+  )
     .then((response) => {
       const $ul = $('#songList').find('#songs');
       response.songs.forEach((song: any) => {
