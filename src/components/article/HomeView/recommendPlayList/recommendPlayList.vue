@@ -13,16 +13,7 @@
 <style lang="scss" scoped></style>
 <script setup lang="ts">
 import $ from 'jquery';
-import {
-  onMounted,
-  ref,
-  nextTick,
-  reactive,
-  computed,
-  h,
-  render,
-  onBeforeMount,
-} from 'vue';
+import { ref, computed, h, render, onBeforeMount } from 'vue';
 import { get } from '../../../../axios/insatance';
 
 import './recommendPlaylist.scss';
@@ -47,6 +38,7 @@ const category = computed(() => {
 
 const address = computed(() => {
   if (props.type == 'hot') return `/personalized?limit=${playlist_num.value}`;
+  // TODO: 此处还需修改为个性化推荐
   else return `/personalized?limit=${playlist_num.value}`;
 });
 

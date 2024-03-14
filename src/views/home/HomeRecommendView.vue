@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.vue';
 import recommendPlaylist from '../../components/article/HomeView/recommendPlaylist/recommendPlaylist.vue';
+import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.vue';
 </script>
 
 <template>
