@@ -66,7 +66,7 @@
         <div>
           <p
             ref="des_height"
-            :style="{ '-webkit-line-clamp': showDescription ? '' : '5' }"
+            :style="{ '-webkit-line-clamp': showDescription ? 'none' : 5 }"
           >
             {{ description }}
           </p>
