@@ -16,7 +16,7 @@ import $ from 'jquery';
 import { ref, computed, h, render, onBeforeMount } from 'vue';
 import { get } from '../../../../axios/insatance';
 
-import './recommendPlaylist.scss';
+import './recommendPlayList.scss';
 
 import PlayList from '../../PlayList/PlayList.vue';
 

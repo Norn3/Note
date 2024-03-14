@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import recommendPlaylist from '../../components/article/HomeView/recommendPlaylist/recommendPlaylist.vue';
+import recommendPlaylist from '../../components/article/HomeView/recommendPlayList/recommendPlayList.vue';
 import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.vue';
 </script>
 
@@ -31,3 +31,4 @@ import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.
   }
 }
 </style>
+../../components/article/HomeView/recommendPlaylist/recommendPlayList.vue
