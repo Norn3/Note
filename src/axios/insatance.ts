@@ -1,14 +1,15 @@
 import axios from "axios";
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import type { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosRequestHeaders  } from "axios";
 
 // 创建实例配置
 const instance: AxiosInstance = axios.create({
     baseURL: 'https://cloud-music-api-note.vercel.app/',
-    timeout: 5000
+    timeout: 5000,
+    // headers: {'Authorization': 'Bearer your-access-token'} as AxiosRequestHeaders,
 });
 // 配置拦截器
 // 请求拦截器
-instance.interceptors.request.use((config: AxiosRequestConfig) => {
+instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     return config;
 }, (error: any) => {
     console.log(error);
@@ -75,11 +76,11 @@ instance.interceptors.response.use((response: AxiosResponse) => {
 })
 
 // 封装 GET 请求
-export function get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+export function get<T>(url: string, config?: InternalAxiosRequestConfig): Promise<T> {
     return instance.get<T>(url, config).then((response: AxiosResponse) => response.data);
 }
   // 封装 POST 请求
-export function post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+export function post<T>(url: string, data?: any, config?: InternalAxiosRequestConfig): Promise<T> {
   return instance.post<T>(url, data, config).then((response: AxiosResponse) => response.data);
 }
 
