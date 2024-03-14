@@ -12,12 +12,17 @@
       <source :src="songItem" type="audio/ogg" />
       Your browser does not support this audio format.
     </audio>
+    <div id="previousButton" class="button previous"></div>
     <div
       id="playButton"
-      class="play_button pause"
+      class="button play pause"
       ref="playButton"
       @click="pressPlayButton"
     ></div>
+    <div id="nextButton" class="button next"></div>
+    <div id="coverImg" class="cover_img">
+      <img :src="coverImg" alt="cover" />
+    </div>
     <div id="songTitle" class="song_title">
       {{ songTitle + ' - ' + creatorName }}
     </div>
@@ -34,7 +39,7 @@
       </div>
     </div>
     <div id="time" class="time">{{ curTime + '/' + songDuration }}</div>
-
+    <div id="features" class="features"></div>
     <div id="volume" class="volume">
       <!-- 音量控制条 -->
       <div
@@ -95,7 +100,7 @@ let nextSongItem = ''; // getSong的时候先获取到这里，再替换到songI
 // 歌曲信息显示
 const songTitle = ref('');
 const creatorName = ref('');
-
+const coverImg = ref('');
 const songDuration = ref('0:00');
 const curTime = ref('0:00');
 let getCurTime: number | null = null;
@@ -201,6 +206,8 @@ const songLoaded = () => {
   // 根据播放时间判断是否初次加载完成
   if (audioRef.value && audioRef.value.currentTime == 0) {
     const info = listStore.getSongInfo(listStore.current_song_index);
+    console.log(info);
+    coverImg.value = info.al.picUrl;
     songTitle.value = info.name;
     creatorName.value = '';
     info.ar.forEach((item: any) => {

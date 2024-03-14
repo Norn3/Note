@@ -1,9 +1,8 @@
 @import '../../../mainStyle.scss';
 
 .audioPlayer{
-    display: flex;
+    display: grid;
     position: absolute;
-    justify-content: center;
     width: 100%;
     height: 0%;
     bottom: 0px;
@@ -11,28 +10,65 @@
     margin-block-start: 0;
     padding-inline-start: 0;
     transition: height .5s ease-out;
-    
+    grid-template-columns: 4vw 4vw 3vw 6vw 50vw 11vw 12vw 10vw;
+    grid-auto-rows: 30% 70%;
+    grid-column-gap: 10px;
+    grid-row-gap: 0px;
+    grid-template-areas:
+      'previous play next cover_img song_title time features volume'
+      'previous play next cover_img progress_control progress_control features volume';
     
     .audio{
         width: 50%;
         height: 50%;
         display: none;
     }
-    .play_button{
+    .button{
         position: relative;
-        top: $audioPlayerIconTop;
-        width: $audioPlayerIconSize;
-        height: 55%;
-        margin-right: $audioPlayerIconSize;
+        // top: $audioPlayerIconTop;
+        // width: $audioPlayerIconSize;
+        // height: 55%;
+        // margin-right: $audioPlayerIconSize;
         cursor: pointer;
     }
+    .previous {
+        grid-area: previous;
+        background: url('../../../assets/icons/skip_previous.svg') no-repeat right;
+    }
+    .play{
+        grid-area: play;
+    }
+    .next{
+        grid-area: next;
+        background: url('../../../assets/icons/skip_next.svg') no-repeat left;
+    }
     .playing{
-        background: url('../../../assets/icons/pause.svg') no-repeat;
+        background: url('../../../assets/icons/pause.svg') no-repeat center;
     }
     .pause{
-        background: url('../../../assets/icons/play.svg') no-repeat;
+        background: url('../../../assets/icons/play.svg') no-repeat center;
+    }
+    .cover_img{
+        grid-area: cover_img;
+        width: 50px;
+        height: 50px;
+        margin:  auto;
+        img{
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    }
+    .song_title{
+        grid-area: song_title;
+        display: flex;
+    }
+    .time{
+        grid-area: time;
     }
     .progress_control{
+        grid-area: progress_control;
         position: relative;
         top: 0;
         width: 60vw;
@@ -46,8 +82,8 @@
 
         .progress{
             width: 100%;
-            height: 10%;
-            margin: 30px 0;
+            height: 15%;
+            margin: 2vh 0;
             background-color: $subBrandColor;
             border-radius: $progressBorderRadius;
             
@@ -59,11 +95,14 @@
             }
         }
     }
+    .features{
+        grid-area: features;
+    }
     
     .volume{
+        grid-area: volume;
         position: relative;
         top: -$volumeHandlerHeight + $audioPlayerIconTop + $audioPlayerIconSize;
-        margin-left: $audioPlayerIconSize;
         width: $audioPlayerIconSize;
         height: 250%;
 
@@ -99,20 +138,21 @@
             }
             
         }
+        .volumeIcon{
+            position: absolute;
+            top: 90px;
+            width: $audioPlayerIconSize;
+            height: 32%;
+            cursor: pointer; 
+        }
 
     }
-    .volumeIcon{
-        position: absolute;
-        top: 97px;
-        width: $audioPlayerIconSize;
-        height: 32%;
-        cursor: pointer; 
-    }
+
     .not_muted{
-        background: url('../../../assets/icons/volume.svg') no-repeat;
+        background: url('../../../assets/icons/volume.svg') no-repeat center;
     }
     .muted{
-        background: url('../../../assets/icons/muted.svg') no-repeat;
+        background: url('../../../assets/icons/muted.svg') no-repeat center;
     }
 }
 .active {
