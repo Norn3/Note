@@ -22,7 +22,6 @@ instance.interceptors.response.use((response: AxiosResponse) => {
     // 这里用来处理http常见错误，进行全局提示
     let message = "";
     console.log(error);
-    
     switch (error.response.status) {
       case 400:
         message = "请求错误(400)";

@@ -70,7 +70,7 @@ const createItem = async () => {
         render(
           h(PlayList, {
             type: 'playlist',
-            info: String(element.id),
+            id: String(element.id),
             imgUrl: element.coverImgUrl,
             playCount: element.playCount,
             title: element.name,

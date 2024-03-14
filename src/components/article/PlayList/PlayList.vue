@@ -5,11 +5,13 @@ import router from '../../../router/index';
 // import { get } from '../../../axios/insatance';
 import processPlayCount from '../../../util/processPlayCount';
 
+import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
+
 import './PlayList.scss';
 
 const props = defineProps({
   type: String,
-  info: String,
+  id: String,
   imgUrl: String,
   playCount: {
     type: Number,
@@ -23,16 +25,25 @@ const props = defineProps({
   },
 });
 
+const listStore = useCurrentPlayingListStore();
+
 const jumpPage = () => {
   sessionStorage.setItem('lastPathName', 'Info');
   sessionStorage.setItem(
     'lastPathQuery',
-    JSON.stringify({ type: 'playlist', id: props.info })
+    JSON.stringify({ type: 'playlist', id: props.id })
   );
+  console.log(props.id);
+
   router.push({
     name: 'Info',
-    query: { type: 'playlist', id: props.info },
+    query: { type: 'playlist', id: props.id },
   });
+};
+
+const playlist = async () => {
+  await listStore.changeList('playlist', props.id as string);
+  listStore.resetCurSong();
 };
 
 onMounted(async () => {
@@ -42,12 +53,7 @@ onMounted(async () => {
 </script>
 <!-- eslint-disable vue/no-useless-template-attributes -->
 <template>
-  <div
-    id="playlist"
-    class="play-list-container"
-    :info="info"
-    @click="jumpPage()"
-  >
+  <div id="playlist" class="play-list-container" :info="id" @click="jumpPage()">
     <div
       id="image"
       class="image"
@@ -60,7 +66,7 @@ onMounted(async () => {
             {{ processPlayCount(props.playCount) }}
           </div>
         </div>
-        <div id="playButton" class="play-button"></div>
+        <div id="playButton" class="play-button" @click.stop="playlist"></div>
       </div>
     </div>
     <div id="description" class="description">
