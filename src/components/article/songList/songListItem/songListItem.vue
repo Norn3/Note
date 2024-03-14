@@ -4,11 +4,11 @@ import { onMounted, nextTick, ref, useAttrs } from 'vue';
 import router from '../../../../router/index';
 import { get } from '../../../../axios/insatance';
 
+import { useCurrentPlayingListStore } from '../../../../stores/currentPlayingList';
+
 import processSongDuration from '../../../../util/processSongDuration'; // 处理时长
 
 import './songListItem.scss';
-
-import { useCurrentSongStore } from '../../../../stores/currentPlayingSong';
 
 const props = defineProps({
   type: String,
@@ -45,12 +45,10 @@ const jumpPage = (type: string, id: number) => {
   });
 };
 
-// 可以在组件中的任意位置访问 `store` 变量 ✨
-const songStore = useCurrentSongStore();
+const listStore = useCurrentPlayingListStore();
 
 const playSong = () => {
-  songStore.songUrl = Number(props.songId);
-  localStorage.setItem('currentSongId', JSON.stringify(props.songId));
+  listStore.playSong(String(props.songId));
 };
 
 onMounted(async () => {

@@ -187,11 +187,10 @@ const unfoldDescription = () => {
 const getInfo = async () => {
   await get<any>(`${address(props.type)}`)
     .then((response) => {
+      console.log(response);
+
       if (props.type == 'playlist') {
         let playlist = response.playlist;
-        playlist.trackIds.forEach((track: any) => {
-          trackIds.push(Number(track.id));
-        });
         coverImgUrl.value = playlist.coverImgUrl;
         name.value = playlist.name;
         creatorName = reactive([]);
@@ -301,10 +300,10 @@ const getLyrics = async () => {
   });
 };
 
-// 列表播放，此处可以优化为检测到要播放的props.target_id和props.type与state中的一致时，仅更新state中的replay值使监听方从头播放
-const playList = () => {
-  listStore.playingListIds = trackIds;
-  listStore.$patch({ playingListIds: trackIds, patchState: true });
+// 列表播放，调用listStore里的changeList方法，如果props.target_id与当前播放列表id一致，则从头播放
+const playList = async () => {
+  await listStore.changeList(props.type, props.target_id as string);
+  listStore.resetCurSong();
 };
 
 // 点击歌单标签，跳转到歌单分类页面
@@ -314,6 +313,7 @@ const jumpCategory = (tag: string) => {
 
 onMounted(async () => {
   await getInfo();
+
   // 判断简介长度
   handleFoldButton();
 });

@@ -2,7 +2,7 @@
   <main class="info_view">
     <section>
       <info-page :target_id="String(route.query.id)"></info-page>
-      <song-list :target_id="Number(route.query.id)"></song-list>
+      <song-list :target_id="String(route.query.id)"></song-list>
     </section>
   </main>
 </template>

@@ -98,6 +98,13 @@ import accountBar from './components/header/account/accountBar.vue';
 import audioPlayer from './components/footer/audioPlayer/audioPlayer.vue';
 import headerNav from './components/header/nav/headerNav.vue';
 
+import { useCurrentPlayingListStore } from './stores/currentPlayingList';
+
+const listStore = useCurrentPlayingListStore();
+
+// 初始化歌单列表
+listStore.initializeStore();
+
 // 鼠标在上方时audioPlayer出现
 $(document).on('mouseover', 'footer', () => {
   const audioPlayer = $('#audioPlayer')[0];
