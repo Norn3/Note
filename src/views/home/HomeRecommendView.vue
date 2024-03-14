@@ -9,8 +9,8 @@ import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.
       <section>
         <main-banner></main-banner>
         <div id="mianInfo" class="main_info">
-          <recommend-playlist type="hot"></recommend-playlist>
-          <recommend-playlist type="personal"></recommend-playlist>
+          <recommendPlaylist type="hot"></recommendPlaylist>
+          <recommendPlaylist type="personal"></recommendPlaylist>
         </div>
       </section>
     </main>

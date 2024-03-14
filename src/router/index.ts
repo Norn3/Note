@@ -17,13 +17,6 @@ const routes: Array<RouteRecordRaw> = [
 				path: 'homePlaylist',
 				name: 'playlist',
 				component: () => import('../views/home/HomePlaylistView.vue'), 
-				// beforeEnter: (to, from, next)  =>{
-				// 	if (sessionStorage.getItem("token")) {
-				// 		next()
-				// 	} else {
-				// 		next("login")
-				// 	}
-				// },
 			},
 			{
 				path: 'homeRank',
