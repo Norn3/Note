@@ -37,18 +37,16 @@
             background-color: rgb(251, 253, 255);
           }
         } 
-  
-        .playlist_result{
+
+        .pic_list {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
         }
-        
-        .album_result{
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-        }
+      }
+
+      .result_pagination{
+        justify-content: center;
       }
     }
   }

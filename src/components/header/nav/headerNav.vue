@@ -71,8 +71,8 @@ onMounted(() => {
   if (check_item == -1) $(`#header_li0`)[0].classList.add('check');
   else $(`#header_li${check_item}`)[0].classList.add('check');
 
-  // 如果是路径是“我的音乐”，则直接带参跳转
-  if (path_name == 'myPlaylistInfo') {
+  // 如果是路径是“我的音乐”或搜索结果，则直接带参跳转
+  if (path_name == 'myPlaylistInfo' || path_name == 'search') {
     const path_query = sessionStorage.getItem('lastPathQuery') as string;
     console.log(path_name, path_query);
     router.push({ name: path_name, query: JSON.parse(path_query) });
