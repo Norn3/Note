@@ -1,8 +1,7 @@
 <template>
   <div id="playlistInfoContainer" class="info_container">
-    <el-text v-if="loading" v-loading="loading" class="loading"
-      >Loading...</el-text
-    >
+    <loading-state :loading="loading"></loading-state>
+
     <main id="playlistBasicInfo" class="basic_info" v-show="!loading">
       <img id="cover" class="cover" alt="封面" :src="coverImgUrl" />
       <title id="title" class="title">{{ name }}</title>
@@ -105,6 +104,7 @@ import moment from 'moment';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 
 import './InfoPage.scss';
+import loadingState from '../loadingState/loadingState.vue';
 import processPlayCount from '../../../util/processPlayCount';
 import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
 
@@ -190,6 +190,8 @@ const unfoldDescription = () => {
 
 // 获取资源信息
 const getInfo = async () => {
+  console.log(address(props.type));
+
   await get<any>(`${address(props.type)}`)
     .then((response) => {
       console.log(response);
