@@ -16,6 +16,7 @@
             <ul id="songResult" class="song_result"></ul>
           </el-tab-pane>
           <el-tab-pane label="专辑" name="10"> </el-tab-pane>
+          <ul id="albumResult" class="album_result"></ul>
           <el-tab-pane label="歌手" name="100"> </el-tab-pane>
           <el-tab-pane label="歌单" name="1000">
             <ul id="playlistResult" class="playlist_result"></ul>
@@ -26,7 +27,6 @@
   </main>
 </template>
 <style lang="scss" scoped></style>
-
 <script setup lang="ts">
 // import { useRoute } from 'vue-router'
 import $ from 'jquery';
@@ -46,6 +46,7 @@ import { get } from '../../axios/insatance';
 import searchFrame from '../../components/header/search/searchFrame.vue';
 import songListItem from '../../components/article/songList/songListItem/songListItem.vue';
 import PlayList from '../../components/article/PlayList/PlayList.vue';
+import albumItem from '../../components/article/albumItem/albumItem.vue';
 
 import processSingerArray from '../../util/processSingerArray';
 
@@ -61,6 +62,9 @@ const getListFromResult = (result: any): Array<any> => {
   switch (activeName.value) {
     case '1':
       arr = result.songs;
+      break;
+    case '10':
+      arr = result.albums;
       break;
     case '1000':
       arr = result.playlists;
@@ -112,6 +116,25 @@ const renderResult = (result: Array<any>) => {
       });
       break;
     }
+    case '10': {
+      const $ul = $('#albumResult');
+      result.forEach((item) => {
+        const $li = $('<li>');
+        $li.addClass('album_result_item');
+        const li = $li[0];
+        $ul.append(li);
+        render(
+          h(albumItem, {
+            id: String(item.id),
+            imgUrl: item.picUrl,
+            title: item.name,
+            artists: processSingerArray(item.artists),
+          }),
+          li
+        );
+      });
+      break;
+    }
     case '1000': {
       const $ul = $('#playlistResult');
       result.forEach((item) => {
@@ -122,7 +145,7 @@ const renderResult = (result: Array<any>) => {
         render(
           h(PlayList, {
             type: 'playlist',
-            id: item.id,
+            id: String(item.id),
             imgUrl: item.coverImgUrl,
             playCount: item.playCount,
             title: item.name,
