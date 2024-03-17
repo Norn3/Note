@@ -17,9 +17,10 @@
       </div>
     </div>
     <div id="description" class="description">
-      <a href="" id="title" class="title">{{ title }}</a>
+      <div id="title" class="title">{{ title }}</div>
       <div id="creatorTitle" class="creatorTitle" v-if="showCreator">
-        by<a href="" id="creator" class="creator">{{ creator }}</a>
+        by
+        <div id="creator" class="creator">{{ creator }}</div>
       </div>
     </div>
   </div>

@@ -68,10 +68,11 @@
         position: relative;
         width: 100%;
         height: 22%;
+        text-align: left;
+
         .title{
             width: 100%;
-            height: 60%;
-            display: inline-block;
+            height: 55%;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -83,19 +84,22 @@
 
         }
         .creatorTitle{
-            justify-content: left;
+            display: flex;
             width: 100%;
-            height: 40%;
+            height: 45%;
             font-size: 0.8em;
             color: gray;
             
 
             .creator{
+                width: 80%;
                 margin-left: 7px;
+                text-align: left;
                 overflow: hidden;
                 white-space: nowrap;
+                text-overflow: ellipsis;
                 color: black;
-                font-size: 1.1em;
+                font-size: 1em;
 
                 &:hover{
                     text-decoration: underline;
