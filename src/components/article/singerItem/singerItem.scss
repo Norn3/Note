@@ -1,0 +1,40 @@
+@import '../../../mainStyle.scss';
+
+.sinegr_container{
+    position: relative;
+    width: 140px;
+    height: 180px;
+    margin: 10px $playlistMarginLeftRight 25px;
+
+    .image{
+        position: relative;
+        width: 100%;
+        height: 78%;
+        border-radius: 2px;
+        box-shadow: 1px 1px 4px 0 #00000048;
+        background-repeat: no-repeat;
+        background-size: cover;
+        &:hover{
+            cursor: pointer;
+        }
+    }
+
+    .description{
+        position: relative;
+        width: 100%;
+        height: 22%;
+        text-align: left;
+        .name{
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: black;
+            font-size: 1.05em;
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+    }
+}

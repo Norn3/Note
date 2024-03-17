@@ -57,7 +57,6 @@ const jumpPage = () => {
     'lastPathQuery',
     JSON.stringify({ type: 'album', id: props.id })
   );
-  console.log(props.id);
 
   router.push({
     name: 'Info',
