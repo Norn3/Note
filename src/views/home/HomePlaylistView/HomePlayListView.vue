@@ -32,13 +32,13 @@ import {
   onBeforeUnmount,
   ref,
 } from 'vue';
-import { get } from '../../axios/insatance';
+import { get } from '../../../axios/insatance';
 import { useRoute } from 'vue-router';
 
-import PlayList from '../../components/article/PlayList/PlayList.vue';
-import selectCategory from '../../components/article/selectCategory/selectCategory.vue';
+import PlayList from '../../../components/article/PlayList/PlayList.vue';
+import selectCategory from '../../../components/article/selectCategory/selectCategory.vue';
 
-import processPlayCount from '../../util/processPlayCount';
+import processPlayCount from '../../../util/processPlayCount';
 
 import './HomePlaylistView.scss';
 
@@ -158,3 +158,4 @@ onBeforeUpdate(() => {
   updateItem();
 });
 </script>
+../../../axios/insatance../../../util/processPlayCount

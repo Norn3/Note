@@ -16,7 +16,7 @@ const routes: Array<RouteRecordRaw> = [
 			{
 				path: 'homePlaylist',
 				name: 'playlist',
-				component: () => import('../views/home/HomePlayListView.vue'), 
+				component: () => import('../views/home/HomePlaylistView/HomePlayListView.vue'), 
 			},
 			{
 				path: 'homeRank',
@@ -26,14 +26,14 @@ const routes: Array<RouteRecordRaw> = [
 					{
 						path: 'rankInfo',
 						name: 'rankInfo',
-						component: () => import('../views/mySong/MyPlayListInfoView.vue'),   
+						component: () => import('../views/MyPlayListInfoView/MyPlayListInfoView.vue'),   
 					},
 				]   
 			},
 			{
 				path: 'Info',
 				name: 'Info',
-				component: () => import('../views/InfoView.vue'),     
+				component: () => import('../views/InfoView/InfoView.vue'),     
 			},
 		]
 	},
@@ -45,7 +45,7 @@ const routes: Array<RouteRecordRaw> = [
 			{
 				path: 'myPlaylistInfo',
 				name: 'myPlaylistInfo',
-				component: () => import('../views/mySong/MyPlayListInfoView.vue'),     
+				component: () => import('../views/MyPlayListInfoView/MyPlayListInfoView.vue'),     
 			},
 		]
 	},
@@ -76,7 +76,7 @@ const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/search',
 		name: 'search',
-		component: () => import('../views/SearchResultPage.vue'),
+		component: () => import('../views/SearchResultPage/SearchResultPage.vue'),
 		
 	}
 ]

@@ -41,8 +41,8 @@ import $ from 'jquery';
 import { nextTick, onMounted, reactive, ref, h, render, onUpdated } from 'vue';
 import { useRoute } from 'vue-router';
 
-import InfoPage from '../components/article/InfoPage/InfoPage.vue';
-import songList from '../components/article/songList/songList.vue';
+import InfoPage from '../../components/article/InfoPage/InfoPage.vue';
+import songList from '../../components/article/songList/songList.vue';
 // 获取路由参数pid，用于获取歌单详情渲染页面
 const route = useRoute();
 onMounted(async () => {
