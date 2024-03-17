@@ -1,3 +1,40 @@
+<!-- eslint-disable vue/no-useless-template-attributes -->
+<template>
+  <div id="songListItem" class="song_list_item" :key="'songListItem' + listId">
+    <ul>
+      <li
+        id="serialNum"
+        class="serial_num"
+        v-if="props.type != 'search_result'"
+      >
+        {{ listId }}
+      </li>
+      <li id="clickToPlay" class="click_to_play" @click="playSong">
+        <img src="../../../../assets/icons/playSong_songlist.svg" alt="播放" />
+      </li>
+      <li
+        id="name"
+        class="name"
+        @click="jumpPage('song', Number(props.songId))"
+      >
+        {{ name }}
+      </li>
+      <li id="duration" class="duration">
+        {{ processSongDuration(durationTime as number) }}
+      </li>
+      <li id="singer" class="singer">{{ singer_list() }}</li>
+      <li
+        id="album"
+        class="album"
+        v-if="String(props.type) != 'album'"
+        @click="jumpPage('album', Number(props.albumId))"
+      >
+        {{ album }}
+      </li>
+    </ul>
+  </div>
+</template>
+<style lang="scss"></style>
 <script setup lang="ts">
 import $, { event } from 'jquery';
 import { onMounted, nextTick, ref, useAttrs } from 'vue';
@@ -47,6 +84,7 @@ const jumpPage = (type: string, id: number) => {
 
 const listStore = useCurrentPlayingListStore();
 
+// TODO：点击播放单曲，没有loading态而且过程很长
 const playSong = () => {
   listStore.playSong(String(props.songId));
 };
@@ -56,34 +94,3 @@ onMounted(async () => {
   await nextTick();
 });
 </script>
-<!-- eslint-disable vue/no-useless-template-attributes -->
-<template>
-  <div id="songListItem" class="song_list_item" :key="listId">
-    <ul>
-      <li id="serialNum" class="serial_num">{{ listId }}</li>
-      <li id="clickToPlay" class="click_to_play" @click="playSong">
-        <img src="../../../../assets/icons/playSong_songlist.svg" alt="播放" />
-      </li>
-      <li
-        id="name"
-        class="name"
-        @click="jumpPage('song', Number(props.songId))"
-      >
-        {{ name }}
-      </li>
-      <li id="duration" class="duration">
-        {{ processSongDuration(durationTime as number) }}
-      </li>
-      <li id="singer" class="singer">{{ singer_list() }}</li>
-      <li
-        id="album"
-        class="album"
-        v-if="String(props.type) != 'album'"
-        @click="jumpPage('album', Number(props.albumId))"
-      >
-        {{ album }}
-      </li>
-    </ul>
-  </div>
-</template>
-<style lang="scss"></style>

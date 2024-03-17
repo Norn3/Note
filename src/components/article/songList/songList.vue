@@ -24,9 +24,10 @@ import router from '../../../router/index';
 import { get } from '../../../axios/insatance';
 
 import './songList.scss';
-import SongListItem from './songListItem/songListItem.vue';
+import songListItem from './songListItem/songListItem.vue';
 
 import { address } from '../../../util/getSongListAddress';
+import processSingerArray from '../../../util/processSingerArray';
 
 const props = defineProps({
   type: {
@@ -43,7 +44,9 @@ const firstGetSongs = async () => {
   const $ul = $('#songList').find('#songs');
   $ul.empty();
   current_song_id = 0;
+  already_getting.value = true;
   await getSongs();
+  already_getting.value = false;
 };
 
 // 获取歌单中的歌曲
@@ -58,10 +61,6 @@ const getSongs = async () => {
         $li.addClass('song_item');
         const li = $li[0];
         $ul.append(li);
-        const singers: Array<string> = [];
-        song.ar.forEach((singer: any) => {
-          singers.push(singer.name);
-        });
         // 此处还可以优化减少判断
         let album = '';
         let albumId = 0;
@@ -70,13 +69,13 @@ const getSongs = async () => {
           albumId = song.al.id;
         }
         render(
-          h(SongListItem, {
+          h(songListItem, {
             type: props.type,
             listId: ++current_song_id,
             songId: song.id,
             name: song.name,
             durationTime: song.dt,
-            singer: singers,
+            singer: processSingerArray(song.ar),
             album: album,
             albumId: albumId,
           }),
@@ -123,6 +122,7 @@ const isReachBottom = (): boolean => {
     return true;
   else return false;
 };
+// 判断是否不是正处于获取中的状态，并且已滚动到判定线以下
 const onScroll = async () => {
   if (!already_getting.value) {
     if (isReachBottom()) {
@@ -139,10 +139,10 @@ const onReachBottom = () => {
 };
 
 onMounted(async () => {
-  // 等待页面加载结束，再调用createItem创建列表项
+  // 等待页面加载结束，再调用firstGetSongs创建列表项
   await nextTick();
   if (props.type != 'song') {
-    getSongs();
+    firstGetSongs();
   }
   onReachBottom();
 });
