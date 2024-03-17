@@ -22,7 +22,7 @@
       <swiper-slide
         id="mySlide"
         v-for="(picture, index) in pictureList"
-        :key="index"
+        :key="'mySlide' + index"
       >
         <div
           class="background"

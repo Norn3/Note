@@ -43,7 +43,7 @@ const accountMenuList = [
       <ul>
         <li
           v-for="item in accountMenuList"
-          :key="item.id"
+          :key="'accountMenuList' + item.id"
           @click="jumpPage(item.address)"
         >
           {{ item.text }}

@@ -2,7 +2,7 @@
   <ul class="nav" ref="nav">
     <li
       v-for="item in navItem"
-      :key="item.id"
+      :key="'navBarItem' + item.id"
       :id="'li' + item.id"
       class="navItem"
       @click="jumpPage(item.address, `#li${item.id}`)"

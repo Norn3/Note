@@ -5,14 +5,14 @@
       id="cateList"
       class="cate_list"
       v-for="(value, index) in category_list"
-      :key="index"
+      :key="'selectCategoryCateList' + index"
     >
       <dt id="mianCate" class="mian_cate">{{ value }}</dt>
       <dd id="subCate" class="sub_cate">
         <a
           href="javascript:void(0);"
           v-for="(value, key) in sub_category_list[index]"
-          :key="key"
+          :key="'selectCategorySubCateList' + key"
           @click="jumpPage(value)"
           >{{ value }}</a
         >

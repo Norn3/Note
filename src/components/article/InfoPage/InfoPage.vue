@@ -16,7 +16,12 @@
         />
         <p v-else class="creator_label">歌手：</p>
         <ul class="creator_name">
-          <li v-for="(name, index) in creatorName" :key="index">{{ name }}</li>
+          <li
+            v-for="(name, index) in creatorName"
+            :key="'InfoPageCreatorName' + index"
+          >
+            {{ name }}
+          </li>
         </ul>
       </div>
       <p v-if="props.type != 'song'" id="createTime" class="create_time text">
@@ -29,7 +34,7 @@
         class="label_or_album text"
       >
         <p v-if="tags.length > 0">标签：</p>
-        <ul v-for="(tag, index) in tags" :key="index">
+        <ul v-for="(tag, index) in tags" :key="'InfoPageTag' + index">
           <li @click="jumpCategory(tag)">{{ tag }}</li>
         </ul>
       </div>
@@ -300,6 +305,7 @@ const getLyrics = async () => {
   });
 };
 
+// TODO：点击播放列表，没有loading态而且过程很长
 // 列表播放，调用listStore里的changeList方法，如果props.target_id与当前播放列表id一致，则从头播放
 const playList = async () => {
   await listStore.changeList(props.type, props.target_id as string);
