@@ -1,0 +1,49 @@
+@import '../../mainStyle.scss';
+
+.search_result_view {
+    position: relative;
+    width: 75vw;
+    min-height: 92vh;
+    height: 100%;
+    padding: 0 0 50px 0;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 3px 0 #4e53548d;
+  
+    section {
+      position: relative;
+      min-height: 100vh;
+      height: 100%;
+      width: 70vw;
+      margin: 0 auto;
+  
+      .new_search {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin: 0 auto;
+        width: 70%;
+        height: 70px;
+      }
+  
+      .search_result {
+        width: 100%;
+        
+        .my_tabs {
+          .el-tabs__header {
+            margin: 0;
+          }
+          div.el-tabs__content  {
+            padding: 47px 32px 32px;
+            background-color: rgb(251, 253, 255);
+          }
+        } 
+  
+        .playlist_result{
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        
+      }
+    }
+  }
