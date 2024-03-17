@@ -10,8 +10,9 @@
     margin-block-start: 0;
     padding-inline-start: 0;
     transition: height .5s ease-out;
+    transform-origin: bottom;
     grid-template-columns: 4vw 4vw 3vw 6vw 50vw 11vw 12vw 10vw;
-    grid-auto-rows: 30% 70%;
+    grid-auto-rows: 35% 65%;
     grid-column-gap: 10px;
     grid-row-gap: 0px;
     grid-template-areas:
@@ -25,10 +26,6 @@
     }
     .button{
         position: relative;
-        // top: $audioPlayerIconTop;
-        // width: $audioPlayerIconSize;
-        // height: 55%;
-        // margin-right: $audioPlayerIconSize;
         cursor: pointer;
     }
     .previous {
@@ -63,6 +60,19 @@
     .song_title{
         grid-area: song_title;
         display: flex;
+
+        .title{
+            white-space: nowrap;
+        }
+        .creator{
+            font-size: small;
+            vertical-align: bottom;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            margin: 3.5px 0 0 7px;
+        }
+
     }
     .time{
         grid-area: time;
@@ -97,6 +107,21 @@
     }
     .features{
         grid-area: features;
+        .playinglist_icon{
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: url('../../../assets/icons/playinglist.svg') no-repeat left;
+            cursor: pointer;
+        }
+        .playing_list{
+            position: absolute;
+            bottom: 8vh;
+            right: 40px;
+            @media screen and (max-height: 625px) {
+                bottom: 50px;
+              }
+        }
     }
     
     .volume{
@@ -157,5 +182,7 @@
 }
 .active {
     height: 100%;
-    transform-origin: bottom;
+}
+.showing_playinglist{
+    height: 100%;
 }

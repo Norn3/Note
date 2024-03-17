@@ -1,5 +1,5 @@
 <template>
-  <div class="audioPlayer">
+  <div id="audioPlayer" class="audioPlayer">
     <audio
       class="audio"
       id="audio"
@@ -12,19 +12,26 @@
       <source :src="songItem" type="audio/ogg" />
       Your browser does not support this audio format.
     </audio>
-    <div id="previousButton" class="button previous"></div>
+    <div
+      id="previousButton"
+      class="button previous"
+      @click="playPreviousSong"
+    ></div>
     <div
       id="playButton"
       class="button play pause"
       ref="playButton"
       @click="pressPlayButton"
     ></div>
-    <div id="nextButton" class="button next"></div>
+    <div id="nextButton" class="button next" @click="playNextSong"></div>
     <div id="coverImg" class="cover_img">
       <img :src="coverImg" alt="cover" />
     </div>
     <div id="songTitle" class="song_title">
-      {{ songTitle + ' - ' + creatorName }}
+      <span id="title" class="title">{{ songTitle }}</span>
+      <span id="creator" class="creator" v-if="creatorName">{{
+        ' - ' + creatorName
+      }}</span>
     </div>
     <div
       id="progressControl"
@@ -39,7 +46,14 @@
       </div>
     </div>
     <div id="time" class="time">{{ curTime + '/' + songDuration }}</div>
-    <div id="features" class="features"></div>
+    <div id="features" class="features">
+      <div
+        id="playinglistIcon"
+        class="playinglist_icon"
+        @click="togglePlaylist"
+      ></div>
+      <playingList id="playingList" class="playing_list"></playingList>
+    </div>
     <div id="volume" class="volume">
       <!-- 音量控制条 -->
       <div
@@ -81,6 +95,7 @@ import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
 import processSongDuration from '../../../util/processSongDuration';
 
 import SongListItem from '../../article/songList/songListItem/songListItem.vue';
+import playingList from '../../footer/playingList/playingList.vue';
 
 // ref引用的元素
 const playButton = ref<HTMLElement | null>(null);
@@ -101,9 +116,14 @@ let nextSongItem = ''; // getSong的时候先获取到这里，再替换到songI
 const songTitle = ref('');
 const creatorName = ref('');
 const coverImg = ref('');
-const songDuration = ref('0:00');
-const curTime = ref('0:00');
+const songDuration = ref('00:00');
+const curTime = ref('00:00');
 let getCurTime: number | null = null;
+
+const togglePlaylist = () => {
+  $('#playingList').toggleClass('show_playinglist');
+  $('#audioPlayer').toggleClass('showing_playinglist');
+};
 
 // 通过 $subscribe 订阅状态， subscribe()即可停止订阅
 // 当前正在播放的歌曲改变，重新获取歌曲并播放
@@ -205,16 +225,7 @@ const songLoaded = () => {
 
   // 根据播放时间判断是否初次加载完成
   if (audioRef.value && audioRef.value.currentTime == 0) {
-    const info = listStore.getSongInfo(listStore.current_song_index);
-    console.log(info);
-    coverImg.value = info.al.picUrl;
-    songTitle.value = info.name;
-    creatorName.value = '';
-    info.ar.forEach((item: any) => {
-      if (creatorName.value == '') creatorName.value += item.name;
-      else creatorName.value += '/' + item.name;
-    });
-    songDuration.value = processSongDuration(info.dt);
+    showSongInfo();
 
     // 获取下一首的url，即使不是初次加载，此时listStore.current_song_index也还没变，不会错误获取下下首歌曲
     listStore.getNextSong();
@@ -230,34 +241,50 @@ const playNextSong = () => {
   play(0);
 };
 
-let audio = document.getElementById('#audio');
-if (audio) {
-  audio.addEventListener('error', (event) => {
-    console.log('audio error');
-    console.log(event.target);
-  });
-}
-
-window.onerror = function (msg, url, lineNo, columnNo, error) {
-  console.log(msg, url, lineNo, columnNo, error);
+const playPreviousSong = async () => {
+  clearInterval(Number(getCurTime));
+  listStore.preCurIndex();
+  await getSong(listStore.getSongId(listStore.current_song_index));
+  songItem.value = nextSongItem;
+  play(0);
 };
 
-window.addEventListener('error', function (event) {
-  console.log(event);
-});
+const showSongInfo = () => {
+  const info = listStore.getSongInfo(listStore.current_song_index);
+  coverImg.value = info.al.picUrl;
+  songTitle.value = info.name;
+  creatorName.value = '';
+  info.ar.forEach((item: any) => {
+    if (creatorName.value == '') creatorName.value += item.name;
+    else creatorName.value += '/' + item.name;
+  });
+  songDuration.value = info.fee == '1' ? '00:30' : processSongDuration(info.dt);
+};
+
+// let audio = document.getElementById('#audio');
+// if (audio) {
+//   audio.addEventListener('error', (event) => {
+//     console.log('audio error');
+//     console.log(event.target);
+//   });
+// }
+
+// window.onerror = function (msg, url, lineNo, columnNo, error) {
+//   console.log(msg, url, lineNo, columnNo, error);
+// };
+
+// window.addEventListener('error', function (event) {
+//   console.log(event);
+// });
 
 // 挂载后执行
 onMounted(async () => {
   await getSong(listStore.getSongId(listStore.current_song_index));
   songItem.value = nextSongItem;
-  console.log(songItem.value);
+  listStore.getNextSong();
+  getSong(listStore.getSongId(listStore.next_song_index));
+  showSongInfo();
   addListener();
-  // const getCurTime = setInterval(() => {
-  //   if(audioRef.value && songItem.value) {
-  //     console.log(audioRef.value.currentTime);
-
-  //   }
-  // }, 1000)
 });
 // 卸载前执行
 onBeforeUnmount(() => {

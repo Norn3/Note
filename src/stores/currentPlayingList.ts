@@ -8,11 +8,11 @@ import processSongDuration from '../util/processSongDuration';
 
 export const useCurrentPlayingListStore = defineStore('currentPlayingList', () => {
     const current_playlist_id = ref('');       // 当前播放列表所属歌单id，如果并非已有歌单、专辑，则置空
-    const playing_list = ref<any[]>([]);   // 当前播放列表所有歌曲信息
+    const playing_list = ref<any[]>([]);       // 当前播放列表所有歌曲信息
     const current_song_index = ref(0);         // 当前播放歌曲在playing_list中的下标
     const next_song_index = ref(0);            // 即将播放的下一首歌曲的id，audioPlayer通过监听它实现预加载
-    const play_mode = ref('sequential');      // 播放模式，分为singleloop，sequential和shuffle
-    const cur_song_reset = ref(false);       // 是否由于点击播放按钮，使得当前正在播放的歌曲发生切换
+    const play_mode = ref('sequential');       // 播放模式，分为singleloop，sequential和shuffle
+    const cur_song_reset = ref(false);         // 是否由于点击播放按钮，使得当前正在播放的歌曲发生切换
 
     // 创建实例用于一次更改多个属性而只触发一次subscribe
     const store = useCurrentPlayingListStore();
@@ -168,6 +168,17 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
       localStorage.setItem('current_song_index', String(current_song_index.value));
     }
 
+    // 当前下标切换到下一首
+    const preCurIndex = () => {
+      if(current_song_index.value == 0){
+          current_song_index.value = playing_list.value.length - 1;
+          localStorage.setItem('current_song_index', String(current_song_index.value));
+      }
+      else{
+        current_song_index.value = current_song_index.value - 1;
+      }
+    }
+
     // 获取下一首歌（预加载）
     const getNextSong = () => {
       // 当播放列表存在时，获取下一首歌，否则一直保持原id
@@ -236,5 +247,5 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
     }
 
 
-    return {current_playlist_id, playing_list, current_song_index, next_song_index, play_mode, cur_song_reset, getSongId, initializeStore, changeList, getNextSong, nextCurIndex, resetCurSong, playSong, getSongInfo}
+    return {current_playlist_id, playing_list, current_song_index, next_song_index, play_mode, cur_song_reset, getSongId, initializeStore, changeList, getNextSong, preCurIndex, nextCurIndex, resetCurSong, playSong, getSongInfo, clearList}
 })
