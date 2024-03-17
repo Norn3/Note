@@ -20,6 +20,8 @@ import './recommendPlayList.scss';
 
 import PlayList from '../../PlayList/PlayList.vue';
 
+import createLiTag from '../../../../util/createLiTag';
+
 const props = defineProps({
   type: String,
 });
@@ -51,10 +53,7 @@ const createItem = async () => {
       // 插入元素
       let $ul = $(`#${props.type}PlaylistList`);
       playlist.forEach((element: any) => {
-        const $li = $('<li>');
-
-        const li = $li[0];
-        $ul.append(li);
+        const li = createLiTag($ul);
         render(
           h(PlayList, {
             type: 'playlist',

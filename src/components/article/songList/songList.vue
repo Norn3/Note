@@ -28,6 +28,7 @@ import songListItem from './songListItem/songListItem.vue';
 
 import { address } from '../../../util/getSongListAddress';
 import processSingerArray from '../../../util/processSingerArray';
+import createLiTag from '../../../util/createLiTag';
 
 const props = defineProps({
   type: {
@@ -57,10 +58,7 @@ const getSongs = async () => {
     .then((response) => {
       const $ul = $('#songList').find('#songs');
       response.songs.forEach((song: any) => {
-        const $li = $('<li>');
-        $li.addClass('song_item');
-        const li = $li[0];
-        $ul.append(li);
+        const li = createLiTag($ul, 'song_item');
         // 此处还可以优化减少判断
         let album = '';
         let albumId = 0;
