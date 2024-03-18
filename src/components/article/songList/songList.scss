@@ -6,7 +6,7 @@
     margin: 0 20px;
     .title{
       display: flex;
-      justify-content: left;
+      justify-content: space-between;
       align-items: center;
       height: 40px;
       width: 90%;
@@ -20,7 +20,7 @@
         height: 40px;
         line-height: 40px;
         align-items: center;
-        white-space: nowrap;
+        white-space: nowrap;        
         &.serial_num, &.click_to_play{
           width: 8.5%;
           
@@ -57,6 +57,7 @@
           }
         }
       }
+
     }
     .songs{
       li.song_item:nth-child(2n){

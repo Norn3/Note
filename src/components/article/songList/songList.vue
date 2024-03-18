@@ -7,7 +7,9 @@
       <li id="songName" class="name">歌曲</li>
       <li id="duration" class="duration">时长</li>
       <li id="singer" class="singer">歌手</li>
-      <li id="album" class="album" v-if="type != 'album'">专辑</li>
+      <li id="album" class="album" v-if="String(props.type) != 'album'">
+        专辑
+      </li>
     </ul>
     <ul id="songs" class="songs"></ul>
     <el-text v-if="already_getting" v-loading="already_getting" class="loading"
@@ -142,9 +144,6 @@ onMounted(async () => {
   if (props.type != 'song') {
     firstGetSongs();
   }
-  if (props.type == 'album') {
-    $('#songlistTitle').addClass('album_info');
-  }
   window.addEventListener('scroll', throttleReturn);
 });
 
@@ -156,11 +155,6 @@ watch(
     window.removeEventListener('scroll', throttleReturn);
     window.addEventListener('scroll', throttleReturn);
     gotAllSongs.value = false;
-    if (props.type == 'album') {
-      $('#songlistTitle').addClass('album_info');
-    } else {
-      $('#songlistTitle').removeClass('album_info');
-    }
     if (props.type != 'song') {
       firstGetSongs();
     }
