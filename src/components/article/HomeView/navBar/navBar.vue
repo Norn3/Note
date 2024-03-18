@@ -91,6 +91,8 @@ const jumpPage = (address: string, id: string) => {
   }
 };
 
+// TODO：后续要把加载时跳转的功能移到app.vue或其他地方
+
 // 加载时，选中第一项，用onMounted才能给选中项添加样式
 onMounted(() => {
   // 上次最后到哪

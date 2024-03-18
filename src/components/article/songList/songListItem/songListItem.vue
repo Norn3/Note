@@ -58,6 +58,7 @@ const props = defineProps({
   albumId: Number,
 });
 
+// TODO: 后续应该实现点击跳转到对应歌手，解决方案，hover时出现一个气泡展示所有歌手，然后点击单个跳转到artistInfoView
 const singer_list = () => {
   let str = '';
   if (props.singer) {
