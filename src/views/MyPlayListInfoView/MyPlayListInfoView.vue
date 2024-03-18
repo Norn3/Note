@@ -22,7 +22,6 @@ section {
   min-height: 100vh;
   height: 100%;
   width: 100%;
-  margin: 0 auto;
 }
 </style>
 

@@ -100,9 +100,4 @@ let uid = 571024254;
 onBeforeMount(() => {
   getSideBar();
 });
-
-// onMounted(async () => {
-//   // 等待页面加载结束，再调用createItem创建列表项
-//   await nextTick();
-// });
 </script>
