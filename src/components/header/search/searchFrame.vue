@@ -179,26 +179,36 @@ const jumpResult = () => {
 // 点击搜索联想结果，打开页面
 const handleSelect = (item: any) => {
   console.log(item);
-  let type = '';
-  switch (item.category) {
-    case '单曲':
-      type = 'song';
-      break;
-    case '专辑':
-      type = 'album';
-      break;
-    case '歌单':
-      type = 'playlist';
-      break;
+
+  if (item.category != '歌手') {
+    let type = '';
+    switch (item.category) {
+      case '单曲':
+        type = 'song';
+        break;
+      case '专辑':
+        type = 'album';
+        break;
+      case '歌单':
+        type = 'playlist';
+        break;
+    }
+    sessionStorage.setItem('lastPathName', 'Info');
+    sessionStorage.setItem(
+      'lastPathQuery',
+      JSON.stringify({ type: type, id: item.id })
+    );
+    router.push({
+      name: 'Info',
+      query: { type: type, id: item.id },
+    });
+  } else {
+    sessionStorage.setItem('lastPathName', 'artistInfo');
+    sessionStorage.setItem('lastPathQuery', JSON.stringify({ id: item.id }));
+    router.push({
+      name: 'artistInfo',
+      query: { id: item.id },
+    });
   }
-  sessionStorage.setItem('lastPathName', 'Info');
-  sessionStorage.setItem(
-    'lastPathQuery',
-    JSON.stringify({ type: type, id: item.id })
-  );
-  router.push({
-    name: 'Info',
-    query: { type: type, id: item.id },
-  });
 };
 </script>

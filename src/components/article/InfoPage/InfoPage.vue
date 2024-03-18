@@ -16,10 +16,11 @@
         <p v-else class="creator_label">歌手：</p>
         <ul class="creator_name">
           <li
-            v-for="(name, index) in creatorName"
+            v-for="(item, index) in creatorName"
             :key="'InfoPageCreatorName' + index"
+            @click="jumpArtistInfo(item.id)"
           >
-            {{ name }}
+            {{ item.name }}
           </li>
         </ul>
       </div>
@@ -141,7 +142,7 @@ const loading = ref(true);
 // playlist
 let name = ref(''),
   coverImgUrl = ref(''),
-  creatorName: Array<string> = reactive([]),
+  creatorName: Array<any> = reactive([]),
   creatorAvatar = ref(''),
   createTime = ref(''),
   playCountText = ref(''),
@@ -202,7 +203,10 @@ const getInfo = async () => {
         coverImgUrl.value = playlist.coverImgUrl;
         name.value = playlist.name;
         creatorName = reactive([]);
-        creatorName.push(playlist.creator.nickname);
+        creatorName.push({
+          id: playlist.creator.userId,
+          name: playlist.creator.nickname,
+        });
         creatorAvatar.value = playlist.creator.avatarUrl;
         createTime.value = moment(playlist.createTime).format(
           'YYYY-MM-DD HH:mm:ss'
@@ -227,7 +231,7 @@ const getInfo = async () => {
         name.value = song.name;
         creatorName = reactive([]);
         song.ar.forEach((singer: any) => {
-          creatorName.push(singer.name);
+          creatorName.push({ id: singer.id, name: singer.name });
         });
         albumOfSong.value = song.al.name;
         getLyrics();
@@ -239,8 +243,8 @@ const getInfo = async () => {
         coverImgUrl.value = album.picUrl;
         name.value = album.name;
         creatorName = reactive([]);
-        album.artists.forEach((creator: any) => {
-          creatorName.push(creator.name);
+        album.artists.forEach((singer: any) => {
+          creatorName.push({ id: singer.id, name: singer.name });
         });
         // creatorAvatar.value = album.creator.avatarUrl;
         createTime.value = moment(album.publishTime).format('YYYY-MM-DD');
@@ -318,6 +322,14 @@ const playList = async () => {
 // 点击歌单标签，跳转到歌单分类页面
 const jumpCategory = (tag: string) => {
   router.push({ name: 'playlist', query: { category: tag } });
+};
+
+const jumpArtistInfo = (id: number) => {
+  console.log(id);
+
+  if (props.type == 'song' || props.type == 'album') {
+    router.push({ name: 'artistInfo', query: { id: id } });
+  }
 };
 
 const storePath = async () => {

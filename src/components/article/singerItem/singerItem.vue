@@ -30,16 +30,12 @@ const props = defineProps({
 });
 
 const jumpPage = () => {
-  sessionStorage.setItem('lastPathName', 'Info');
-  sessionStorage.setItem(
-    'lastPathQuery',
-    JSON.stringify({ type: 'album', id: props.id })
-  );
-  console.log(props.id);
+  sessionStorage.setItem('lastPathName', 'artistInfo');
+  sessionStorage.setItem('lastPathQuery', JSON.stringify({ id: props.id }));
 
   router.push({
-    name: 'Info',
-    query: { type: 'album', id: props.id },
+    name: 'artistInfo',
+    query: { id: props.id },
   });
 };
 </script>
