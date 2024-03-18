@@ -35,6 +35,12 @@ const routes: Array<RouteRecordRaw> = [
 				name: 'Info',
 				component: () => import('../views/InfoView/InfoView.vue'),     
 			},
+			{
+				path: 'artistInfo',
+				name: 'artistInfo',
+				component: () => import('../views/artistInfoView/artistInfoView.vue'),
+				
+			},
 		]
 	},
 	{
@@ -78,7 +84,7 @@ const routes: Array<RouteRecordRaw> = [
 		name: 'search',
 		component: () => import('../views/SearchResultPage/SearchResultPage.vue'),
 		
-	}
+	},
 ]
 
 // 创建路由
