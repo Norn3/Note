@@ -76,14 +76,16 @@
           text-overflow: ellipsis;
           overflow: hidden;
 
-          &:hover{
-            cursor: pointer;
-            color: $brandColor;
-          }
+          
 
           @media screen and (max-width: 860px) {
             display: none;
           }
+        }
+
+        &.album:hover{
+          cursor: pointer;
+          color: $brandColor;
         }
   
   
