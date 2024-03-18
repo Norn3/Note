@@ -135,7 +135,8 @@ const onScroll = async () => {
   }
 };
 
-const throttleScroll = throttle(onScroll, 500);
+// 用变量储存throttle返回的函数，确保绑定和移除监听的对象是同一个
+const throttleReturn = throttle(onScroll, 500);
 
 onMounted(async () => {
   if (props.type != 'song') {
@@ -144,7 +145,7 @@ onMounted(async () => {
   if (props.type == 'album') {
     $('#songlistTitle').addClass('album_info');
   }
-  window.addEventListener('scroll', throttleScroll);
+  window.addEventListener('scroll', throttleReturn);
 });
 
 // 当页面的路由改变，马上重新获取信息
@@ -152,8 +153,8 @@ watch(
   () => props.target_id,
   (newId, oldId) => {
     // 保证页面内只有一个监听器
-    window.removeEventListener('scroll', throttleScroll);
-    window.addEventListener('scroll', throttleScroll);
+    window.removeEventListener('scroll', throttleReturn);
+    window.addEventListener('scroll', throttleReturn);
     gotAllSongs.value = false;
     if (props.type == 'album') {
       $('#songlistTitle').addClass('album_info');
@@ -171,7 +172,7 @@ watch(
   () => gotAllSongs.value,
   () => {
     if (gotAllSongs.value) {
-      window.removeEventListener('scroll', throttleScroll);
+      window.removeEventListener('scroll', throttleReturn);
     }
   }
 );
