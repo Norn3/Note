@@ -1,13 +1,13 @@
 <!-- eslint-disable vue/no-useless-template-attributes -->
 <template>
   <div id="songList" class="song_list">
-    <ul id="title" class="title">
+    <ul id="songlistTitle" class="title">
       <li id="num" class="serial_num"></li>
       <li id="playSong" class="click_to_play"></li>
       <li id="songName" class="name">歌曲</li>
       <li id="duration" class="duration">时长</li>
       <li id="singer" class="singer">歌手</li>
-      <li id="album" class="album">专辑</li>
+      <li id="album" class="album" v-if="type != 'album'">专辑</li>
     </ul>
     <ul id="songs" class="songs"></ul>
     <el-text v-if="already_getting" v-loading="already_getting" class="loading"
@@ -39,6 +39,8 @@ const props = defineProps({
 });
 
 let current_song_id = 0;
+const limit = 50;
+let gotAllSongs = ref(false);
 const already_getting = ref(false);
 
 const firstGetSongs = async () => {
@@ -53,9 +55,10 @@ const firstGetSongs = async () => {
 // 获取歌单中的歌曲
 const getSongs = async () => {
   await get<any>(
-    `${address(props.type, props.target_id as string, 50, current_song_id)}`
+    `${address(props.type, props.target_id as string, limit, current_song_id)}`
   )
     .then((response) => {
+      if (response.songs.length < limit) gotAllSongs.value = true;
       const $ul = $('#songList').find('#songs');
       response.songs.forEach((song: any) => {
         const li = createLiTag($ul, 'song_item');
@@ -131,27 +134,45 @@ const onScroll = async () => {
     }
   }
 };
-// 触底函数
-const onReachBottom = () => {
-  window.addEventListener('scroll', throttle(onScroll, 500));
-};
+
+const throttleScroll = throttle(onScroll, 500);
 
 onMounted(async () => {
-  // 等待页面加载结束，再调用firstGetSongs创建列表项
-  await nextTick();
   if (props.type != 'song') {
     firstGetSongs();
   }
-  onReachBottom();
+  if (props.type == 'album') {
+    $('#songlistTitle').addClass('album_info');
+  }
+  window.addEventListener('scroll', throttleScroll);
 });
 
 // 当页面的路由改变，马上重新获取信息
 watch(
   () => props.target_id,
   (newId, oldId) => {
-    console.log(newId, oldId);
-    window.removeEventListener('scroll', throttle(onScroll, 500));
-    firstGetSongs();
+    // 保证页面内只有一个监听器
+    window.removeEventListener('scroll', throttleScroll);
+    window.addEventListener('scroll', throttleScroll);
+    gotAllSongs.value = false;
+    if (props.type == 'album') {
+      $('#songlistTitle').addClass('album_info');
+    } else {
+      $('#songlistTitle').removeClass('album_info');
+    }
+    if (props.type != 'song') {
+      firstGetSongs();
+    }
+  }
+);
+
+// 当已获取所有的歌曲，移除监听，不再滚动加载更多
+watch(
+  () => gotAllSongs.value,
+  () => {
+    if (gotAllSongs.value) {
+      window.removeEventListener('scroll', throttleScroll);
+    }
   }
 );
 </script>

@@ -109,6 +109,7 @@ import processPlayCount from '../../../util/processPlayCount';
 import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
 
 const router = useRouter();
+const route = useRoute();
 
 const props = defineProps({
   target_id: String,
@@ -319,21 +320,27 @@ const jumpCategory = (tag: string) => {
   router.push({ name: 'playlist', query: { category: tag } });
 };
 
-onMounted(async () => {
-  await getInfo();
+const storePath = async () => {
+  sessionStorage.setItem('lastPathName', String(route.name));
+  sessionStorage.setItem('lastPathQuery', JSON.stringify(route.query));
+};
 
+const renderInfo = async () => {
+  storePath();
+  await getInfo();
   // 判断简介长度
   handleFoldButton();
+};
+
+onMounted(() => {
+  renderInfo();
 });
 
 // 当页面的路由改变，马上重新获取信息
 watch(
   () => props.target_id,
   async (newId, oldId) => {
-    console.log(newId, oldId);
-    await getInfo();
-    // 判断简介长度
-    handleFoldButton();
+    renderInfo();
   }
 );
 </script>

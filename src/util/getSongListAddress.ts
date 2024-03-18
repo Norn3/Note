@@ -5,7 +5,7 @@ export const address = (type: string, target_id: string, limit?: number, offset?
     switch (type) {
       case 'playlist':
         {
-          if(limit && offset) {
+          if(limit != undefined && offset != undefined) {
             addr = `/playlist/track/all?id=${target_id}&limit=${limit}&offset=${offset}`;
           }
           else {
@@ -16,7 +16,7 @@ export const address = (type: string, target_id: string, limit?: number, offset?
         
       case 'album':
         {
-          if(limit && offset) {
+          if(limit != undefined && offset != undefined) {
             addr = `/album?id=${target_id}&limit=${limit}&offset=${offset}`;
           }
           else {

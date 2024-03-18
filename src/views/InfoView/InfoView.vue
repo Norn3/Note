@@ -37,16 +37,10 @@ section {
 // 展示歌曲、歌单等资源的信息，无侧边栏
 
 // import { useRoute } from 'vue-router'
-import $ from 'jquery';
-import { nextTick, onMounted, reactive, ref, h, render, onUpdated } from 'vue';
 import { useRoute } from 'vue-router';
 
 import InfoPage from '../../components/article/InfoPage/InfoPage.vue';
 import songList from '../../components/article/songList/songList.vue';
 // 获取路由参数pid，用于获取歌单详情渲染页面
 const route = useRoute();
-onMounted(async () => {
-  // 等待页面加载结束，再调用createItem创建列表项
-  await nextTick();
-});
 </script>
