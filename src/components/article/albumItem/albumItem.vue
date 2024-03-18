@@ -25,7 +25,7 @@
           v-for="(item, index) in artists"
           :key="index"
         >
-          {{ item + (index == 0 ? '' : '/') }}
+          {{ (index == 0 ? '' : '/') + item }}
         </li>
       </ul>
     </div>
