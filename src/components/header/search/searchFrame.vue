@@ -17,7 +17,9 @@
             item.category + '\u3000'
           }}</span>
           <span v-else class="category">{{ '\u3000\u3000\u3000' }}</span>
-          <span class="name">{{ item.name }}</span>
+          <span class="name">{{
+            item.name + (item.singer ? ' - ' + item.singer : '')
+          }}</span>
         </div>
       </template>
     </el-autocomplete>
@@ -31,6 +33,8 @@ import { get } from '../../../axios/insatance';
 import { useRouter, useRoute } from 'vue-router';
 
 import './searchFrame.scss';
+
+import processSingerArray from '../../../util/processSingerArray';
 
 onMounted(() => {
   const search = $('.search');
@@ -52,12 +56,15 @@ let keyword = ref('');
 const router = useRouter();
 
 interface SourceItemObj {
+  id: number;
   category: string;
   name: string;
+  singer?: string;
   index: number;
 }
 const mySource = ref<SourceItemObj[]>([
   {
+    id: 0,
     category: 'none',
     name: 'none',
     index: 0,
@@ -85,10 +92,12 @@ const searchFn = async (queryString: string) => {
       let arr: Array<SourceItemObj> = [];
       let id = 0;
       if (result.songs) {
-        result.songs.forEach((element: SourceItemObj) => {
+        result.songs.forEach((element: any) => {
           let item: SourceItemObj = {
+            id: element.id,
             category: '单曲',
             name: element.name,
+            singer: singer_list(processSingerArray(element.artists)),
             index: id++,
           };
           arr.push(item);
@@ -97,8 +106,9 @@ const searchFn = async (queryString: string) => {
 
       if (result.artists) {
         id = 0;
-        result.artists.forEach((element: SourceItemObj) => {
+        result.artists.forEach((element: any) => {
           let item: SourceItemObj = {
+            id: element.id,
             category: '歌手',
             name: element.name,
             index: id++,
@@ -109,10 +119,12 @@ const searchFn = async (queryString: string) => {
 
       if (result.albums) {
         id = 0;
-        result.albums.forEach((element: SourceItemObj) => {
+        result.albums.forEach((element: any) => {
           let item: SourceItemObj = {
+            id: element.id,
             category: '专辑',
             name: element.name,
+            singer: element.artist.name,
             index: id++,
           };
           arr.push(item);
@@ -121,8 +133,9 @@ const searchFn = async (queryString: string) => {
 
       if (result.playlists) {
         id = 0;
-        result.playlists.forEach((element: SourceItemObj) => {
+        result.playlists.forEach((element: any) => {
           let item: SourceItemObj = {
+            id: element.id,
             category: '歌单',
             name: element.name,
             index: id++,
@@ -140,7 +153,23 @@ const searchFn = async (queryString: string) => {
   return mySource.value;
 };
 
+const singer_list = (singers: Array<string>) => {
+  let str = '';
+  if (singers) {
+    singers.forEach((element: string) => {
+      if (str != '') {
+        str = str + '/' + element;
+      } else {
+        str += element;
+      }
+    });
+  }
+  return str;
+};
+
 const jumpResult = () => {
+  console.log('jumpresult');
+
   router.push({
     name: 'search',
     query: { keyword: keyword.value },
@@ -148,7 +177,28 @@ const jumpResult = () => {
 };
 
 // 点击搜索联想结果，打开页面
-const handleSelect = (item: string) => {
+const handleSelect = (item: any) => {
   console.log(item);
+  let type = '';
+  switch (item.category) {
+    case '单曲':
+      type = 'song';
+      break;
+    case '专辑':
+      type = 'album';
+      break;
+    case '歌单':
+      type = 'playlist';
+      break;
+  }
+  sessionStorage.setItem('lastPathName', 'Info');
+  sessionStorage.setItem(
+    'lastPathQuery',
+    JSON.stringify({ type: type, id: item.id })
+  );
+  router.push({
+    name: 'Info',
+    query: { type: type, id: item.id },
+  });
 };
 </script>
