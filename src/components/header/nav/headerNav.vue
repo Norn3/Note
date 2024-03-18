@@ -60,6 +60,7 @@ const jumpPage = (address: string, id: string) => {
   } else {
     router.push({ name: address });
     sessionStorage.setItem('lastPathName', address);
+    sessionStorage.setItem('lastPathQuery', '');
   }
 };
 
@@ -70,17 +71,6 @@ onMounted(() => {
   // 如果sessionStorage中存入的路径在navItem项中找不到，那么选中“发现音乐”项
   if (check_item == -1) $(`#header_li0`)[0].classList.add('check');
   else $(`#header_li${check_item}`)[0].classList.add('check');
-
-  // 如果是路径是“我的音乐”或搜索结果，则直接带参跳转
-  if (path_name == 'myPlaylistInfo' || path_name == 'search') {
-    const path_query = sessionStorage.getItem('lastPathQuery') as string;
-    console.log(path_name, path_query);
-    router.push({ name: path_name, query: JSON.parse(path_query) });
-  }
-  // 否则，不带参跳转即可
-  else {
-    router.push({ name: path_name });
-  }
   getPid(uid);
 });
 </script>

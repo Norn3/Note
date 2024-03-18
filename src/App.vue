@@ -99,6 +99,10 @@ import audioPlayer from './components/footer/audioPlayer/audioPlayer.vue';
 import headerNav from './components/header/nav/headerNav.vue';
 
 import { useCurrentPlayingListStore } from './stores/currentPlayingList';
+import { useRouter, useRoute } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
 
 const listStore = useCurrentPlayingListStore();
 
@@ -115,4 +119,30 @@ $(document).on('mouseout', 'footer', () => {
   const audioPlayer = $('#audioPlayer')[0];
   audioPlayer.classList.remove('active');
 });
+
+// 如果是路径是“我的音乐”/搜索结果/资源详情，则直接带参跳转
+let path_name = sessionStorage.getItem('lastPathName') as string;
+// 如果没有找到对应路径，比如初次打开，则打开推荐页
+if (route.name == 'home' && path_name == null) {
+  path_name = 'recommend';
+}
+
+// 判断是否带有参数
+const path_query = sessionStorage.getItem('lastPathQuery') as string;
+// 如果带参就直接跳转
+if (path_query) {
+  router.push({ name: path_name, query: JSON.parse(path_query) });
+}
+// 如果不带参且是歌单页则默认全部歌单
+else if (path_name == 'playlist') {
+  router.push({ name: path_name, query: { category: '全部' } });
+}
+// 如果不带参且是排行榜页则默认飙升榜
+else if (path_name == 'rankInfo') {
+  router.push({ name: path_name, query: { id: 19723756 } });
+}
+// 否则，不带参跳转即可
+else {
+  router.push({ name: path_name });
+}
 </script>

@@ -88,10 +88,9 @@ const jumpPage = (address: string, id: string) => {
     });
   } else {
     router.push({ name: address });
+    sessionStorage.setItem('lastPathQuery', '');
   }
 };
-
-// TODO：后续要把加载时跳转的功能移到app.vue或其他地方
 
 // 加载时，选中第一项，用onMounted才能给选中项添加样式
 onMounted(() => {
@@ -104,35 +103,9 @@ onMounted(() => {
   // 如果没有找到对应路径，比如初次打开，则打开推荐页
   if (route.name == 'home' && path_name == null) {
     check_item = 0;
-    path_name = 'recommend';
   }
+  // 给对应项添加选中类名
   $(`#li${check_item}`).addClass('check');
-
-  // 若有参数，则要连参数一起传递
-  const path_query = sessionStorage.getItem('lastPathQuery') as string;
-
-  // 如果是recommend，不需要考虑参数
-  if (check_item == 0) {
-    router.push({ name: path_name });
-  }
-  // 如果不是recommend，则区分有参数和无参数的情况
-  else if (path_query) {
-    // 如果参数不为空，则直接跳转至sessionStroage中存好的路径
-    router.push({ name: path_name, query: JSON.parse(path_query) });
-    console.log(path_name, path_query);
-  } else {
-    // 如果参数为空：初次打开歌单页，则默认选择‘全部’；初次打开排行榜页，则选择ranklist
-    if (check_item == 1) {
-      router.push({ name: path_name, query: { category: '全部' } });
-    }
-    if (check_item == 2) {
-      router.push({ name: path_name, query: { id: 19723756 } });
-    }
-    // 如果既不是歌单页也不是排行榜页，则跳转至对应路径
-    else {
-      router.push({ name: path_name });
-    }
-  }
 });
 </script>
 
