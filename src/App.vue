@@ -123,7 +123,7 @@ $(document).on('mouseout', 'footer', () => {
 // 如果是路径是“我的音乐”/搜索结果/资源详情，则直接带参跳转
 let path_name = sessionStorage.getItem('lastPathName') as string;
 // 如果没有找到对应路径，比如初次打开，则打开推荐页
-if (route.name == 'home' && path_name == null) {
+if (route.name == 'home' || path_name == null) {
   path_name = 'recommend';
 }
 

@@ -101,7 +101,7 @@ onMounted(() => {
   let check_item = navItem.findIndex((item) => item.address == path_name);
 
   // 如果没有找到对应路径，比如初次打开，则打开推荐页
-  if (route.name == 'home' && path_name == null) {
+  if (route.name == 'home' || path_name == null) {
     check_item = 0;
   }
   // 给对应项添加选中类名
