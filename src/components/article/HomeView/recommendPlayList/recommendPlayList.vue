@@ -4,9 +4,7 @@
       <h2 class="title">{{ category }}</h2>
       <ul class="category_list"></ul>
     </div>
-    <el-text v-if="loading" v-loading="loading" class="loading"
-      >Loading...</el-text
-    >
+    <loading-state :loading="loading"></loading-state>
     <ul :id="props.type + 'PlaylistList'" class="playlist_list"></ul>
   </div>
 </template>
@@ -19,7 +17,7 @@ import { get } from '../../../../axios/insatance';
 import './recommendPlayList.scss';
 
 import PlayList from '../../PlayList/PlayList.vue';
-
+import loadingState from '../../loadingState/loadingState.vue';
 import createLiTag from '../../../../util/createLiTag';
 
 const props = defineProps({
