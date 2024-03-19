@@ -42,7 +42,10 @@
         <p>所属专辑：</p>
         {{ albumOfSong }}
       </div>
-      <div v-else-if="props.type == 'album'" class="label_or_album text">
+      <div
+        v-else-if="props.type == 'album' && company != ''"
+        class="label_or_album text"
+      >
         <p>发行公司：</p>
         {{ company }}
       </div>
@@ -65,7 +68,7 @@
       </div>
 
       <div id="description" class="description">
-        <strong v-if="description != null" class="text description_title"
+        <strong v-if="description != ''" class="text description_title"
           >介绍：</strong
         >
         <div>

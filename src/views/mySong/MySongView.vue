@@ -44,6 +44,8 @@ section {
   height: 100%;
   width: 60vw;
   left: 15vw;
+  margin: 0;
+
   .playListTitle {
     position: relative;
     height: 4em;

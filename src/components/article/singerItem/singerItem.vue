@@ -1,11 +1,6 @@
 <!-- eslint-disable vue/no-useless-template-attributes -->
 <template>
-  <div
-    id="singerContainer"
-    class="sinegr_container"
-    :info="id"
-    @click="jumpPage()"
-  >
+  <div id="singerContainer" class="sinegr_container" @click="jumpPage()">
     <div
       id="image"
       class="image"
