@@ -22,7 +22,9 @@
       <li id="duration" class="duration">
         {{ processSongDuration(durationTime as number) }}
       </li>
-      <li id="singer" class="singer">{{ singer_list() }}</li>
+      <li id="singer" class="singer" v-if="String(props.type) != 'artist'">
+        {{ singer_list() }}
+      </li>
       <li
         id="album"
         class="album"

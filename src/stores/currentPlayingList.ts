@@ -7,6 +7,7 @@ import processSongDuration from '../util/processSongDuration';
 
 
 export const useCurrentPlayingListStore = defineStore('currentPlayingList', () => {
+    // TODO：current_playlist_id还需要优化，因为歌单、专辑、歌手热曲这三种不同的歌曲列表来源，id有可能一致。或者可以直接取消该属性，对比时直接对比整个播放列表
     const current_playlist_id = ref('');       // 当前播放列表所属歌单id，如果并非已有歌单、专辑，则置空
     const playing_list = ref<any[]>([]);       // 当前播放列表所有歌曲信息
     const current_song_index = ref(0);         // 当前播放歌曲在playing_list中的下标
@@ -44,16 +45,17 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
     }
 
     // 替换整个播放列表
-    const changeList = async (type:string, newPlaylistId: string, newList?: Array<any>) => {
-      if(newPlaylistId != current_playlist_id.value){  // 防止重复改变
+    const changeList = async (type: string, newPlayinglistId: string, newList?: Array<any>) => {
+      if(newPlayinglistId != current_playlist_id.value){  // 防止重复改变
         let templist = [];
         if(newList) {
           templist = newList;
         }
         else {
-          await get<any>(`${address(type, newPlaylistId)}`)
+          await get<any>(`${address(type, newPlayinglistId)}`)
           .then((response) => {
-            templist = response.songs;
+            if(type == 'artist') templist = response.hotSongs;
+            else templist = response.songs;
           })
           .catch((error) => {
             // 处理请求错误
@@ -61,9 +63,9 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
             console.log(error);
           });
         }
-        store.$patch({playing_list: templist, current_playlist_id: newPlaylistId, current_song_index: 0})
+        store.$patch({playing_list: templist, current_playlist_id: newPlayinglistId, current_song_index: 0})
         localStorage.setItem('playing_list',JSON.stringify(templist));
-        localStorage.setItem('current_playlist_id',JSON.stringify(newPlaylistId));
+        localStorage.setItem('current_playlist_id',JSON.stringify(newPlayinglistId));
         localStorage.setItem('current_song_index', '0');
       }
       else {

@@ -24,6 +24,11 @@ export const address = (type: string, target_id: string, limit?: number, offset?
           }
           break;
         }
+      case 'artist':
+        {
+          addr = `/artists?id=${target_id}`;
+          break;
+        }
     }
     return addr;
 };

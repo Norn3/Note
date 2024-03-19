@@ -6,7 +6,9 @@
       <li id="playSong" class="click_to_play"></li>
       <li id="songName" class="name">歌曲</li>
       <li id="duration" class="duration">时长</li>
-      <li id="singer" class="singer">歌手</li>
+      <li id="singer" class="singer" v-if="String(props.type) != 'artist'">
+        歌手
+      </li>
       <li id="album" class="album" v-if="String(props.type) != 'album'">
         专辑
       </li>
@@ -60,9 +62,16 @@ const getSongs = async () => {
     `${address(props.type, props.target_id as string, limit, current_song_id)}`
   )
     .then((response) => {
-      if (response.songs.length < limit) gotAllSongs.value = true;
+      let songlist = [];
+      if (props.type == 'artist') {
+        songlist = response.hotSongs;
+        gotAllSongs.value = true;
+      } else {
+        songlist = response.songs;
+        if (songlist.length < limit) gotAllSongs.value = true;
+      }
       const $ul = $('#songList').find('#songs');
-      response.songs.forEach((song: any) => {
+      songlist.forEach((song: any) => {
         const li = createLiTag($ul, 'song_item');
         // 此处还可以优化减少判断
         let album = '';
