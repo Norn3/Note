@@ -241,6 +241,8 @@ onMounted(() => {
   getSimilarArtist();
   $('.el-pagination__goto')[0].innerText = '跳转至第';
   $('.el-pagination__classifier')[0].innerText = '页';
+  sessionStorage.setItem('lastPathName', String(route.name));
+  sessionStorage.setItem('lastPathQuery', JSON.stringify(route.query));
 });
 
 const jumpSingerPage = (id: string) => {
@@ -262,6 +264,7 @@ watch(
     descriptionLoading.value = true;
     getInfo();
     getSimilarArtist();
+    sessionStorage.setItem('lastPathQuery', JSON.stringify(route.query));
   }
 );
 </script>
