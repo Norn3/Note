@@ -8,7 +8,7 @@
       <div id="searchResult" class="search_result">
         <el-tabs
           v-model="activeName"
-          class="my_tabs"
+          class="search_result_tabs"
           @tab-change="handleActiveNameChange"
         >
           <el-tab-pane label="单曲" name="song">
