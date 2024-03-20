@@ -9,15 +9,36 @@
     z-index: 100;
 
     .avatar{
-        height: 8vh;
-        min-height: 40px;
+        position: relative;
+        top: 1vh;
         width: 40px;
+        height: 40px;
+        line-height: 40px;
         margin: auto;
         border-radius: 50%;
-        background: url(../../../assets/icons/avatar.svg) no-repeat center;
+        color: white;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        cursor: pointer;
+        
+
+        &:hover{
+            text-decoration: underline;
+        }
+
+        @media screen and (max-height: 580px) {
+            top: 0;
+        }
+
+        &.default_avatar{
+            background: url(../../../assets/icons/avatar.svg);  
+        }
     }
 
     .accountMenu{
+        position: relative;
+        top: 2vh;
         display: none;
         border-radius: 10px;
         background-color: rgb(253, 255, 241);
