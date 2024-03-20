@@ -5,6 +5,7 @@ import type { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse, AxiosReq
 const instance: AxiosInstance = axios.create({
     baseURL: 'https://cloud-music-api-note.vercel.app/',
     timeout: 5000,
+    withCredentials: true,          // axios发送跨域请求时自动携带凭据（cookie）
     // headers: {'Authorization': 'Bearer your-access-token'} as AxiosRequestHeaders,
 });
 // 配置拦截器
