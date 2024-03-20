@@ -180,9 +180,6 @@ const play = (time: number) => {
       console.log('请求发生错误:', error);
       // 在这里执行你的处理逻辑
     }
-    // audioRef.value.load();
-    // audioRef.value.currentTime = time;
-    // audioRef.value.play();
   }
 };
 
@@ -251,14 +248,20 @@ const playPreviousSong = async () => {
 
 const showSongInfo = () => {
   const info = listStore.getSongInfo(listStore.current_song_index);
-  coverImg.value = info.al.picUrl;
-  songTitle.value = info.name;
-  creatorName.value = '';
-  info.ar.forEach((item: any) => {
-    if (creatorName.value == '') creatorName.value += item.name;
-    else creatorName.value += '/' + item.name;
-  });
-  songDuration.value = info.fee == '1' ? '00:30' : processSongDuration(info.dt);
+  // TODO：初次打开或播放列表被清空的时候，无法加载出图片名称等信息
+  if (info == undefined) {
+    console.log('播放列表为空');
+  } else {
+    coverImg.value = info.al.picUrl;
+    songTitle.value = info.name;
+    creatorName.value = '';
+    info.ar.forEach((item: any) => {
+      if (creatorName.value == '') creatorName.value += item.name;
+      else creatorName.value += '/' + item.name;
+    });
+    songDuration.value =
+      info.fee == '1' ? '00:30' : processSongDuration(info.dt);
+  }
 };
 
 // let audio = document.getElementById('#audio');
