@@ -19,7 +19,7 @@
         ></div>
         <div id="similarArtistContainer" class="similar_artist_container">
           <div id="similarArtistTitle" class="similar_artist_title">
-            热门歌手
+            {{ loginStore.getLoginState() ? '相似歌手' : '热门歌手' }}
           </div>
           <loading-state
             :loading="similatArtistLoading"
@@ -109,9 +109,14 @@ import albumItem from '../../components/article/albumItem/albumItem.vue';
 import { h, nextTick, onMounted, ref, render, watch } from 'vue';
 import createLiTag from '../../util/createLiTag';
 import processSingerArray from '../../util/processSingerArray';
+
+import { useLoginStateStore } from '../../stores/loginState';
+
 // 获取路由参数pid，用于获取歌单详情渲染页面
 const route = useRoute();
 const router = useRouter();
+
+const loginStore = useLoginStateStore();
 
 const activeName = ref('hotsongs');
 
@@ -170,7 +175,9 @@ const getInfo = async () => {
 
 const getSimilarArtist = async () => {
   await get<any>(
-    `/top/artists?offset=${Math.floor(Math.random() * 90)}&limit=9`
+    loginStore.getLoginState()
+      ? `/simi/artist?id=${route.query.id}`
+      : `/top/artists?offset=${Math.floor(Math.random() * 90)}&limit=9`
   )
     .then((response) => {
       console.log(response);
