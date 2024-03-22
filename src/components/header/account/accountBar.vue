@@ -22,7 +22,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import $ from 'jquery';
 import { useRouter } from 'vue-router';
 
@@ -35,32 +35,40 @@ const loginStore = useLoginStateStore();
 
 // 登录
 
+// TODO: 登录程序还没做
 // 点击登录标签，进入登录程序
 const showLoginEntry = async () => {
   await get<any>(`/login/cellphone?phone=15992154127&password=zhang2002730`)
     .then((response) => {
       console.log(response);
-      loginStore.processLogin(response.cookie);
+
+      loginStore.processLogin();
     })
     .catch((error) => {
       // 处理请求错误
       console.log('请求失败');
       console.log(error);
     });
-  changeLoginStatus();
+  router.push({ name: 'recommend' });
 };
+
+watch(
+  () => loginStore.already_login,
+  () => {
+    console.log(loginStore.already_login);
+
+    changeLoginStatus();
+  }
+);
 
 // 改变登录状态
 const changeLoginStatus = async () => {
   const $avatar = $('#avatar');
   if (loginStore.getLoginState()) {
-    if (loginStore.getProfile().avatarUrl) {
-      console.log(loginStore.getProfile().avatarUrl);
-
-      $avatar.css(
-        'background-image',
-        `url(${loginStore.getProfile().avatarUrl})`
-      );
+    const avatarUrl = loginStore.getProfile().avatarUrl;
+    if (avatarUrl) {
+      // TODO: 头像出错，登录后显示默认的
+      $avatar.css('background-image', `url(${avatarUrl})`);
     } else {
       $avatar.addClass('default_avatar');
     }
@@ -98,7 +106,7 @@ const clickMenuItem = async (address: string) => {
   if (address == 'exit') {
     await loginStore.processLogout();
     $('#accountMenu')[0].style.display = 'none';
-    changeLoginStatus();
+    router.push({ name: 'recommend' });
   } else {
     router.push({
       name: address,
