@@ -38,18 +38,9 @@ const loginStore = useLoginStateStore();
 // TODO: 登录程序还没做
 // 点击登录标签，进入登录程序
 const showLoginEntry = async () => {
-  await get<any>(`/login/cellphone?phone=15992154127&password=zhang2002730`)
-    .then((response) => {
-      console.log(response);
-
-      loginStore.processLogin();
-    })
-    .catch((error) => {
-      // 处理请求错误
-      console.log('请求失败');
-      console.log(error);
-    });
+  loginStore.processLogin();
   router.push({ name: 'recommend' });
+  sessionStorage.setItem('lastPathName', 'recommend');
 };
 
 watch(
@@ -111,6 +102,7 @@ const clickMenuItem = async (address: string) => {
     router.push({
       name: address,
     });
+    sessionStorage.setItem('lastPathName', 'recommend');
   }
 };
 </script>

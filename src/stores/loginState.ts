@@ -40,9 +40,17 @@ export const useLoginStateStore = defineStore('loginState', () => {
 
     // 处理登录
     const processLogin = async () => {
+        await get<any>(`/login/cellphone?phone=15992154127&password=zhang2002730&timestamp=${Date.now()}`)
+        .then(async (response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            // 处理请求错误
+            console.log('请求失败');
+            console.log(error);
+        });
         profile.value = await requsetUserProfile();
         already_login.value = true;
-
     }
 
     // 处理登出
