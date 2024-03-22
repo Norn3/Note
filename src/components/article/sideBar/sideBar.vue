@@ -35,6 +35,10 @@ import SideBarItem from './sideBarItem/sideBarItem.vue';
 
 import PlaylistItem from '../../../class/PlaylistItemClass';
 
+import { useLoginStateStore } from '../../../stores/loginState';
+
+const loginStore = useLoginStateStore();
+
 const loading = ref(true);
 
 // 通过defineProps接收父组件的值
@@ -55,7 +59,8 @@ const props = defineProps({
   },
 });
 const listItem = reactive(props.listItem);
-const uid = 571024254;
+// TODO：此处暂时设置为默认值1，后续需要优化
+let uid = 1;
 
 const list_title1 = computed(() => {
   return props.listType == 'playlist' ? '创建的歌单' : '热门榜单';
@@ -67,11 +72,12 @@ const list_title2 = computed(() => {
 
 watch(listItem, (newListItem) => {
   loading.value = true;
+  uid = loginStore.already_login ? loginStore.getProfile().userId : 1;
   addItemToList(newListItem);
   loading.value = false;
 });
 
-//
+// 决定列表项的分割位置，然后将列表项加到对应列表中
 const addItemToList = (listItem: Array<PlaylistItem>) => {
   let slice = 4;
   if (props.listType == 'playlist') {
@@ -83,9 +89,10 @@ const addItemToList = (listItem: Array<PlaylistItem>) => {
   }
   createItem(listItem, 0, slice, '#create');
   createItem(listItem, slice, listItem.length, '#like');
-  if ($('#create').children(':first') != undefined) {
+
+  if ($('#create').children(':first').length != 0) {
     $('#create').children(':first').addClass('check');
-  } else if ($('#like').children(':first') != undefined) {
+  } else if ($('#like').children(':first').length != 0) {
     $('#like').children(':first').addClass('check');
   }
 };
