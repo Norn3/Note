@@ -1,6 +1,13 @@
 <template>
   <div class="play_view">
-    <main>
+    <div id="logoutSongView" class="logout_song_view" v-show="!isLogin">
+      <div class="please_log_text">请先登录以查看更多内容</div>
+      <!-- TODO：此处按钮应该换成自制的，目前样式还不够完美 -->
+      <el-button size="large" color="#9aceff" @click="showLoginEntry"
+        >点击登录</el-button
+      >
+    </div>
+    <main v-show="isLogin">
       <aside>
         <side-bar :listItem="listItem" listType="playlist"></side-bar>
       </aside>
@@ -17,7 +24,17 @@
   min-height: 92vh;
   height: 100%;
   background-color: rgb(255, 255, 255);
+
+  .logout_song_view {
+    position: relative;
+    top: 30vh;
+    .please_log_text {
+      margin-bottom: 50px;
+      font-size: larger;
+    }
+  }
 }
+
 main {
   position: relative;
   min-height: 100vh;
@@ -74,7 +91,7 @@ section {
 
 <script setup lang="ts">
 import $ from 'jquery';
-import { reactive, onBeforeMount, watch } from 'vue';
+import { reactive, onBeforeMount, watch, ref } from 'vue';
 import { get } from '../../axios/insatance';
 
 import PlaylistItemClass from '../../class/PlaylistItemClass';
@@ -84,19 +101,16 @@ import { useLoginStateStore } from '../../stores/loginState';
 import SideBar from '../../components/article/sideBar/sideBar.vue';
 import { useRouter } from 'vue-router';
 
+const isLogin = ref(false);
+
 const router = useRouter();
 
 const loginStore = useLoginStateStore();
 
-let userId = loginStore.getLoginState() ? loginStore.getProfile().userId : '1';
-
-// TODO: 未登录应该不允许跳转，此页面要改
-
 let listItem: Array<PlaylistItemClass> = reactive([]);
 
-const getSideBar = () => {
-  console.log(userId);
-
+// 获取侧边栏数据
+const getSideBar = (userId: number) => {
   get<any>(`/user/playlist?uid=${userId}&limit=100`)
     .then((response) => {
       console.log(response);
@@ -114,7 +128,7 @@ const getSideBar = () => {
 };
 
 // 获取“我的音乐”页面的首个歌单
-const getPid = async (): Promise<number> => {
+const getPid = async (userId: number): Promise<number> => {
   let pid = 1;
   await get<any>(`/user/playlist?uid=${userId}`)
     .then((response) => {
@@ -135,24 +149,37 @@ const jumpPage = (pid: number) => {
   sessionStorage.setItem('lastPathQuery', JSON.stringify({ id: pid }));
 };
 
-// 渲染页面
-const renderPage = async () => {
-  getSideBar();
-  let pid = await getPid();
-  jumpPage(pid);
+// 根据登录状态渲染页面
+const renderPage = async (loginState: boolean) => {
+  if (loginState) {
+    isLogin.value = true;
+    let userId = loginStore.getProfile().userId;
+    getSideBar(userId);
+    let pid = await getPid(userId);
+    jumpPage(pid);
+  } else {
+    isLogin.value = false;
+  }
 };
 
-// 如果在MySongView里执行了刷新操作，则重新获取userId并渲染页面
+// 如果在MySongView里执行了刷新操作，则重新进行页面渲染
 watch(
   () => loginStore.already_login,
   (newValue, oldValue) => {
-    userId = newValue ? loginStore.getProfile().userId : '1';
-    renderPage();
+    renderPage(newValue);
   }
 );
 
-// 根据点击“我的音乐”那一刻的userId渲染页面
+// 根据点击“我的音乐”那一刻的登录状态进行页面渲染
 onBeforeMount(() => {
-  renderPage();
+  renderPage(loginStore.already_login);
 });
+
+// 点击登录入口，登录并跳转回首页
+const showLoginEntry = () => {
+  loginStore.processLogin();
+  router.push({ name: 'recommend' });
+  sessionStorage.setItem('lastPathName', 'recommend');
+  sessionStorage.setItem('lastPathQuery', '');
+};
 </script>
