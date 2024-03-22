@@ -1,7 +1,4 @@
 <template>
-  <!-- router-link组件可实现点击跳转，to属性后写入path的值即可 -->
-  <!-- <router-link to="/">首页</router-link> |
-  <router-link to="/about">关于页面</router-link> -->
   <div class="main_view">
     <header>
       <brand-icon></brand-icon>
@@ -16,8 +13,6 @@
       <audio-player id="audioPlayer"></audio-player>
     </footer>
   </div>
-
-  <!-- 路由的显示入口 -->
 </template>
 
 <style lang="scss" scoped>
@@ -91,6 +86,7 @@
 </style>
 <script setup lang="ts">
 import $ from 'jquery';
+import { useRouter, useRoute } from 'vue-router';
 
 import brandIcon from './components/header/icon/brandIcon.vue';
 import searchFrame from './components/header/search/searchFrame.vue';
@@ -99,14 +95,18 @@ import audioPlayer from './components/footer/audioPlayer/audioPlayer.vue';
 import headerNav from './components/header/nav/headerNav.vue';
 
 import { useCurrentPlayingListStore } from './stores/currentPlayingList';
-import { useRouter, useRoute } from 'vue-router';
+import { useLoginStateStore } from './stores/loginState';
 
 const router = useRouter();
 const route = useRoute();
 
 const listStore = useCurrentPlayingListStore();
+const loginState = useLoginStateStore();
 
-// 初始化歌单列表
+// 初始化登录状态
+loginState.getLoginStatus();
+
+// 初始化播放列表
 listStore.initializeStore();
 
 // 鼠标在上方时audioPlayer出现
@@ -120,7 +120,7 @@ $(document).on('mouseout', 'footer', () => {
   audioPlayer.classList.remove('active');
 });
 
-// 如果是路径是“我的音乐”/搜索结果/资源详情，则直接带参跳转
+// 获取sessionStorage中的上次最后访问路由
 let path_name = sessionStorage.getItem('lastPathName') as string;
 // 如果没有找到对应路径，比如初次打开，则打开推荐页
 if (route.name == 'home' || path_name == null) {
