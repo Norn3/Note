@@ -15,47 +15,28 @@
 
 <script setup lang="ts">
 import $ from 'jquery';
-import { onMounted, ref, nextTick, reactive } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted, ref, nextTick, reactive, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import './headerNav.scss';
-import { get } from '../../../axios/insatance';
+
+const router = useRouter();
+const route = useRoute();
 
 // 创建导航栏内容
 const navItem = [
   { id: 0, text: '发现音乐', address: 'recommend' },
-  { id: 1, text: '我的音乐', address: 'myPlaylistInfo' },
+  { id: 1, text: '我的音乐', address: 'play' },
 ];
 
-const uid = 571024254;
-let pid = 0;
-const getPid = async (uid: number) => {
-  await get<any>(`/user/playlist?uid=${uid}`)
-    .then((response) => {
-      console.log(response);
-      pid = response.playlist[0].id;
-      console.log(pid);
-    })
-    .catch((error) => {
-      // 处理请求错误
-      console.log('请求失败');
-      console.log(error);
-    });
-  return 0;
-};
-
 // 选择导航栏中的每一项，都会将改变router到对应路径，并且更改选中样式
-const router = useRouter();
 const jumpPage = (address: string, id: string) => {
-  // 删除所有项的被选中样式，然后给选中项加上选中样式
-  $('.header_nav_item').removeClass('check');
-  $(id)[0].classList.add('check');
-  console.log(address);
-
   // 如果选中“我的音乐”，则跳转并存储地址和参数
-  if (address == 'myPlaylistInfo') {
-    router.push({ name: address, query: { id: pid } });
+  if (address == 'play') {
+    // TODO: 当pid为0时未实现
+    router.push({ name: address });
     sessionStorage.setItem('lastPathName', address);
-    sessionStorage.setItem('lastPathQuery', JSON.stringify({ id: pid }));
+    sessionStorage.setItem('lastPathQuery', '');
+
     // 否则直接不带参跳转并存入地址即可
   } else {
     router.push({ name: address });
@@ -64,13 +45,27 @@ const jumpPage = (address: string, id: string) => {
   }
 };
 
-// 加载时，选中第一项
-onMounted(() => {
-  const path_name = sessionStorage.getItem('lastPathName') as string;
-  let check_item = navItem.findIndex((item) => item.address == path_name);
-  // 如果sessionStorage中存入的路径在navItem项中找不到，那么选中“发现音乐”项
-  if (check_item == -1) $(`#header_li0`)[0].classList.add('check');
-  else $(`#header_li${check_item}`)[0].classList.add('check');
-  getPid(uid);
-});
+// 会使得导航栏第一项被选中的页面集合
+const selectFirstItemPageSet = new Set([
+  'recommend',
+  'playlist',
+  'rankInfo',
+  'Info',
+  'artistInfo',
+]);
+const selectSecondItemPageSet = new Set(['myPlaylistInfo', 'play']);
+
+// TODO：如果headerNav中再增加选项，只能一直列举下去，希望能找到一个规律将其总结起来
+// 监听路由变化，根据路由判断该选中哪一项
+watch(
+  () => route.name,
+  (newValue) => {
+    $('.header_nav_item').removeClass('check');
+    if (selectFirstItemPageSet.has(newValue as string)) {
+      $('#header_li0')[0].classList.add('check');
+    } else if (selectSecondItemPageSet.has(newValue as string)) {
+      $('#header_li1')[0].classList.add('check');
+    }
+  }
+);
 </script>
