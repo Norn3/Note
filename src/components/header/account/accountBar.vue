@@ -38,9 +38,9 @@ const loginStore = useLoginStateStore();
 // TODO: 登录程序还没做
 // 点击登录标签，进入登录程序
 const showLoginEntry = async () => {
-  loginStore.processLogin();
-  router.push({ name: 'recommend' });
-  sessionStorage.setItem('lastPathName', 'recommend');
+  loginStore.showLoginEntry();
+  // router.push({ name: 'recommend' });
+  // sessionStorage.setItem('lastPathName', 'recommend');
 };
 
 watch(

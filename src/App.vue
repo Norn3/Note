@@ -1,5 +1,6 @@
 <template>
   <div class="main_view">
+    <login-frame v-show="isLogin"></login-frame>
     <header>
       <brand-icon></brand-icon>
       <header-nav></header-nav>
@@ -89,6 +90,7 @@
 import $ from 'jquery';
 import { useRouter, useRoute } from 'vue-router';
 
+import loginFrame from './components/article/loginFrame/loginFrame.vue';
 import brandIcon from './components/header/icon/brandIcon.vue';
 import searchFrame from './components/header/search/searchFrame.vue';
 import accountBar from './components/header/account/accountBar.vue';
@@ -97,10 +99,12 @@ import headerNav from './components/header/nav/headerNav.vue';
 
 import { useCurrentPlayingListStore } from './stores/currentPlayingList';
 import { useLoginStateStore } from './stores/loginState';
-import { onMounted } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
+
+const isLogin = ref(false);
 
 const listStore = useCurrentPlayingListStore();
 const loginState = useLoginStateStore();
@@ -147,4 +151,16 @@ else if (path_name == 'rankInfo') {
 else {
   router.push({ name: path_name });
 }
+
+watch(
+  () => loginState.useLogin,
+  (newValue) => {
+    isLogin.value = newValue;
+    if (newValue) {
+      $('.main_view').css('max-height', '100vh');
+    } else {
+      $('.main_view').css('max-height', 'none');
+    }
+  }
+);
 </script>

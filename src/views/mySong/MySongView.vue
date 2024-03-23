@@ -177,9 +177,9 @@ onBeforeMount(() => {
 
 // 点击登录入口，登录并跳转回首页
 const showLoginEntry = () => {
-  loginStore.processLogin();
-  router.push({ name: 'recommend' });
-  sessionStorage.setItem('lastPathName', 'recommend');
-  sessionStorage.setItem('lastPathQuery', '');
+  loginStore.showLoginEntry();
+  // router.push({ name: 'recommend' });
+  // sessionStorage.setItem('lastPathName', 'recommend');
+  // sessionStorage.setItem('lastPathQuery', '');
 };
 </script>

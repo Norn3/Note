@@ -1,0 +1,70 @@
+@import '../../../mainStyle.scss';
+
+.login_page{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5000;
+    background-color: rgba(114, 114, 114, 0.2);
+    .login_frame{
+        position: absolute;
+        left: calc(50vw - 17.5vw);
+        top: calc(50vh - 25vh);
+        width: 35vw;
+        height: 50vh;
+        min-width: 370px;
+        min-height: 280px;
+        border-radius: 5px;
+        background-color: white;
+        .frame_title{
+            display: flex;
+            align-items: center;
+            height: 5vh;
+            min-height: 25px;
+            color: white;
+            font-size: large;
+            background-color: $brandColor;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            .title_text{
+                width: 4vw;
+                min-width: 60px;
+                height: 25px;
+                line-height: 25px;
+                white-space: nowrap;
+            }
+            .close_frame{
+                position: absolute;
+                right: 0;
+                width: 30px;
+                height: 5vh;
+                min-height: 25px;
+                background: url('../../../assets/icons/close.svg') no-repeat center;
+            }
+        }
+
+        .frame_content{
+
+            .password_login_form{
+                max-width: 300px;
+                margin: 10vh auto;
+
+                .submit_button{
+                    width: 300px;
+                    max-width: 300px;
+                    color: white;
+                    background-color: $brandColor;
+
+                    &:hover{
+                        background-color: $darkerBrandColor;
+                    }
+
+                    &:focus{
+                        outline: none;
+                    }
+                }
+            }
+        }
+    }
+
+}

@@ -9,6 +9,8 @@ export const useLoginStateStore = defineStore('loginState', () => {
     // 此处可以优化为，用一个数据类存储需要的属性，然后外部读取时调用该数据类的实例进行属性访问
     const profile = ref<any>('');
 
+    const useLogin = ref(false);
+
     // 创建实例用于一次更改多个属性而只触发一次subscribe
     const store = useLoginStateStore();
 
@@ -34,23 +36,44 @@ export const useLoginStateStore = defineStore('loginState', () => {
         return already_login.value;
     }
     
+    // 获取用户数据
     const getProfile = () => {
         return profile.value;
     }
 
+    // 点击登录入口时，改变useLogin，触发loginFrame登录框出现
+    const showLoginEntry = () => {
+        useLogin.value = true;
+    }
+
+    // 点击登录框的关闭键，或完成登录操作时，改变useLogin，触发loginFrame登录框隐藏
+    const hideLoginEntry = () => {
+        useLogin.value = false;
+    }
+
     // 处理登录
-    const processLogin = async () => {
-        await get<any>(`/login/cellphone?phone=15992154127&password=zhang2002730&timestamp=${Date.now()}`)
+    const processLogin = async (phone: string, password: string): Promise<boolean> => {
+        let login_result = false;
+        await get<any>(`/login/cellphone?phone=${phone}&password=${password}&timestamp=${Date.now()}`)
         .then(async (response) => {
             console.log(response);
+            if(response.code == 200) {
+                profile.value = await requsetUserProfile();
+                already_login.value = true;
+                login_result = true;
+                console.log('登录成功');
+            }
+            else{
+                already_login.value = false;
+                login_result = false;
+            }
         })
         .catch((error) => {
             // 处理请求错误
             console.log('请求失败');
             console.log(error);
         });
-        profile.value = await requsetUserProfile();
-        already_login.value = true;
+        return login_result;
     }
 
     // 处理登出
@@ -87,5 +110,5 @@ export const useLoginStateStore = defineStore('loginState', () => {
     }
 
 
-    return {already_login, getLoginState, getProfile, processLogin, processLogout, getLoginStatus}
+    return {already_login, useLogin, getLoginState, getProfile, processLogin, processLogout, getLoginStatus, showLoginEntry, hideLoginEntry}
 })
