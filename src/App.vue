@@ -22,6 +22,7 @@
   min-height: 100vh;
   height: auto;
   background-color: #ffffff;
+  overflow: scroll;
 
   header {
     position: fixed;
@@ -96,6 +97,7 @@ import headerNav from './components/header/nav/headerNav.vue';
 
 import { useCurrentPlayingListStore } from './stores/currentPlayingList';
 import { useLoginStateStore } from './stores/loginState';
+import { onMounted } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
