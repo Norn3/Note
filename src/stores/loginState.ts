@@ -54,25 +54,23 @@ export const useLoginStateStore = defineStore('loginState', () => {
     // 处理登录
     const processLogin = async (type: string, id?: string, password?: string): Promise<boolean> => {
         let login_result = false;
-        if(type == 'captcha'|| type == 'password') {
-            const address = `/login/cellphone?phone=${id}` + (type == 'password' ? `&md5_password=${password}` : `&captcha=${password}`);
-            login_result = 
-            await get<any>(address)
-                .then(async (response) => {
-                    console.log(response);
-                    if(response.code == 200) {
-                        return true;
-                    }
-                    return false;
-                })
-                .catch((error) => {
-                    // 处理请求错误
-                    console.log('请求失败');
-                    console.log(error);
-                    return false;
+        const address = `/login/cellphone?phone=${id}` + (type == 'password' ? `&md5_password=${password}` : `&captcha=${password}`);
+        login_result = 
+        await get<any>(address)
+            .then(async (response) => {
+                console.log(response);
+                if(response.code == 200) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((error) => {
+                // 处理请求错误
+                console.log('请求失败');
+                console.log(error);
+                return false;
 
-                });
-        }
+            });
         if(login_result) {
             profile.value = await requsetUserProfile();
         }

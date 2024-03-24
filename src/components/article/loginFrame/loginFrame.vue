@@ -11,8 +11,9 @@
           ></div>
         </div>
         <div id="frameContent" class="frame_content">
-          <captcha-login-frame v-show="currentWay == 1"></captcha-login-frame>
-          <password-login-frame v-show="currentWay == 2"></password-login-frame>
+          <qrcode-login-form v-show="currentWay == 0"></qrcode-login-form>
+          <captcha-login-form v-show="currentWay == 1"></captcha-login-form>
+          <password-login-form v-show="currentWay == 2"></password-login-form>
         </div>
         <div id="switchLoginWay" class="switch_login_way">
           <div
@@ -45,8 +46,9 @@ import { useRoute, useRouter } from 'vue-router';
 
 import { useLoginStateStore } from '../../../stores/loginState';
 
-import passwordLoginFrame from './passwordLoginForm/passwordLoginForm.vue';
-import captchaLoginFrame from './captchaLoginForm/captcahLoginForm.vue';
+import passwordLoginForm from './passwordLoginForm/passwordLoginForm.vue';
+import captchaLoginForm from './captchaLoginForm/captcahLoginForm.vue';
+import qrcodeLoginForm from './qrcodeLoginForm/qrcodeLoginForm.vue';
 
 import './loginFrame.scss';
 
