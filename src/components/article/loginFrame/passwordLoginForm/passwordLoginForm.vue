@@ -43,6 +43,8 @@ import { useLoginStateStore } from '../../../../stores/loginState';
 import './passwordLoginForm.scss';
 import type { FormInstance, FormRules } from 'element-plus';
 
+import { Md5 } from 'ts-md5';
+
 const router = useRouter();
 const route = useRoute();
 
@@ -84,16 +86,20 @@ const onSubmit = (formInstance: FormInstance | undefined) => {
   if (!formInstance) return;
   formInstance.validate(async (valid) => {
     if (!valid) {
-      return false;
+      return;
     } else {
+      // 定义MD5对象
+      const md5: any = new Md5();
+      md5.appendAsciiStr(phoneAndPassword.password);
+      const password = md5.end();
       const login_result = await loginStore.processLogin(
         phoneAndPassword.phone,
-        phoneAndPassword.password
+        password
       );
       // 登录成功
       if (login_result) {
         // 隐藏登录框
-        // loginStore.hideLoginEntry();
+        loginStore.hideLoginEntry();
         // 清空登录框内的账号密码
         if (formInstance) {
           formInstance.resetFields();
@@ -104,8 +110,7 @@ const onSubmit = (formInstance: FormInstance | undefined) => {
       }
       // 登录失败
       else {
-        // alert('账号或密码不正确');
-        return false;
+        alert('账号或密码不正确！');
       }
     }
   });

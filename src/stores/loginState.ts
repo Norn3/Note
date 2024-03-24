@@ -53,26 +53,26 @@ export const useLoginStateStore = defineStore('loginState', () => {
 
     // 处理登录
     const processLogin = async (phone: string, password: string): Promise<boolean> => {
-        let login_result = false;
-        await get<any>(`/login/cellphone?phone=${phone}&password=${password}&timestamp=${Date.now()}`)
-        .then(async (response) => {
-            console.log(response);
-            if(response.code == 200) {
-                profile.value = await requsetUserProfile();
-                already_login.value = true;
-                login_result = true;
-                console.log('登录成功');
-            }
-            else{
-                already_login.value = false;
-                login_result = false;
-            }
-        })
-        .catch((error) => {
-            // 处理请求错误
-            console.log('请求失败');
-            console.log(error);
-        });
+        const login_result = 
+            await get<any>(`/login/cellphone?phone=${phone}&md5_password=${password}`)
+            .then(async (response) => {
+                console.log(response);
+                if(response.code == 200) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((error) => {
+                // 处理请求错误
+                console.log('请求失败');
+                console.log(error);
+                return false;
+
+            });
+        if(login_result) {
+            profile.value = await requsetUserProfile();
+        }
+        already_login.value = login_result;
         return login_result;
     }
 
@@ -96,7 +96,7 @@ export const useLoginStateStore = defineStore('loginState', () => {
     // 请求用户信息
     const requsetUserProfile = async (): Promise<any> => {
         let profile = null;
-        await get<any>('/user/account')
+        await get<any>(`/user/account?timestamp=${Date.now()}`)
         .then((response) => {
             console.log(response);
             profile = response.profile;
