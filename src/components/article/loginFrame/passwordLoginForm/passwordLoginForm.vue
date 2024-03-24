@@ -52,6 +52,7 @@ const loginStore = useLoginStateStore();
 
 const passwordLoginFormRef = ref<FormInstance>();
 
+// TODO：未验证外国手机号
 const validatePhone = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('请输入手机号！'));
@@ -93,6 +94,7 @@ const onSubmit = (formInstance: FormInstance | undefined) => {
       md5.appendAsciiStr(phoneAndPassword.password);
       const password = md5.end();
       const login_result = await loginStore.processLogin(
+        'password',
         phoneAndPassword.phone,
         password
       );

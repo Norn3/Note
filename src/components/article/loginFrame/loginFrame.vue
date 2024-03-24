@@ -11,7 +11,24 @@
           ></div>
         </div>
         <div id="frameContent" class="frame_content">
-          <password-login-frame></password-login-frame>
+          <captcha-login-frame v-show="currentWay == 1"></captcha-login-frame>
+          <password-login-frame v-show="currentWay == 2"></password-login-frame>
+        </div>
+        <div id="switchLoginWay" class="switch_login_way">
+          <div
+            class="pre_way"
+            v-show="currentWay != 0"
+            @click="currentWay -= 1"
+          >
+            {{ loginWayText[currentWay - 1] }}
+          </div>
+          <div
+            class="next_way"
+            v-show="currentWay != loginWayText.length - 1"
+            @click="currentWay += 1"
+          >
+            {{ loginWayText[currentWay + 1] }}
+          </div>
         </div>
       </div>
       <!-- <img src="https://p5.music.126.net/obj/wo3DlcOGw6DClTvDisK1/9643571155/525c/faac/2dc6/fe695c03c7c358ddaa4651736b26a55f.png" alt="提示图片 ············"> -->
@@ -29,6 +46,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useLoginStateStore } from '../../../stores/loginState';
 
 import passwordLoginFrame from './passwordLoginForm/passwordLoginForm.vue';
+import captchaLoginFrame from './captchaLoginForm/captcahLoginForm.vue';
 
 import './loginFrame.scss';
 
@@ -36,6 +54,10 @@ const router = useRouter();
 const route = useRoute();
 
 const loginStore = useLoginStateStore();
+
+const currentWay = ref(1);
+
+const loginWayText = ['扫码登录', '验证码登录', '账号密码登录'];
 
 const hideLoginFrame = () => {
   loginStore.hideLoginEntry();

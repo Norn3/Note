@@ -48,6 +48,51 @@
 
             
         }
+        .switch_login_way{
+            position: absolute;
+            bottom: 0;
+            height: 6vh;
+            min-height: 30px;
+            width: calc(100% - 20px);
+            padding: 0 10px;
+            line-height: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid $brandColor;
+
+            .pre_way, .next_way{
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+            }
+
+            .pre_way{
+                &::before{
+                    position: relative;
+                    display: inline-block;
+                    content: url('../../../assets/icons/arrow.svg');
+                    width: 20px;
+                    height: 20px;
+                    transform: scale(1.5) rotate(90deg);
+
+                }
+            }
+
+            .next_way{
+                position: absolute;
+                right: 10px;
+                &::after{
+                    position: relative;
+                    display: inline-block;
+                    content: url('../../../assets/icons/arrow.svg');
+                    width: 20px;
+                    height: 20px;
+                    transform: scale(1.5) rotate(270deg);
+
+                }
+            }
+        }
     }
 
 }
