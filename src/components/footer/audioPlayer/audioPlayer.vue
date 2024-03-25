@@ -147,8 +147,6 @@ const togglePlaylist = () => {
 const getSong = async (songId: string) => {
   await get<any>(`/song/url/v1?id=${songId}&level=standard`)
     .then((response) => {
-      console.log(response);
-
       // 处理返回的用户数据
       const song: Song = response.data;
       nextSongItem = song[0].url;

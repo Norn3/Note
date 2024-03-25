@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import navBar from '../../components/article/HomeView/navBar/navBar.vue';
-</script>
-
 <template>
   <div class="home_view">
     <main>
@@ -42,3 +38,6 @@ import navBar from '../../components/article/HomeView/navBar/navBar.vue';
   }
 }
 </style>
+<script setup lang="ts">
+import navBar from '../../components/article/HomeView/navBar/navBar.vue';
+</script>

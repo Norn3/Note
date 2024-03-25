@@ -145,7 +145,7 @@ watch(
             console.log('轮询二维码失败');
             console.log(error);
           });
-      }, 1000);
+      }, 3000);
     } else {
       clearInterval(checkQRCode);
     }
