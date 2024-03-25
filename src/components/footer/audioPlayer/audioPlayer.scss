@@ -107,9 +107,29 @@
     }
     .features{
         grid-area: features;
+        display: flex;
+
+        .lyrics_icon{
+            position: relative;
+            width: 30px;
+            height: 100%;
+            margin-right: 20px;
+            background: url('../../../assets/icons/lyrics.svg') no-repeat left;
+            cursor: pointer;
+        }
+
+        .lyrics_page{
+            position: absolute;
+            bottom: 8vh;
+            right: 0;
+            @media screen and (max-height: 625px) {
+                bottom: 50px;
+              }
+        }
+
         .playinglist_icon{
             position: relative;
-            width: 100%;
+            width: 30px;
             height: 100%;
             background: url('../../../assets/icons/playinglist.svg') no-repeat left;
             cursor: pointer;
@@ -183,6 +203,6 @@
 .active {
     height: 100%;
 }
-.showing_playinglist{
+.showing_feature{
     height: 100%;
 }

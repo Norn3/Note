@@ -48,9 +48,19 @@
     <div id="time" class="time">{{ curTime + '/' + songDuration }}</div>
     <div id="features" class="features">
       <div
+        id="lyricsIcon"
+        class="lyrics_icon"
+        @click="toggleFeature('lyrics')"
+      ></div>
+      <lyrics-page
+        id="lyricsPage"
+        class="lyrics_page"
+        :songId="loadLyricsSongId"
+      ></lyrics-page>
+      <div
         id="playinglistIcon"
         class="playinglist_icon"
-        @click="togglePlaylist"
+        @click="toggleFeature('playinglist')"
       ></div>
       <playingList id="playingList" class="playing_list"></playingList>
     </div>
@@ -85,17 +95,27 @@
 </template>
 <script setup lang="ts">
 import $ from 'jquery';
-import { onBeforeUnmount, onMounted, reactive, ref, toRaw, watch } from 'vue';
+import {
+  onBeforeMount,
+  onBeforeUnmount,
+  onMounted,
+  reactive,
+  ref,
+  toRaw,
+  watch,
+} from 'vue';
 import './audioPlayer.scss';
 
 import { get } from '../../../axios/insatance';
 import Song from '../../../class/Song';
 
 import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
+import { useLyricsStore } from '../../../stores/lyrics';
 import processSongDuration from '../../../util/processSongDuration';
 
 import SongListItem from '../../article/songList/songListItem/songListItem.vue';
-import playingList from '../../footer/playingList/playingList.vue';
+import playingList from '../playingList/playingList.vue';
+import lyricsPage from '../lyricsPage/lyricsPage.vue';
 
 // ref引用的元素
 const playButton = ref<HTMLElement | null>(null);
@@ -107,6 +127,9 @@ const audioRef = ref<HTMLAudioElement | null>(null);
 
 // 播放列表store
 let listStore = useCurrentPlayingListStore();
+
+// 歌词store
+let lyricsStore = useLyricsStore();
 
 // 歌曲url控制
 let songItem = ref('');
@@ -120,9 +143,37 @@ const songDuration = ref('00:00');
 const curTime = ref('00:00');
 let getCurTime: number | null = null;
 
-const togglePlaylist = () => {
-  $('#playingList').toggleClass('show_playinglist');
-  $('#audioPlayer').toggleClass('showing_playinglist');
+let show_playinglist = false;
+let show_lyrics = false;
+
+const loadLyricsSongId = ref('');
+const watchLyricsChange = ref(null);
+
+// 点击功能图标，展示功能组件并固定住播放器
+const toggleFeature = (item: string) => {
+  const $feature = item == 'playinglist' ? $('#playingList') : $('#lyricsPage');
+  if (item == 'playinglist') {
+    if (show_playinglist) {
+      $feature.removeClass(`show_${item}`);
+    } else {
+      $feature.addClass(`show_${item}`);
+    }
+    show_playinglist = !show_playinglist;
+  } else if (item == 'lyrics') {
+    if (show_lyrics) {
+      $feature.removeClass(`show_${item}`);
+    } else {
+      $feature.addClass(`show_${item}`);
+    }
+    lyricsStore.toggleShowLyrics(!show_lyrics);
+    show_lyrics = !show_lyrics;
+  }
+
+  if (show_playinglist || show_lyrics) {
+    $('#audioPlayer').addClass('showing_feature');
+  } else {
+    $('#audioPlayer').removeClass('showing_feature');
+  }
 };
 
 // 通过 $subscribe 订阅状态， subscribe()即可停止订阅
@@ -181,6 +232,18 @@ const play = (time: number) => {
   }
 };
 
+// 用id获取歌词，并把id传入lyricsStore
+const preProcessNextSong = async (songId: string) => {
+  await getSong(songId);
+  lyricsStore.setNextId(songId);
+};
+
+// 歌曲url和歌词都切换到下一首
+const switchToNext = () => {
+  songItem.value = nextSongItem;
+  lyricsStore.switchToNextLyrics();
+};
+
 // 播放监听
 
 // 绑定监听器
@@ -199,8 +262,10 @@ const watchCurSongReset = watch(
   async (newValue, oldValue) => {
     if (newValue) {
       clearInterval(Number(getCurTime));
-      await getSong(listStore.getSongId(listStore.current_song_index));
-      songItem.value = nextSongItem;
+      await preProcessNextSong(
+        listStore.getSongId(listStore.current_song_index)
+      );
+      switchToNext();
       play(0);
       listStore.resetCurSong();
     }
@@ -224,23 +289,24 @@ const songLoaded = () => {
 
     // 获取下一首的url，即使不是初次加载，此时listStore.current_song_index也还没变，不会错误获取下下首歌曲
     listStore.getNextSong();
-    getSong(listStore.getSongId(listStore.next_song_index));
+    preProcessNextSong(listStore.getSongId(listStore.next_song_index));
   }
 };
 
-// 当前歌曲播放结束，切换下一首歌曲的url进行播放
+// 当前歌曲播放结束或点击下一首，切换下一首歌曲的url进行播放
 const playNextSong = () => {
   clearInterval(Number(getCurTime));
   listStore.nextCurIndex();
-  songItem.value = nextSongItem;
+  switchToNext();
   play(0);
 };
 
+// 点击上一首，切换到上一首歌曲进行播放
 const playPreviousSong = async () => {
   clearInterval(Number(getCurTime));
   listStore.preCurIndex();
-  await getSong(listStore.getSongId(listStore.current_song_index));
-  songItem.value = nextSongItem;
+  await preProcessNextSong(listStore.getSongId(listStore.current_song_index));
+  switchToNext();
   play(0);
 };
 
@@ -280,10 +346,10 @@ const showSongInfo = () => {
 
 // 挂载后执行
 onMounted(async () => {
-  await getSong(listStore.getSongId(listStore.current_song_index));
-  songItem.value = nextSongItem;
+  await preProcessNextSong(listStore.getSongId(listStore.current_song_index));
+  switchToNext();
   listStore.getNextSong();
-  getSong(listStore.getSongId(listStore.next_song_index));
+  preProcessNextSong(listStore.getSongId(listStore.next_song_index));
   showSongInfo();
   addListener();
 });
