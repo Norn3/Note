@@ -81,7 +81,8 @@ onMounted(() => {
     (newValue, oldValue) => {
       playing_list.value = newValue;
       playlist_length.value = newValue.length;
-    }
+    },
+    { deep: true }
   );
   $('#clearPlayinglist')[0].addEventListener('click', () => {
     listStore.clearList();
