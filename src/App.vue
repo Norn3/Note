@@ -23,7 +23,6 @@
   min-height: 100vh;
   height: auto;
   background-color: #ffffff;
-  overflow: scroll;
 
   header {
     position: fixed;
@@ -156,10 +155,12 @@ watch(
   () => loginState.useLogin,
   (newValue) => {
     isLogin.value = newValue;
+    console.log(newValue);
+
     if (newValue) {
-      $('.main_view').css('max-height', '100vh');
+      $('html').css('overflow-y', 'hidden');
     } else {
-      $('.main_view').css('max-height', 'none');
+      $('html').css('overflow-y', 'overlay');
     }
   }
 );

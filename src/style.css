@@ -15,7 +15,7 @@
   text-size-adjust: 100%;
 
   /* chrome浏览器，滚动条不挤压页面 */
-  overflow-y: overlay;          
+  overflow-y: overlay; 
 }
 
 a {
