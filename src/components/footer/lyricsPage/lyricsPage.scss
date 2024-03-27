@@ -2,7 +2,7 @@
 .lyrics_page{
     position: fixed;
     display: block;
-    background-color: rgba(124, 124, 124, 0.456);
+    background-color: rgba(255, 255, 255, 0.856);
     width: 100vw;
     height: 0;
     transition: all 0.5s;
@@ -12,6 +12,10 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
+
+        .loading_state{
+            height: 100%;
+        }
     }
     
 }

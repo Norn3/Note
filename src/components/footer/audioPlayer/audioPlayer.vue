@@ -235,7 +235,7 @@ const play = (time: number) => {
 // 用id获取歌词，并把id传入lyricsStore
 const preProcessNextSong = async (songId: string) => {
   await getSong(songId);
-  lyricsStore.setNextId(songId);
+  await lyricsStore.setNextId(songId);
 };
 
 // 歌曲url和歌词都切换到下一首

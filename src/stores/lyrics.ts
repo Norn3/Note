@@ -17,11 +17,10 @@ export const useLyricsStore = defineStore('lyrics', () => {
         curId.value = newId;
     }
 
-    const setNextId = (newId: string) => {
+    const setNextId = async (newId: string) => {
         nextId.value = newId;
         if(showLyrics.value) {
-            setNextLyrics();
-            
+            await setNextLyrics();
         }
     }
 
@@ -42,23 +41,22 @@ export const useLyricsStore = defineStore('lyrics', () => {
     const switchToNextLyrics = () => {
         curId.value = nextId.value;
         curLyrics.value = nextLyrics.value;
+        
     }
 
-    const toggleShowLyrics = (show: boolean) => {
+    const toggleShowLyrics = async (show: boolean) => {
         if(show) {
-            if(curId.value != '') setCurLyrics();
-            if(nextId.value != '') setNextLyrics();
+            if(curId.value != '') await setCurLyrics();
+            if(nextId.value != '') await setNextLyrics();
         }
         showLyrics.value = show;
-
     }
 
+    // TODO：往下到三拜红尘凉不出，需要检查接口返回。往回的时候不触发lyricsPage的current_song_index监听，需要检查
     const getLyrics = async (songId: string): Promise<string> => {
         let lyrics = '';
         await get<any>(`/lyric?id=${songId}`)
         .then((response) => {
-            console.log(response);
-            
             lyrics = response.lrc.lyric;
         })
         .catch((error) => {
@@ -70,5 +68,5 @@ export const useLyricsStore = defineStore('lyrics', () => {
     }
 
 
-    return {setCurId, setNextId, setNextLyrics, getCurLyrics, switchToNextLyrics, toggleShowLyrics}
+    return {showLyrics, curLyrics, setCurId, setNextId, setNextLyrics, getCurLyrics, switchToNextLyrics, toggleShowLyrics}
 })
