@@ -20,11 +20,14 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
 
     // 打开页面时将localStroage中的数据存入store中
     const initializeStore = () => {
-      if(localStorage.getItem('playing_list') && localStorage.getItem('current_playlist_id') && localStorage.getItem('current_song_index')){
+      if(localStorage.getItem('playing_list')){
+        const pid = localStorage.getItem('current_playlist_id') ? JSON.parse(localStorage.getItem('current_playlist_id') as string) : '';
+        const index = localStorage.getItem('current_song_index') ? Number(localStorage.getItem('current_song_index')) : 0;
+        
         store.$patch({
           playing_list: JSON.parse(localStorage.getItem('playing_list') as string), 
-          current_playlist_id: JSON.parse(localStorage.getItem('current_playlist_id') as string), 
-          current_song_index: Number(localStorage.getItem('current_song_index')),
+          current_playlist_id: pid, 
+          current_song_index: index,
         });
       }
       // 加载所有数据，调用getNextSong更新nextSongId
@@ -40,7 +43,7 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
         return playing_list.value[index].id;
       }
       else {
-        return '1294924084';
+        return '2034187125';
       }
     }
 
@@ -143,7 +146,6 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
             state.current_playlist_id = '';
             state.current_song_index = state.playing_list.length - 1;
           })
-          console.log(playing_list.value, current_song_index.value);
           localStorage.setItem('playing_list', JSON.stringify(playing_list.value));
           localStorage.setItem('current_playlist_id','');
           localStorage.setItem('current_song_index', String(playing_list.value.length - 1));
@@ -243,7 +245,7 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
       getNextSong();
     }
 
-    // 获取歌曲时长
+    // 获取歌曲信息
     const getSongInfo = (index: number): any => {
       return playing_list.value[index];
     }
