@@ -193,6 +193,7 @@ const unfoldDescription = () => {
   }
 };
 
+// TODO：有时获取资源超时，需要改一下loading显示或解决超时错误
 // 获取资源信息
 const getInfo = async () => {
   console.log(address(props.type));
@@ -319,7 +320,6 @@ const getLyrics = async () => {
 // 列表播放，调用listStore里的changeList方法，如果props.target_id与当前播放列表id一致，则从头播放
 const playList = async () => {
   await listStore.changeList(props.type, props.target_id as string);
-  listStore.resetCurSong();
 };
 
 // 点击歌单标签，跳转到歌单分类页面

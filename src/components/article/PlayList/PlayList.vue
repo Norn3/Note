@@ -73,7 +73,6 @@ const jumpPage = () => {
 // TODO：点击播放列表，没有loading态而且过程很长
 const playlist = async () => {
   await listStore.changeList('playlist', props.id as string);
-  listStore.resetCurSong();
 };
 
 onMounted(async () => {

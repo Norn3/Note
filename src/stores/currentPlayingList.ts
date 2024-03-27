@@ -66,16 +66,19 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
             console.log(error);
           });
         }
+        if(templist == undefined || templist.length == 0) return;
         store.$patch({playing_list: templist, current_playlist_id: newPlayinglistId, current_song_index: 0})
         localStorage.setItem('playing_list',JSON.stringify(templist));
         localStorage.setItem('current_playlist_id',JSON.stringify(newPlayinglistId));
         localStorage.setItem('current_song_index', '0');
+
       }
       else {
         current_song_index.value = 0;
         localStorage.setItem('current_song_index', '0');
       }
       getNextSong();
+      resetCurSong();
     }
 
     const resetCurSong = () => {

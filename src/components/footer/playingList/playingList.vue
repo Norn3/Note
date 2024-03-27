@@ -81,6 +81,7 @@ onMounted(() => {
     (newValue, oldValue) => {
       playing_list.value = newValue;
       playlist_length.value = newValue.length;
+      showCurItem();
     },
     { deep: true }
   );
