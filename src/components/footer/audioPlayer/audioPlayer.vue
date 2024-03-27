@@ -278,7 +278,9 @@ const songLoaded = () => {
   getCurTime = Number(
     setInterval(() => {
       if (audioRef.value && songItem.value) {
-        curTime.value = processSongDuration(audioRef.value.currentTime * 1000);
+        const currentTime = audioRef.value.currentTime * 1000;
+        lyricsStore.currentTime = Math.floor(currentTime);
+        curTime.value = processSongDuration(currentTime);
       }
     }, 1000)
   );
