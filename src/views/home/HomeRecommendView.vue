@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import recommendPlaylist from '../../components/article/HomeView/recommendPlayList/recommendPlayList.vue';
 import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.vue';
+import playlistList from '../../components/article/playlistList/playlistList.vue';
 </script>
 
 <template>
@@ -9,8 +9,8 @@ import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.
       <section>
         <main-banner></main-banner>
         <div id="mianInfo" class="main_info">
-          <recommendPlaylist type="hot"></recommendPlaylist>
-          <recommendPlaylist type="personal"></recommendPlaylist>
+          <playlistList type="hot"></playlistList>
+          <playlistList type="personal"></playlistList>
         </div>
       </section>
     </main>
@@ -31,4 +31,3 @@ import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.
   }
 }
 </style>
-../../components/article/HomeView/recommendPlaylist/recommendPlayList.vue

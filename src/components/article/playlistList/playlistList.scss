@@ -1,9 +1,9 @@
-@import '../../../../mainStyle.scss';
+@import '../../../mainStyle.scss';
 
-.recommend_playlist{
+.playlist_list{
     margin: 0 auto;
     
-    .rec_description{
+    .list_description{
         display: flex;
         margin: 0 $playlistMarginLeftRight;
         border-bottom: 2px solid $brandColor;
@@ -13,7 +13,7 @@
             color: $titleTextColor;
         }
     }
-    .playlist_list{
+    .playlist_container{
         display: flex;
         justify-content: left;
         width: 100%;
