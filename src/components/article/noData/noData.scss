@@ -1,0 +1,9 @@
+@import '../../../mainStyle.scss';
+
+.no_data{
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    background: url('../../../assets/icons/no_data.svg') no-repeat center;
+    background-size: contain;
+  }
