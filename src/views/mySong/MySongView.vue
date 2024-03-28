@@ -111,9 +111,8 @@ let listItem: Array<PlaylistItemClass> = reactive([]);
 
 // 获取侧边栏数据
 const getSideBar = (userId: number) => {
-  get<any>(`/user/playlist?uid=${userId}&limit=100`)
+  get<any>(`/user/playlist?uid=${userId}`)
     .then((response) => {
-      console.log(response);
       // 先清空listItem
       listItem.splice(0, listItem.length);
       response.playlist.forEach((element: PlaylistItemClass) => {
@@ -178,8 +177,5 @@ onBeforeMount(() => {
 // 点击登录入口，登录并跳转回首页
 const showLoginEntry = () => {
   loginStore.showLoginEntry();
-  // router.push({ name: 'recommend' });
-  // sessionStorage.setItem('lastPathName', 'recommend');
-  // sessionStorage.setItem('lastPathQuery', '');
 };
 </script>
