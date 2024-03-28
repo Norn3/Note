@@ -1,6 +1,8 @@
 <template>
   <div id="lyricsPage" class="lyrics_page">
-    <div id="coverContainer" class="cover_container"></div>
+    <div id="coverContainer" class="cover_container">
+      <div id="lyricsCoverImg" class="lyrics_cover_img"></div>
+    </div>
     <div id="lyricsContainer" class="lyrics_container">
       <loading-state :loading="loading" class="loading_state"></loading-state>
       <ul class="lyrics">
@@ -59,6 +61,13 @@ watch(
     if (showLyrics || curLyrics) {
       loadCurLyrics();
     }
+  }
+);
+
+watch(
+  () => lyricsStore.coverImg,
+  (newValue) => {
+    $('#lyricsCoverImg').css('background-image', `url(${newValue})`);
   }
 );
 

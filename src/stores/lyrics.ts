@@ -7,6 +7,7 @@ export const useLyricsStore = defineStore('lyrics', () => {
     
     const showLyrics = ref(false);
     const currentTime = ref(0);
+    const coverImg = ref('');
 
     const curId = ref('');
     const nextId = ref('');
@@ -60,6 +61,10 @@ export const useLyricsStore = defineStore('lyrics', () => {
         nextLyrics.value = processLyrics(result)
     }
 
+    const setCoverImg = (img: string) => {
+        coverImg.value = img;
+    }
+
     const getCurLyrics = () => {
         return curLyrics.value;
     }
@@ -94,5 +99,5 @@ export const useLyricsStore = defineStore('lyrics', () => {
     }
 
 
-    return {showLyrics, curLyrics, currentTime, setCurId, setNextId, setNextLyrics, getCurLyrics, switchToNextLyrics, toggleShowLyrics}
+    return {showLyrics, curLyrics, currentTime, coverImg, setCurId, setNextId, setNextLyrics, getCurLyrics, switchToNextLyrics, toggleShowLyrics, setCoverImg}
 })

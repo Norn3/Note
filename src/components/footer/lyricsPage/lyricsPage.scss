@@ -11,8 +11,20 @@
     overflow: hidden;
 
     .cover_container{
+        display: flex;
+        align-items: center;
         width: 40%;
         height: 100%;
+
+        .lyrics_cover_img{
+            width: 80%;
+            height: 50%;
+            margin: 0 auto;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
     }
 
     .lyrics_container{
@@ -66,5 +78,4 @@
 }
 .show_lyrics{
     height: 81.5vh;
-    border: 1px solid $brandColor;
 }

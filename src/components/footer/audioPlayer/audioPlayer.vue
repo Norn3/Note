@@ -319,6 +319,7 @@ const showSongInfo = () => {
     console.log('播放列表为空');
   } else {
     coverImg.value = info.al.picUrl;
+    lyricsStore.setCoverImg(coverImg.value);
     songTitle.value = info.name;
     creatorName.value = '';
     info.ar.forEach((item: any) => {
