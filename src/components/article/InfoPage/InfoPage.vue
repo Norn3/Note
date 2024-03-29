@@ -104,9 +104,8 @@ import {
   watch,
 } from 'vue';
 import { get } from '../../../axios/insatance';
-import moment from 'moment';
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
-
+import { format } from 'date-fns';
 import './InfoPage.scss';
 import loadingState from '../loadingState/loadingState.vue';
 import processPlayCount from '../../../util/processPlayCount';
@@ -212,9 +211,7 @@ const getInfo = async () => {
           name: playlist.creator.nickname,
         });
         creatorAvatar.value = playlist.creator.avatarUrl;
-        createTime.value = moment(playlist.createTime).format(
-          'YYYY-MM-DD HH:mm:ss'
-        );
+        createTime.value = format(playlist.createTime, 'yyyy-MM-dd HH:mm:ss');
         description.value = playlist.description;
         tags = [];
         playlist.tags.forEach((element: string) => {
@@ -251,7 +248,7 @@ const getInfo = async () => {
           creatorName.push({ id: singer.id, name: singer.name });
         });
         // creatorAvatar.value = album.creator.avatarUrl;
-        createTime.value = moment(album.publishTime).format('YYYY-MM-DD');
+        createTime.value = format(album.publishTime, 'yyyy-MM-dd');
         description.value = album.description;
         tags = [];
         company.value = album.company;
