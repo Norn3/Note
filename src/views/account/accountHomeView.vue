@@ -98,6 +98,7 @@ import {
 import { useRouter } from 'vue-router';
 import { get } from '../../axios/insatance';
 import { differenceInYears, fromUnixTime } from 'date-fns';
+import cascaderOptions, { DivisionUtil } from '@pansy/china-division';
 
 import { useLoginStateStore } from '../../stores/loginState';
 
@@ -118,6 +119,9 @@ const userListenedSongs = ref('');
 
 const createList = ref([]);
 const faroviteList = ref([]);
+
+const divisionUtil = new DivisionUtil(cascaderOptions);
+console.log(divisionUtil.getProvinces());
 
 const getPlaylists = (uid: string) => {
   get<any>(`/user/playlist?uid=${uid}`)
@@ -154,8 +158,12 @@ const getInfo = (uid: string) => {
       } else {
         userGender.value = response.profile.gender == 1 ? '男' : '女';
       }
-      userProvince.value = response.profile.province;
-      userCity.value = response.profile.city;
+      userProvince.value = divisionUtil.getNameByCode(
+        String(response.profile.province)
+      );
+      userCity.value = divisionUtil.getNameByCode(
+        String(response.profile.city)
+      );
       userAge.value = String(
         differenceInYears(
           new Date(),
