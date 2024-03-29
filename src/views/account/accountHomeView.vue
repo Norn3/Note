@@ -97,7 +97,6 @@ import {
 } from 'vue';
 import { useRouter } from 'vue-router';
 import { get } from '../../axios/insatance';
-import moment from 'moment';
 
 import { useLoginStateStore } from '../../stores/loginState';
 
@@ -156,9 +155,7 @@ const getInfo = (uid: string) => {
       }
       userProvince.value = response.profile.province;
       userCity.value = response.profile.city;
-      userAge.value = String(
-        moment(new Date(response.profile.birthday)).format('YYYY年MM月DD日')
-      );
+      userAge.value = String(new Date(response.profile.birthday));
       userCreateDays.value = response.createDays;
       userListenedSongs.value = response.listenSongs;
     })
