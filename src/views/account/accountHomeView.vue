@@ -10,7 +10,7 @@
           <div id="userAddress" class="user_address">
             {{ userProvince + '-' + userCity }}
           </div>
-          <div id="userAge" class="user_age">{{ userAge }}</div>
+          <div id="userAge" class="user_age">{{ userAge + '岁' }}</div>
           <div id="userCreateDays" class="user_create_days">
             {{ '这是您加入我们的第' + userCreateDays + '天' }}
           </div>
@@ -97,6 +97,7 @@ import {
 } from 'vue';
 import { useRouter } from 'vue-router';
 import { get } from '../../axios/insatance';
+import { differenceInYears, fromUnixTime } from 'date-fns';
 
 import { useLoginStateStore } from '../../stores/loginState';
 
@@ -155,7 +156,12 @@ const getInfo = (uid: string) => {
       }
       userProvince.value = response.profile.province;
       userCity.value = response.profile.city;
-      userAge.value = String(new Date(response.profile.birthday));
+      userAge.value = String(
+        differenceInYears(
+          new Date(),
+          fromUnixTime(response.profile.birthday / 1000)
+        )
+      );
       userCreateDays.value = response.createDays;
       userListenedSongs.value = response.listenSongs;
     })
