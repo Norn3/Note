@@ -116,6 +116,7 @@ import processSongDuration from '../../../util/processSongDuration';
 import SongListItem from '../../article/songList/songListItem/songListItem.vue';
 import playingList from '../playingList/playingList.vue';
 import lyricsPage from '../lyricsPage/lyricsPage.vue';
+import { useLoginStateStore } from '../../../stores/loginState';
 
 // ref引用的元素
 const playButton = ref<HTMLElement | null>(null);
@@ -130,6 +131,9 @@ let listStore = useCurrentPlayingListStore();
 
 // 歌词store
 let lyricsStore = useLyricsStore();
+
+// 登录store
+let loginStore = useLoginStateStore();
 
 // 歌曲url控制
 let songItem = ref('');
@@ -196,7 +200,9 @@ const toggleFeature = (item: string) => {
 
 // 获取歌曲url
 const getSong = async (songId: string) => {
-  await get<any>(`/song/url/v1?id=${songId}&level=standard`)
+  await get<any>(
+    `/song/url/v1?id=${songId}&level=standard&timestamp=${Date.now()}`
+  )
     .then((response) => {
       // 处理返回的用户数据
       const song: Song = response.data;
@@ -326,8 +332,16 @@ const showSongInfo = () => {
       if (creatorName.value == '') creatorName.value += item.name;
       else creatorName.value += '/' + item.name;
     });
-    songDuration.value =
-      info.fee == '1' ? '00:30' : processSongDuration(info.dt);
+    if (info.fee == '1') {
+      songDuration.value =
+        loginStore.getProfile().vipType == 0
+          ? '00:30'
+          : processSongDuration(info.dt);
+    } else if (info.fee == '4') {
+      songDuration.value = '00:30';
+    } else {
+      songDuration.value = processSongDuration(info.dt);
+    }
   }
 };
 
