@@ -56,15 +56,16 @@
           播放
           <p id="playCount" class="play_count">{{ playCountText }}</p>
         </button>
-        <button id="like" class="like_playlist">
+        <button id="like" class="like_playlist" @click="toggleSubscribe">
           <img src="../../../assets/icons/favorites.svg" alt="" />
-          收藏
+          <span v-if="!isSubscribed"> 收藏 </span>
+          <span v-else> 已收藏 </span>
           <p id="likeCount" class="like_count">{{ subscribedText }}</p>
         </button>
-        <button id="sharePlaylist" class="share_playist">
+        <!-- <button id="sharePlaylist" class="share_playist">
           <img src="../../../assets/icons/share.svg" alt="" />
           分享
-        </button>
+        </button> -->
       </div>
 
       <div id="description" class="description">
@@ -110,6 +111,7 @@ import './InfoPage.scss';
 import loadingState from '../loadingState/loadingState.vue';
 import processPlayCount from '../../../util/processPlayCount';
 import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
+import { useLoginStateStore } from '../../../stores/loginState';
 
 const router = useRouter();
 const route = useRoute();
@@ -127,13 +129,13 @@ const address = (type: string): string => {
   let addr = '';
   switch (type) {
     case 'playlist':
-      addr = `/playlist/detail?id=${props.target_id}`;
+      addr = `/playlist/detail?id=${props.target_id}&timestamp=${Date.now()}`;
       break;
     case 'song':
-      addr = `/song/detail?ids=${props.target_id}`;
+      addr = `/song/detail?ids=${props.target_id}&timestamp=${Date.now()}`;
       break;
     case 'album':
-      addr = `/album?id=${props.target_id}`;
+      addr = `/album?id=${props.target_id}&timestamp=${Date.now()}`;
       break;
   }
   return addr;
@@ -148,6 +150,7 @@ let name = ref(''),
   creatorAvatar = ref(''),
   createTime = ref(''),
   playCountText = ref(''),
+  isSubscribed = ref(false),
   subscribedText = ref(''),
   tags: Array<string> = reactive([]),
   description = ref(''),
@@ -159,7 +162,10 @@ let albumOfSong = ref('');
 // album
 let company = ref('');
 
+// 播放列表store
 let listStore = useCurrentPlayingListStore();
+// 登录状态store，用于判断当前能否使用收藏功能
+let loginStore = useLoginStateStore();
 
 // 简介状态控制
 const showDescription = ref(true); // 是否完全展示简介
@@ -189,6 +195,45 @@ const unfoldDescription = () => {
   // 收起状态
   else {
     window.scrollTo(0, 0); // 回到最顶端
+  }
+};
+
+// 必须先登录才能收藏，专辑不具备单独收藏功能，单曲只能收藏，不能取消收藏
+const toggleSubscribe = () => {
+  if (!loginStore.getLoginState()) {
+    loginStore.showLoginEntry();
+    return;
+  }
+  switch (props.type) {
+    case 'playlist': {
+      const action = isSubscribed.value ? '2' : '1';
+      get<any>(
+        `/playlist/subscribe?t=${action}&id=${
+          props.target_id
+        }&timestamp=${Date.now()}`
+      )
+        .then((response) => {
+          isSubscribed.value = !isSubscribed.value;
+        })
+        .catch((error) => {
+          // 处理请求错误
+          console.log('请求失败');
+          console.log(error);
+        });
+      break;
+    }
+    case 'song': {
+      // get<any>(`/like?id=${props.target_id}&timestamp=${Date.now()}`)
+      // .then((response) => {
+      //   console.log(response);
+      // })
+      // .catch((error) => {
+      //   // 处理请求错误
+      //   console.log('请求失败');
+      //   console.log(error);
+      // });
+      break;
+    }
   }
 };
 
@@ -222,6 +267,7 @@ const getInfo = async () => {
           playCountText.value =
             '（' + processPlayCount(playlist.playCount) + '）';
         }
+        isSubscribed.value = playlist.subscribed;
         if (playlist.subscribedCount != undefined) {
           subscribedText.value =
             '（' + processPlayCount(playlist.subscribedCount) + '）';
@@ -238,6 +284,7 @@ const getInfo = async () => {
         getLyrics();
 
         playCountText.value = '';
+        console.log(isSubscribed.value);
         subscribedText.value = '';
       } else if (props.type == 'album') {
         let album = response.album;
@@ -247,7 +294,6 @@ const getInfo = async () => {
         album.artists.forEach((singer: any) => {
           creatorName.push({ id: singer.id, name: singer.name });
         });
-        // creatorAvatar.value = album.creator.avatarUrl;
         createTime.value = format(album.publishTime, 'yyyy-MM-dd');
         description.value = album.description;
         tags = [];
@@ -351,8 +397,9 @@ onMounted(() => {
 // 当页面的路由改变，马上重新获取信息
 watch(
   () => props.target_id,
-  async (newId, oldId) => {
+  (newId, oldId) => {
     renderInfo();
   }
 );
 </script>
+../../../stores/likeList

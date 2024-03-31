@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { get } from '../axios/insatance';
+import { useuserPlaylistStore } from './userPlaylist';
 
 
 export const useLoginStateStore = defineStore('loginState', () => {
@@ -11,8 +12,8 @@ export const useLoginStateStore = defineStore('loginState', () => {
 
     const useLogin = ref(false);
 
-    // 创建实例用于一次更改多个属性而只触发一次subscribe
-    const store = useLoginStateStore();
+    const userPlaylistStore = useuserPlaylistStore();
+
 
     // 获取登录状态
     const getLoginStatus = () => {
@@ -82,7 +83,7 @@ export const useLoginStateStore = defineStore('loginState', () => {
     const processLogout = async () => {
         // 加时间戳防止缓存
         await get<any>(`/logout?timestamp=${Date.now()}`)
-            .then((response) => {
+            .then(async (response) => {
                 console.log(response);
                 console.log('退出登录成功');
             })
@@ -99,9 +100,11 @@ export const useLoginStateStore = defineStore('loginState', () => {
     const requsetUserProfile = async (): Promise<any> => {
         let profile = null;
         await get<any>(`/user/account?timestamp=${Date.now()}`)
-        .then((response) => {
+        .then(async (response) => {
             console.log(response);
             profile = response.profile;
+            await userPlaylistStore.setUserPlaylist(profile.userId);
+            
         })
         .catch((error) => {
             // 处理请求错误
@@ -112,5 +115,5 @@ export const useLoginStateStore = defineStore('loginState', () => {
     }
 
 
-    return {already_login, useLogin, getLoginState, getProfile, processLogin, processLogout, getLoginStatus, showLoginEntry, hideLoginEntry}
+    return {already_login, useLogin, profile, getLoginState, getProfile, processLogin, processLogout, getLoginStatus, showLoginEntry, hideLoginEntry}
 })

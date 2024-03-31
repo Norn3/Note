@@ -87,9 +87,9 @@ $(document).on('mouseleave', '#account', () => {
 // 菜单跳转
 const accountMenuList = [
   { id: 0, text: '我的主页', address: 'accountHome' },
-  { id: 1, text: '我的信息', address: 'accountMessage' },
-  { id: 2, text: '个人设置', address: 'accountInformation' },
-  { id: 3, text: '退出', address: 'exit' },
+  // { id: 1, text: '我的信息', address: 'accountMessage' },
+  { id: 1, text: '个人设置', address: 'accountInformation' },
+  { id: 2, text: '退出', address: 'exit' },
 ];
 
 const router = useRouter();

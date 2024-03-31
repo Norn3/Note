@@ -36,8 +36,10 @@ import SideBarItem from './sideBarItem/sideBarItem.vue';
 import PlaylistItem from '../../../class/PlaylistItemClass';
 
 import { useLoginStateStore } from '../../../stores/loginState';
+import { useuserPlaylistStore } from '../../../stores/userPlaylist';
 
 const loginStore = useLoginStateStore();
+const userPlaylistStore = useuserPlaylistStore();
 
 const loading = ref(true);
 
@@ -87,8 +89,8 @@ const addItemToList = (listItem: Array<PlaylistItem>) => {
       slice++;
     }
   }
-  createItem(listItem, 0, slice, '#create');
-  createItem(listItem, slice, listItem.length, '#like');
+  createItem(userPlaylistStore.getCreateList(), '#create');
+  createItem(userPlaylistStore.getLikeList(), '#like');
 
   if ($('#create').children(':first').length != 0) {
     $('#create').children(':first').addClass('check');
@@ -97,20 +99,14 @@ const addItemToList = (listItem: Array<PlaylistItem>) => {
   }
 };
 
-const createItem = (
-  listItem: Array<PlaylistItem>,
-  start: number,
-  end: number,
-  listId: string
-) => {
+const createItem = (listItem: Array<PlaylistItem>, listId: string) => {
   // 使用 $() 将目标元素包装为 jQuery 对象
   let $list = $(listId);
   $list.empty();
   $list.css('display', 'none');
-  for (let i = start; i < end; i++) {
+  for (const item of listItem) {
     // 创建新的子元素并设置其内容
     const $li = $('<li>');
-    // $li.attr('id','"listItem'+ (father.itemNum - current) +'"');
     $li.addClass('list_item');
     // 将新创建的子元素添加为目标元素的子节点
     const li = $li[0];
@@ -118,13 +114,13 @@ const createItem = (
     render(
       h(SideBarItem, {
         listType: props.listType,
-        pid: listItem[i].id,
-        name: listItem[i].name,
-        coverImgUrl: listItem[i].coverImgUrl,
+        pid: item.id,
+        name: item.name,
+        coverImgUrl: item.coverImgUrl,
         description:
           props.listType == 'playlist'
-            ? listItem[i].trackCount + '首'
-            : listItem[i].updateFrequency,
+            ? item.trackCount + '首'
+            : item.updateFrequency,
       }),
       li
     );

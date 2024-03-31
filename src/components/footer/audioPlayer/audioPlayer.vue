@@ -25,7 +25,7 @@
     ></div>
     <div id="nextButton" class="button next" @click="playNextSong"></div>
     <div id="coverImg" class="cover_img">
-      <img :src="coverImg" alt="cover" />
+      <img :src="coverImg" alt="封面" />
     </div>
     <div id="songTitle" class="song_title">
       <span id="title" class="title">{{ songTitle }}</span>
