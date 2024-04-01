@@ -112,6 +112,7 @@ import loadingState from '../loadingState/loadingState.vue';
 import processPlayCount from '../../../util/processPlayCount';
 import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
 import { useLoginStateStore } from '../../../stores/loginState';
+import { useuserPlaylistStore } from '../../../stores/userPlaylist';
 
 const router = useRouter();
 const route = useRoute();
@@ -166,6 +167,8 @@ let company = ref('');
 let listStore = useCurrentPlayingListStore();
 // 登录状态store，用于判断当前能否使用收藏功能
 let loginStore = useLoginStateStore();
+// 用户歌单store，用于弹出歌曲收藏框
+let userPlaylistStore = useuserPlaylistStore();
 
 // 简介状态控制
 const showDescription = ref(true); // 是否完全展示简介
@@ -223,15 +226,7 @@ const toggleSubscribe = () => {
       break;
     }
     case 'song': {
-      // get<any>(`/like?id=${props.target_id}&timestamp=${Date.now()}`)
-      // .then((response) => {
-      //   console.log(response);
-      // })
-      // .catch((error) => {
-      //   // 处理请求错误
-      //   console.log('请求失败');
-      //   console.log(error);
-      // });
+      userPlaylistStore.showCollectFrame(String(props.target_id));
       break;
     }
   }

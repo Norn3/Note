@@ -1,6 +1,7 @@
 <template>
   <div class="main_view">
     <login-frame v-show="isLogin"></login-frame>
+    <collcet-song-frame v-show="isCollect"></collcet-song-frame>
     <header>
       <brand-icon></brand-icon>
       <header-nav></header-nav>
@@ -90,6 +91,7 @@ import $ from 'jquery';
 import { useRouter, useRoute } from 'vue-router';
 
 import loginFrame from './components/article/loginFrame/loginFrame.vue';
+import collcetSongFrame from './components/article/collectSongFrame/collectSongFrame.vue';
 import brandIcon from './components/header/icon/brandIcon.vue';
 import searchFrame from './components/header/search/searchFrame.vue';
 import accountBar from './components/header/account/accountBar.vue';
@@ -98,15 +100,18 @@ import headerNav from './components/header/nav/headerNav.vue';
 
 import { useCurrentPlayingListStore } from './stores/currentPlayingList';
 import { useLoginStateStore } from './stores/loginState';
+import { useuserPlaylistStore } from './stores/userPlaylist';
 import { onMounted, ref, watch } from 'vue';
 
 const router = useRouter();
 const route = useRoute();
 
 const isLogin = ref(false);
+const isCollect = ref(false);
 
 const listStore = useCurrentPlayingListStore();
 const loginState = useLoginStateStore();
+const userPlaylistStore = useuserPlaylistStore();
 
 // 初始化登录状态
 loginState.getLoginStatus();
@@ -155,8 +160,18 @@ watch(
   () => loginState.useLogin,
   (newValue) => {
     isLogin.value = newValue;
-    console.log(newValue);
+    if (newValue) {
+      $('html').css('overflow-y', 'hidden');
+    } else {
+      $('html').css('overflow-y', 'overlay');
+    }
+  }
+);
 
+watch(
+  () => userPlaylistStore.use_Collect_Song,
+  (newValue) => {
+    isCollect.value = newValue;
     if (newValue) {
       $('html').css('overflow-y', 'hidden');
     } else {

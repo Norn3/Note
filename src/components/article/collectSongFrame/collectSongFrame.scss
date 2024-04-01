@@ -1,0 +1,202 @@
+@import '../../../mainStyle.scss';
+
+.collect_song_page{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5000;
+    background-color: rgba(114, 114, 114, 0.2);
+    .collect_song_frame{
+        position: absolute;
+        left: calc(50vw - 17.5vw);
+        top: calc(50vh - 25vh);
+        width: 35vw;
+        height: 50vh;
+        min-width: 370px;
+        min-height: 280px;
+        border-radius: 5px;
+        background-color: white;
+        .frame_title{
+            display: flex;
+            align-items: center;
+            height: 5vh;
+            min-height: 25px;
+            color: white;
+            font-size: large;
+            background-color: $brandColor;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            .title_text{
+                width: 7vw;
+                min-width: 110px;
+                height: 25px;
+                line-height: 25px;
+                white-space: nowrap;
+            }
+            .close_frame{
+                position: absolute;
+                right: 0;
+                width: 30px;
+                height: 5vh;
+                min-height: 25px;
+                background: url('../../../assets/icons/close.svg') no-repeat center;
+                cursor: pointer;
+            }
+        }
+
+        .frame_content{
+            height: 43vh;
+            min-height: 255px;
+
+            .user_create_list{
+                height: 100%;
+                padding: 1vh 0 1vh 1.5vw;
+                overflow-y: auto;
+                overflow-x: hidden;
+                &::-webkit-scrollbar {
+                    width: 3px;
+                }
+                &::-webkit-scrollbar-thumb {
+                    background-color: rgb(209, 214, 219);
+                }
+
+                .create_playlist {
+                    height: 50px;
+                    line-height: 50px;
+                    text-align: left;
+                    cursor: pointer;
+
+                    &::before{
+                        content: url('../../../assets/icons/favorites.svg');
+                        padding: 0 17px;
+                        margin-right: 8px;
+                    }
+                }
+
+                .user_list_item {
+                    width: 100%;
+                    height: auto;
+                    display: grid;
+                    /*  声明列的宽度  */
+                    grid-template-columns: 50px auto;
+                    /*  声明行间距和列间距  */
+                    grid-gap: 7px;
+                    /*  声明行的高度  */
+                    grid-template-rows: repeat(2, 1fr);
+                    justify-items: start;
+                    cursor: pointer;
+                
+                    .cover {
+                        width: 50px;
+                        height: 50px;
+                        grid-column: 1;
+                        grid-row: 1 / 3;
+                    }
+                
+                    .name {
+                        grid-column: 2 / 3;
+                        grid-row: 1;
+                        width: 30vw;
+                        text-align: left;
+                        font-size: 1em;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        // 溢出显示省略号
+                        text-overflow: ellipsis;
+    
+                        @media screen and (max-width: 1170px) {
+                            // width: 30vw;
+                        }
+                    
+                    }
+                
+                    .description {
+                        grid-column: 2 / 3;
+                        grid-row: 2;
+                        font-size: 0.7em;
+                        color: gray;
+                    }
+
+                }
+            }
+
+            .create_playlist_form{
+                max-width: 300px;
+                margin: 8vh auto 10vh;
+
+                .text{
+                    color: rgb(179, 179, 179);
+                }
+
+                .buttons{
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 6vh;
+                    .button{
+                        width: 100px;
+                    }
+    
+                    .submit_button{
+                        color: white;
+                        background-color: $brandColor;
+                        &:hover{
+                            background-color: $darkerBrandColor;
+                        }
+                
+                        &:focus{
+                            outline: none;
+                        }
+                    }
+                }
+                
+            }
+            
+        }
+        // .switch_login_way{
+        //     position: absolute;
+        //     bottom: 0;
+        //     height: 6vh;
+        //     min-height: 30px;
+        //     width: calc(100% - 20px);
+        //     padding: 0 10px;
+        //     line-height: 25px;
+        //     display: flex;
+        //     justify-content: space-between;
+        //     align-items: center;
+        //     border-top: 1px solid $brandColor;
+
+        //     .pre_way, .next_way{
+        //         display: flex;
+        //         align-items: center;
+        //         cursor: pointer;
+        //     }
+
+        //     .pre_way{
+        //         &::before{
+        //             position: relative;
+        //             display: inline-block;
+        //             content: url('../../../assets/icons/arrow.svg');
+        //             width: 20px;
+        //             height: 20px;
+        //             transform: scale(1.5) rotate(90deg);
+
+        //         }
+        //     }
+
+        //     .next_way{
+        //         position: absolute;
+        //         right: 10px;
+        //         &::after{
+        //             position: relative;
+        //             display: inline-block;
+        //             content: url('../../../assets/icons/arrow.svg');
+        //             width: 20px;
+        //             height: 20px;
+        //             transform: scale(1.5) rotate(270deg);
+
+        //         }
+        //     }
+        // }
+    }
+
+}
