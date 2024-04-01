@@ -9,7 +9,7 @@
     </div>
     <main v-show="isLogin">
       <aside>
-        <side-bar :listItem="listItem" listType="playlist"></side-bar>
+        <side-bar :checkId="checkPlaylist" listType="playlist"></side-bar>
       </aside>
       <section>
         <router-view></router-view>
@@ -94,9 +94,10 @@ import $ from 'jquery';
 import { reactive, onBeforeMount, watch, ref } from 'vue';
 import { get } from '../../axios/insatance';
 
-import PlaylistItemClass from '../../class/PlaylistItemClass';
+// import PlaylistItemClass from '../../class/PlaylistItemClass';
 
 import { useLoginStateStore } from '../../stores/loginState';
+import { useuserPlaylistStore } from '../../stores/userPlaylist';
 
 import SideBar from '../../components/article/sideBar/sideBar.vue';
 import { useRouter } from 'vue-router';
@@ -106,55 +107,42 @@ const isLogin = ref(false);
 const router = useRouter();
 
 const loginStore = useLoginStateStore();
+const userPlaylistStore = useuserPlaylistStore();
 
-let listItem: Array<PlaylistItemClass> = reactive([]);
-
-// 获取侧边栏数据
-const getSideBar = (userId: number) => {
-  get<any>(`/user/playlist?uid=${userId}`)
-    .then((response) => {
-      // 先清空listItem
-      listItem.splice(0, listItem.length);
-      response.playlist.forEach((element: PlaylistItemClass) => {
-        listItem.push(element);
-      });
-    })
-    .catch((error) => {
-      // 处理请求错误
-      console.log('请求失败');
-      console.log(error);
-    });
-};
+const checkPlaylist = ref('');
 
 // 获取“我的音乐”页面的首个歌单
-const getPid = async (userId: number): Promise<number> => {
-  let pid = 1;
-  await get<any>(`/user/playlist?uid=${userId}`)
-    .then((response) => {
-      pid = response.playlist[0].id;
-    })
-    .catch((error) => {
-      // 处理请求错误
-      console.log('获取首个歌单id失败');
-      console.log(error);
-    });
+const getPid = (): string => {
+  let pid = '';
+  if (userPlaylistStore.getCreateList().length > 0) {
+    pid = userPlaylistStore.getCreateList()[0].id;
+  } else if (userPlaylistStore.getLikeList().length > 0) {
+    pid = userPlaylistStore.getLikeList()[0].id;
+  }
   return pid;
 };
 
 // 根据获取到的pid跳转到myPlaylistInfo
-const jumpPage = (pid: number) => {
+const jumpPage = (pid: string) => {
   router.push({ name: 'myPlaylistInfo', query: { id: pid } });
   sessionStorage.setItem('lastPathName', 'myPlaylistInfo');
   sessionStorage.setItem('lastPathQuery', JSON.stringify({ id: pid }));
 };
 
 // 根据登录状态渲染页面
-const renderPage = async (loginState: boolean) => {
+const renderPage = (loginState: boolean) => {
   if (loginState) {
     isLogin.value = true;
-    let userId = loginStore.getProfile().userId;
-    getSideBar(userId);
-    let pid = await getPid(userId);
+    let pid = '';
+    if (
+      sessionStorage.getItem('lastPathName') == 'myPlaylistInfo' &&
+      sessionStorage.getItem('lastPathQuery') != null
+    ) {
+      pid = JSON.parse(sessionStorage.getItem('lastPathQuery') as string).id;
+    } else {
+      pid = getPid();
+    }
+    checkPlaylist.value = pid;
     jumpPage(pid);
   } else {
     isLogin.value = false;

@@ -56,7 +56,7 @@
           播放
           <p id="playCount" class="play_count">{{ playCountText }}</p>
         </button>
-        <button id="like" class="like_playlist" @click="toggleSubscribe">
+        <button class="like_playlist" @click="toggleSubscribe">
           <img src="../../../assets/icons/favorites.svg" alt="" />
           <span v-if="!isSubscribed"> 收藏 </span>
           <span v-else> 已收藏 </span>
@@ -202,7 +202,7 @@ const unfoldDescription = () => {
 };
 
 // 必须先登录才能收藏，专辑不具备单独收藏功能，单曲只能收藏，不能取消收藏
-const toggleSubscribe = () => {
+const toggleSubscribe = async () => {
   if (!loginStore.getLoginState()) {
     loginStore.showLoginEntry();
     return;
@@ -210,19 +210,11 @@ const toggleSubscribe = () => {
   switch (props.type) {
     case 'playlist': {
       const action = isSubscribed.value ? '2' : '1';
-      get<any>(
-        `/playlist/subscribe?t=${action}&id=${
-          props.target_id
-        }&timestamp=${Date.now()}`
-      )
-        .then((response) => {
-          isSubscribed.value = !isSubscribed.value;
-        })
-        .catch((error) => {
-          // 处理请求错误
-          console.log('请求失败');
-          console.log(error);
-        });
+      const result = await userPlaylistStore.processSubscribePlaylist(
+        String(props.target_id),
+        action
+      );
+      if (result) isSubscribed.value = !isSubscribed.value;
       break;
     }
     case 'song': {
@@ -235,74 +227,69 @@ const toggleSubscribe = () => {
 // TODO：有时获取资源超时，需要改一下loading显示或解决超时错误
 // 获取资源信息
 const getInfo = async () => {
-  console.log(address(props.type));
+  try {
+    const response = await get<any>(`${address(props.type)}`);
+    if (props.type == 'playlist') {
+      let playlist = response.playlist;
+      coverImgUrl.value = playlist.coverImgUrl;
+      name.value = playlist.name;
+      creatorName = reactive([]);
+      creatorName.push({
+        id: playlist.creator.userId,
+        name: playlist.creator.nickname,
+      });
+      creatorAvatar.value = playlist.creator.avatarUrl;
+      createTime.value = format(playlist.createTime, 'yyyy-MM-dd HH:mm:ss');
+      description.value = playlist.description;
+      tags = [];
+      playlist.tags.forEach((element: string) => {
+        tags.push(element);
+      });
 
-  await get<any>(`${address(props.type)}`)
-    .then((response) => {
-      console.log(response);
-
-      if (props.type == 'playlist') {
-        let playlist = response.playlist;
-        coverImgUrl.value = playlist.coverImgUrl;
-        name.value = playlist.name;
-        creatorName = reactive([]);
-        creatorName.push({
-          id: playlist.creator.userId,
-          name: playlist.creator.nickname,
-        });
-        creatorAvatar.value = playlist.creator.avatarUrl;
-        createTime.value = format(playlist.createTime, 'yyyy-MM-dd HH:mm:ss');
-        description.value = playlist.description;
-        tags = [];
-        playlist.tags.forEach((element: string) => {
-          tags.push(element);
-        });
-
-        if (playlist.playCount != undefined) {
-          playCountText.value =
-            '（' + processPlayCount(playlist.playCount) + '）';
-        }
-        isSubscribed.value = playlist.subscribed;
-        if (playlist.subscribedCount != undefined) {
-          subscribedText.value =
-            '（' + processPlayCount(playlist.subscribedCount) + '）';
-        }
-      } else if (props.type == 'song') {
-        let song = response.songs[0];
-        coverImgUrl.value = song.al.picUrl;
-        name.value = song.name;
-        creatorName = reactive([]);
-        song.ar.forEach((singer: any) => {
-          creatorName.push({ id: singer.id, name: singer.name });
-        });
-        albumOfSong.value = song.al.name;
-        getLyrics();
-
-        playCountText.value = '';
-        console.log(isSubscribed.value);
-        subscribedText.value = '';
-      } else if (props.type == 'album') {
-        let album = response.album;
-        coverImgUrl.value = album.picUrl;
-        name.value = album.name;
-        creatorName = reactive([]);
-        album.artists.forEach((singer: any) => {
-          creatorName.push({ id: singer.id, name: singer.name });
-        });
-        createTime.value = format(album.publishTime, 'yyyy-MM-dd');
-        description.value = album.description;
-        tags = [];
-        company.value = album.company;
-
-        playCountText.value = '';
-        subscribedText.value = '';
+      if (playlist.playCount != undefined) {
+        playCountText.value =
+          '（' + processPlayCount(playlist.playCount) + '）';
       }
-    })
-    .catch((error) => {
-      // 处理请求错误
-      console.log('请求失败');
-      console.log(error);
-    });
+      isSubscribed.value = playlist.subscribed;
+      if (playlist.subscribedCount != undefined) {
+        subscribedText.value =
+          '（' + processPlayCount(playlist.subscribedCount) + '）';
+      }
+    } else if (props.type == 'song') {
+      let song = response.songs[0];
+      coverImgUrl.value = song.al.picUrl;
+      name.value = song.name;
+      creatorName = reactive([]);
+      song.ar.forEach((singer: any) => {
+        creatorName.push({ id: singer.id, name: singer.name });
+      });
+      albumOfSong.value = song.al.name;
+      getLyrics();
+
+      playCountText.value = '';
+      console.log(isSubscribed.value);
+      subscribedText.value = '';
+    } else if (props.type == 'album') {
+      let album = response.album;
+      coverImgUrl.value = album.picUrl;
+      name.value = album.name;
+      creatorName = reactive([]);
+      album.artists.forEach((singer: any) => {
+        creatorName.push({ id: singer.id, name: singer.name });
+      });
+      createTime.value = format(album.publishTime, 'yyyy-MM-dd');
+      description.value = album.description;
+      tags = [];
+      company.value = album.company;
+
+      playCountText.value = '';
+      subscribedText.value = '';
+    }
+  } catch (error) {
+    // 处理请求错误
+    console.log('请求失败');
+    console.log(error);
+  }
   loading.value = false;
 };
 
@@ -366,8 +353,6 @@ const jumpCategory = (tag: string) => {
 };
 
 const jumpArtistInfo = (id: number) => {
-  console.log(id);
-
   if (props.type == 'song' || props.type == 'album') {
     router.push({ name: 'artistInfo', query: { id: id } });
   }
@@ -397,4 +382,3 @@ watch(
   }
 );
 </script>
-../../../stores/likeList

@@ -1,5 +1,6 @@
 @import '../../../../mainStyle.scss';
 .sideBar_item {
+    position: relative;
     width: 100%;
     height: auto;
     display: grid;
@@ -41,6 +42,15 @@
       grid-row: 2;
       font-size: 0.7em;
       color: gray;
+    }
+
+    .delete_icon{
+      position: absolute;
+      bottom: 5%;
+      left: 80%;
+      width: 20px;
+      height: 20px;
+      background: url('../../../../assets/icons/trash.svg') no-repeat center;
     }
 
     @media screen and (max-width: 800px) {

@@ -23,7 +23,7 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
     // 获取用户歌单
     const setUserPlaylist = async (uid: string) => {
         try {
-            const response = await get<any>(`/user/playlist?uid=${uid}`);
+            const response = await get<any>(`/user/playlist?uid=${uid}&timestamp=${Date.now()}`);
             const playlist = response.playlist;
             let slice = 0;
             for (const element of playlist) {
@@ -52,17 +52,41 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
     }
 
     const createPlaylist = async (name: string) => {
-        await get<any>(`/playlist/create?name=${name}`)
-        .then((response) => {
-            console.log(response);
+        try {
+            const response = await get<any>(`/playlist/create?name=${name}`)
             processSongInPlaylist('add', response.id);
-        })
-        .catch((error) => {
+            return; 
+
+          } catch (error) {
             // 处理请求错误
             alert('创建歌单失败');
             console.log(error);
-        });
-        return;
+          }
+    }
+
+    const deletePlaylist = async (playlistId: string) => {
+        try {
+            const response = await get<any>(`/playlist/delete?id=${playlistId}`)
+            console.log(response);
+            return; 
+
+          } catch (error) {
+            // 处理请求错误
+            alert('创建歌单失败');
+            console.log(error);
+          }
+    }
+
+    const processSubscribePlaylist = async (playlistId: string, action: string) => {
+        try {
+            const response = await get<any>(`/playlist/subscribe?t=${action}&id=${playlistId}`)
+            await setUserPlaylist(loginStore.getProfile().userId);
+            return response.code == 200 ? true : false;
+        } catch (error) {
+            // 处理请求错误
+            alert('收藏或取消收藏歌单失败');
+            console.log(error);
+        }
     }
 
     const processSongInPlaylist = async (type: string, playlistId: string) => {
@@ -92,5 +116,5 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
 
 
 
-    return {use_Collect_Song, createList, setUserPlaylist, getCreateList, getLikeList, setCollectingSongId, createPlaylist, processSongInPlaylist, showCollectFrame, hideCollectFrame}
+    return {use_Collect_Song, createList, likeList, setUserPlaylist, getCreateList, getLikeList, processSubscribePlaylist, setCollectingSongId, createPlaylist, deletePlaylist, processSongInPlaylist, showCollectFrame, hideCollectFrame}
 })

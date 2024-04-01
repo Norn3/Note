@@ -1,23 +1,42 @@
 <template>
-  <div id="sideBarItem" class="sideBar_item" @click="jumpPage">
+  <div
+    id="sideBarItem"
+    class="sideBar_item"
+    @click="jumpPage"
+    @mouseover="hovering = true"
+    @mouseleave="hovering = false"
+  >
     <img :src="coverImgUrl" alt="" id="cover" class="cover" />
     <div id="name" class="name">{{ name }}</div>
     <div id="description" class="description">{{ description }}</div>
+    <div
+      v-if="hovering && listType == 'playlist' && String(pid) != likePlaylistId"
+      id="deleteIcon"
+      class="delete_icon"
+      @click.stop="deletePlaylist"
+    ></div>
   </div>
 </template>
 <style lang="scss" scoped></style>
 <script setup lang="ts">
 import $ from 'jquery';
 import { onMounted, ref, nextTick, reactive, watch } from 'vue';
+import { useuserPlaylistStore } from '../../../../stores/userPlaylist';
 import router from '../../../../router/index';
 
 import './sideBarItem.scss';
+
+const userPlaylistStore = useuserPlaylistStore();
+
+const hovering = ref(false);
 
 const props = defineProps({
   listType: {
     type: String,
     default: 'playlist',
   },
+  playlistType: String,
+  likePlaylistId: String,
   pid: Number,
   name: String,
   coverImgUrl: String,
@@ -32,9 +51,16 @@ const jumpPage = () => {
   });
 };
 
+const deletePlaylist = () => {
+  if (props.playlistType == 'create') {
+    userPlaylistStore.deletePlaylist(String(props.pid));
+  } else {
+    userPlaylistStore.processSubscribePlaylist(String(props.pid), '2');
+  }
+};
+
 onMounted(async () => {
   // 等待页面加载结束，再调用createItem创建列表项
   await nextTick();
-  // console.log(father.itemNum);
 });
 </script>
