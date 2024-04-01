@@ -29,6 +29,7 @@ import { get } from '../../../axios/insatance';
 
 import './songList.scss';
 import songListItem from './songListItem/songListItem.vue';
+import { useuserPlaylistStore } from '../../../stores/userPlaylist';
 
 import { address } from '../../../util/getSongListAddress';
 import processSingerArray from '../../../util/processSingerArray';
@@ -42,10 +43,14 @@ const props = defineProps({
   target_id: String,
 });
 
+const userPlaylistStore = useuserPlaylistStore();
+
 let current_song_id = 0;
 const limit = 50;
 let gotAllSongs = ref(false);
 const already_getting = ref(false);
+
+const playlistId = ref('');
 
 const firstGetSongs = async () => {
   const $ul = $('#songList').find('#songs');
@@ -80,10 +85,12 @@ const getSongs = async () => {
           album = song.al.name;
           albumId = song.al.id;
         }
+
         render(
           h(songListItem, {
             type: props.type,
             listId: ++current_song_id,
+            playlistId: playlistId.value,
             songId: song.id,
             name: song.name,
             durationTime: song.dt,
@@ -156,26 +163,36 @@ onMounted(async () => {
   window.addEventListener('scroll', throttleReturn);
 });
 
-// 当页面的路由改变，马上重新获取信息
-watch(
-  () => props.target_id,
-  (newId, oldId) => {
-    // 保证页面内只有一个监听器
-    window.removeEventListener('scroll', throttleReturn);
-    window.addEventListener('scroll', throttleReturn);
-    gotAllSongs.value = false;
-    if (props.type != 'song') {
-      firstGetSongs();
-    }
-  }
-);
-
 // 当已获取所有的歌曲，移除监听，不再滚动加载更多
 watch(
   () => gotAllSongs.value,
   () => {
     if (gotAllSongs.value) {
       window.removeEventListener('scroll', throttleReturn);
+    }
+  }
+);
+
+// TODO：有时会出现滚动结束但监听器不移除的情况，需要检查
+
+// 当页面的路由或用户创建的歌单改变，马上重新获取信息
+watch(
+  [() => props.target_id, () => userPlaylistStore.createList],
+  (newValue) => {
+    // 保证页面内只有一个监听器
+
+    window.removeEventListener('scroll', throttleReturn);
+    window.addEventListener('scroll', throttleReturn);
+    gotAllSongs.value = false;
+    if (props.type != 'song') {
+      playlistId.value = '';
+      for (const item of newValue[1]) {
+        if (item.id == Number(newValue[0])) {
+          playlistId.value = String(newValue[0]);
+          break;
+        }
+      }
+      firstGetSongs();
     }
   }
 );

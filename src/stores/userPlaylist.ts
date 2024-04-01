@@ -16,29 +16,29 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
     // 点开收藏框时，需要收藏的目标歌曲id
     const collectingSongId = ref('');
 
+
     // 使用登录store，使用用户id获取用户歌单
     const loginStore = useLoginStateStore();
 
     // 获取用户歌单
     const setUserPlaylist = async (uid: string) => {
-        // 加时间戳防止接口数据缓存
-        await get<any>(`/user/playlist?uid=${uid}`)
-        .then((response) => {
+        try {
+            const response = await get<any>(`/user/playlist?uid=${uid}`);
             const playlist = response.playlist;
             let slice = 0;
             for (const element of playlist) {
-                if (element.userId != uid) break;
-                slice++;
+              if (element.userId != uid) break;
+              slice++;
             }
             createList.value = playlist.slice(0, slice);
             likeList.value = playlist.slice(slice, playlist.length);
-        })
-        .catch((error) => {
+            return; 
+
+          } catch (error) {
             // 处理请求错误
-            console.log('获取登录状态失败');
+            console.log('获取用户歌单失败');
             console.log(error);
-        });
-        return;
+          }
     }
 
     const getCreateList = () => {
@@ -46,6 +46,9 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
     }
     const getLikeList = () => {
         return likeList.value;
+    }
+    const setCollectingSongId = (sId: string) => {
+        collectingSongId.value = sId;
     }
 
     const createPlaylist = async (name: string) => {
@@ -64,10 +67,10 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
 
     const processSongInPlaylist = async (type: string, playlistId: string) => {
         await get<any>(`/playlist/tracks?op=${type}&pid=${playlistId}&tracks=${collectingSongId.value}`)
-        .then((response) => {
+        .then(async (response) => {
             console.log(response);
             hideCollectFrame();
-            setUserPlaylist(loginStore.getProfile().userId);
+            await setUserPlaylist(loginStore.getProfile().userId);
         })
         .catch((error) => {
             // 处理请求错误
@@ -79,14 +82,15 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
     }
 
     const showCollectFrame = (songId: string) => {
-        collectingSongId.value = songId;
+        setCollectingSongId(songId);
         use_Collect_Song.value = true;
     }
     const hideCollectFrame = () => {
-        collectingSongId.value = '';
+        setCollectingSongId('');
         use_Collect_Song.value = false;
     }
 
 
-    return {use_Collect_Song, createList, setUserPlaylist, getCreateList, getLikeList, createPlaylist, processSongInPlaylist, showCollectFrame, hideCollectFrame}
+
+    return {use_Collect_Song, createList, setUserPlaylist, getCreateList, getLikeList, setCollectingSongId, createPlaylist, processSongInPlaylist, showCollectFrame, hideCollectFrame}
 })

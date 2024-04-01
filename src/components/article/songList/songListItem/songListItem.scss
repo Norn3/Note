@@ -61,6 +61,16 @@
         &.duration{
           width: 11%;
 
+          .feature_list{
+            display: flex;
+            .remove_from_list{
+              content: url('../../../../assets/icons/trash.svg');
+              transform: scale(0.7);
+              filter: brightness(70%);
+              cursor: pointer;
+            }
+          }
+
           @media screen and (max-width: 860px) {
             width: 20%;
           }

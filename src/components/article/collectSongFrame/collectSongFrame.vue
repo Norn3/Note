@@ -100,8 +100,13 @@ const showCreatePlaylistEntry = ref(false);
 
 const createPlaylistFormRef = ref<FormInstance>();
 
+// TODO：可以加一个单选项，选择歌单是否隐私
 const createItem = () => {
-  userPlaylist.value = userPlaylistStore.getCreateList();
+  userPlaylist.value.splice(
+    0,
+    userPlaylist.value.length,
+    ...userPlaylistStore.getCreateList()
+  );
 };
 const addToPlaylist = (pid: string) => {
   userPlaylistStore.processSongInPlaylist('add', pid);
@@ -146,10 +151,12 @@ onMounted(() => {
   createItem();
 });
 
+// TODO: 有延迟，短时间之内getCreateList()结果不变，再次打开还是显示原来的列表
 watch(
   () => userPlaylistStore.createList,
   () => {
     createItem();
-  }
+  },
+  { deep: true }
 );
 </script>

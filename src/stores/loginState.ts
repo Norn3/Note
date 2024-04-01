@@ -16,20 +16,21 @@ export const useLoginStateStore = defineStore('loginState', () => {
 
 
     // 获取登录状态
-    const getLoginStatus = () => {
-        // 加时间戳防止接口数据缓存
-        get<any>(`/login/status?timestamp=${Date.now()}`)
-        .then(async (response) => {
+    const getLoginStatus = async () => {
+        try {
+            // 加时间戳防止接口数据缓存
+            const response = await get<any>(`/login/status?timestamp=${Date.now()}`)
             // 先获取到用户数据，最后再变更登录状态，以免其他组件watch被触发时用户数据仍为空
             profile.value = await requsetUserProfile();
             // 如果已登录，将登录状态改为true，否则改为false
             already_login.value = response.data.account.status == -10 ? false : true;
-        })
-        .catch((error) => {
+            return; // 在异步操作执行完毕后再执行 return
+            
+          } catch (error) {
             // 处理请求错误
             console.log('获取登录状态失败');
             console.log(error);
-        });
+          }
     }
 
     // 获取登录状态
@@ -103,8 +104,7 @@ export const useLoginStateStore = defineStore('loginState', () => {
         .then(async (response) => {
             console.log(response);
             profile = response.profile;
-            await userPlaylistStore.setUserPlaylist(profile.userId);
-            
+            await userPlaylistStore.setUserPlaylist(profile.userId);            
         })
         .catch((error) => {
             // 处理请求错误

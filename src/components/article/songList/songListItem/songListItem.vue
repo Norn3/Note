@@ -1,6 +1,10 @@
 <!-- eslint-disable vue/no-useless-template-attributes -->
 <template>
-  <div id="songListItem" class="song_list_item" :key="'songListItem' + listId">
+  <div
+    :id="'songListItem' + listId"
+    class="song_list_item"
+    :key="'songListItem' + listId"
+  >
     <ul>
       <li
         id="serialNum"
@@ -19,8 +23,23 @@
       >
         {{ name }}
       </li>
-      <li id="duration" class="duration">
-        {{ processSongDuration(durationTime as number) }}
+      <li
+        id="duration"
+        class="duration"
+        @mouseover="showFeature = true"
+        @mouseleave="showFeature = false"
+      >
+        <span v-if="!showFeature" id="durationTime" class="duration_time">{{
+          processSongDuration(durationTime as number)
+        }}</span>
+        <ul v-else id="featureList" class="feature_list">
+          <li
+            v-if="playlistId != ''"
+            id="removeFromList"
+            class="remove_from_list"
+            @click="removeSongFromList"
+          ></li>
+        </ul>
       </li>
       <li id="singer" class="singer" v-if="String(props.type) != 'artist'">
         {{ singer_list() }}
@@ -39,19 +58,23 @@
 <style lang="scss"></style>
 <script setup lang="ts">
 import $, { event } from 'jquery';
-import { onMounted, nextTick, ref, useAttrs } from 'vue';
+import { onMounted, nextTick, ref, useAttrs, watch } from 'vue';
 import router from '../../../../router/index';
 import { get } from '../../../../axios/insatance';
 
 import { useCurrentPlayingListStore } from '../../../../stores/currentPlayingList';
+import { useuserPlaylistStore } from '../../../../stores/userPlaylist';
 
 import processSongDuration from '../../../../util/processSongDuration'; // 处理时长
 
 import './songListItem.scss';
 
+const showFeature = ref(false);
+
 const props = defineProps({
   type: String,
   listId: Number,
+  playlistId: String,
   songId: Number,
   name: String,
   durationTime: Number,
@@ -86,14 +109,16 @@ const jumpPage = (type: string, id: number) => {
 };
 
 const listStore = useCurrentPlayingListStore();
+const userPlaylistStore = useuserPlaylistStore();
 
 // TODO：点击播放单曲，没有loading态而且过程很长
 const playSong = () => {
   listStore.playSong(String(props.songId));
 };
 
-onMounted(async () => {
-  // 等待页面加载结束，再调用createItem创建列表项
-  await nextTick();
-});
+const removeSongFromList = () => {
+  if (!props.playlistId) return;
+  userPlaylistStore.setCollectingSongId(String(props.songId));
+  userPlaylistStore.processSongInPlaylist('del', props.playlistId);
+};
 </script>
