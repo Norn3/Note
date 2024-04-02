@@ -115,9 +115,9 @@ const checkPlaylist = ref('');
 const getPid = (): string => {
   let pid = '';
   if (userPlaylistStore.getCreateList().length > 0) {
-    pid = userPlaylistStore.getCreateList()[0].id;
+    pid = String(userPlaylistStore.getCreateList()[0].id);
   } else if (userPlaylistStore.getLikeList().length > 0) {
-    pid = userPlaylistStore.getLikeList()[0].id;
+    pid = String(userPlaylistStore.getLikeList()[0].id);
   }
   return pid;
 };

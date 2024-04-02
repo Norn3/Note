@@ -67,8 +67,8 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
     const deletePlaylist = async (playlistId: string) => {
         try {
             const response = await get<any>(`/playlist/delete?id=${playlistId}`)
-            console.log(response);
-            return; 
+            await setUserPlaylist(loginStore.getProfile().userId);
+            return response.code == 200 ? true : false;
 
           } catch (error) {
             // 处理请求错误

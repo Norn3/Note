@@ -97,10 +97,17 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
 
     // 插入某首歌曲
     const insertSong = async (newSong: string) => {
+      for(let i = 0; i < playing_list.value.length; i++) {
+        if(playing_list.value[i].id == newSong){
+          current_song_index.value = i;
+          resetCurSong();
+          return;
+        }
+      }
       await get<any>(`/song/detail?ids=${newSong}`)
         .then((response) => {
           store.$patch((state) => {
-            state.playing_list.push(response);
+            state.playing_list.push(response.songs[0]);
             state.current_playlist_id = '';
           })
         })
@@ -254,5 +261,5 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
     }
 
 
-    return {current_playlist_id, playing_list, current_song_index, next_song_index, play_mode, cur_song_reset, getSongId, initializeStore, changeList, getNextSong, preCurIndex, nextCurIndex, resetCurSong, playSong, getSongInfo, clearList}
+    return {current_playlist_id, playing_list, current_song_index, next_song_index, play_mode, cur_song_reset, getSongId, initializeStore, changeList, getNextSong, preCurIndex, nextCurIndex, resetCurSong, insertSong, playSong, getSongInfo, clearList}
 })

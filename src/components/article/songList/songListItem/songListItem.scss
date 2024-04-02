@@ -15,12 +15,21 @@
         line-height: 30px;
         align-items: center;
   
-        &.serial_num, &.click_to_play{
-          width: 8.5%;
+        &.serial_num {
+          width: 7.5%;
           text-align: center;
 
           @media screen and (max-width: 860px) {
             width: 15%;
+          }
+        }
+
+        &.click_to_play{
+          width: 6.5%;
+          text-align: center;
+
+          @media screen and (max-width: 860px) {
+            width: 10%;
           }
         }
   
@@ -59,20 +68,38 @@
         }
         
         &.duration{
-          width: 11%;
+          width: 14%;
 
           .feature_list{
             display: flex;
-            .remove_from_list{
-              content: url('../../../../assets/icons/trash.svg');
+            justify-content: left;
+            align-items: center;
+
+            .add_to_playing_list{
+              content: url('../../../../assets/icons/add.svg');
+              height: 20px;
               transform: scale(0.7);
+              filter: brightness(70%);
+              cursor: pointer;
+            }
+
+            .add_to_favorite{
+              height: 20px;
+              content: url('../../../../assets/icons/favorites.svg');
+              filter: contrast(0%) brightness(145%);
+              cursor: pointer;
+            }
+
+            .remove_from_list{
+              height: 20px;
+              content: url('../../../../assets/icons/trash.svg');
               filter: brightness(70%);
               cursor: pointer;
             }
           }
 
           @media screen and (max-width: 860px) {
-            width: 20%;
+            width: 25%;
           }
           @media screen and (max-width: 430px) {
             display: none;

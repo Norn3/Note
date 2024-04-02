@@ -34,6 +34,16 @@
         }}</span>
         <ul v-else id="featureList" class="feature_list">
           <li
+            id="addToPlayingList"
+            class="add_to_playing_list"
+            @click="addToPlayingList"
+          ></li>
+          <li
+            id="addToFavorite"
+            class="add_to_favorite"
+            @click="addToFavorite"
+          ></li>
+          <li
             v-if="playlistId != ''"
             id="removeFromList"
             class="remove_from_list"
@@ -114,6 +124,14 @@ const userPlaylistStore = useuserPlaylistStore();
 // TODO：点击播放单曲，没有loading态而且过程很长
 const playSong = () => {
   listStore.playSong(String(props.songId));
+};
+
+const addToPlayingList = () => {
+  listStore.insertSong(String(props.songId));
+};
+
+const addToFavorite = () => {
+  userPlaylistStore.showCollectFrame(String(props.songId));
 };
 
 const removeSongFromList = () => {

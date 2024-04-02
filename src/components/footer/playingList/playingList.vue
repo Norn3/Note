@@ -58,6 +58,7 @@ const playlist_length = ref(listStore.playing_list.length);
 
 const processCreatorName = (item: any) => {
   let creator_name = '';
+  if (!item) return;
   item.forEach((item: any) => {
     if (creator_name == '') creator_name += item.name;
     else creator_name += '/' + item.name;
@@ -79,6 +80,8 @@ onMounted(() => {
   watch(
     () => listStore.playing_list,
     (newValue, oldValue) => {
+      console.log(newValue);
+
       playing_list.value = newValue;
       playlist_length.value = newValue.length;
       showCurItem();
