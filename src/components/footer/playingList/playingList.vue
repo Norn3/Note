@@ -15,13 +15,20 @@
         v-for="(item, index) in playing_list"
         :key="'playinglistItem' + index"
         @click="clickToPlay(index)"
+        @mouseover="hovering = true"
+        @mouseleave="hovering = false"
       >
         <div id="title" class="title">{{ item.name }}</div>
         <div id="creator" class="creator">
           {{ processCreatorName(item.ar) }}
         </div>
         <div id="duration" class="duration">
-          {{ processSongDuration(item.dt) }}
+          <span v-if="!hovering">{{ processSongDuration(item.dt) }}</span>
+          <div
+            v-else
+            class="delete_icon"
+            @click.stop="deleteFromPlayinglist(index)"
+          ></div>
         </div>
       </li>
     </ul>
@@ -51,6 +58,8 @@ import './playingList.scss';
 
 const already_getting = ref(false);
 
+const hovering = ref(false);
+
 const listStore = useCurrentPlayingListStore();
 
 const playing_list = ref<any[]>(listStore.playing_list);
@@ -73,6 +82,10 @@ const showCurItem = () => {
 
 const clickToPlay = (index: number) => {
   listStore.playSong(listStore.getSongId(index));
+};
+
+const deleteFromPlayinglist = (index: number) => {
+  listStore.deleteSong(index);
 };
 
 onMounted(() => {

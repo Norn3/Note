@@ -131,6 +131,13 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
         })
         localStorage.setItem('current_song_index', String(current_song_index.value++));
       }
+      else if(deleteIndex == current_song_index.value) {
+        store.$patch((state) => {
+          state.playing_list.splice(deleteIndex, 1);
+          state.current_playlist_id = '';
+        })
+        resetCurSong();
+      }
       else {
         store.$patch((state) => {
           state.playing_list.splice(deleteIndex, 1);
@@ -261,5 +268,5 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
     }
 
 
-    return {current_playlist_id, playing_list, current_song_index, next_song_index, play_mode, cur_song_reset, getSongId, initializeStore, changeList, getNextSong, preCurIndex, nextCurIndex, resetCurSong, insertSong, playSong, getSongInfo, clearList}
+    return {current_playlist_id, playing_list, current_song_index, next_song_index, play_mode, cur_song_reset, getSongId, initializeStore, changeList, getNextSong, preCurIndex, nextCurIndex, resetCurSong, insertSong, deleteSong, playSong, getSongInfo, clearList}
 })

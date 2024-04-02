@@ -91,6 +91,13 @@
             }
             .duration{
                 width: 20%;
+
+                .delete_icon{
+                    content: url('../../../assets/icons/trash.svg');
+                    padding: 0 10px;
+                    filter: brightness(70%);
+                    float: right;
+                }
             }
             
         }
