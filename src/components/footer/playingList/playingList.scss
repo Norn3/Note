@@ -92,11 +92,18 @@
             .duration{
                 width: 20%;
 
-                .delete_icon{
-                    content: url('../../../assets/icons/trash.svg');
-                    padding: 0 10px;
-                    filter: brightness(70%);
-                    float: right;
+                .features{
+                    display: flex;
+                    .favorite_icon{
+                        content: url('../../../assets/icons/favorites.svg');
+                        transform: scale(0.9);
+                        filter:  contrast(0%) brightness(145%);
+                    }
+    
+                    .delete_icon{
+                        content: url('../../../assets/icons/trash.svg');
+                        filter: brightness(70%);
+                    }
                 }
             }
             

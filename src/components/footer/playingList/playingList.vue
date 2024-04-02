@@ -24,11 +24,20 @@
         </div>
         <div id="duration" class="duration">
           <span v-if="!hovering">{{ processSongDuration(item.dt) }}</span>
-          <div
-            v-else
-            class="delete_icon"
-            @click.stop="deleteFromPlayinglist(index)"
-          ></div>
+          <ul v-else class="features">
+            <li>
+              <div
+                class="favorite_icon"
+                @click.stop="favoriteSong(item.id)"
+              ></div>
+            </li>
+            <li>
+              <div
+                class="delete_icon"
+                @click.stop="deleteFromPlayinglist(index)"
+              ></div>
+            </li>
+          </ul>
         </div>
       </li>
     </ul>
@@ -53,6 +62,7 @@ import {
 import processSongDuration from '../../../util/processSongDuration';
 
 import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
+import { useuserPlaylistStore } from '../../../stores/userPlaylist';
 
 import './playingList.scss';
 
@@ -61,6 +71,7 @@ const already_getting = ref(false);
 const hovering = ref(false);
 
 const listStore = useCurrentPlayingListStore();
+const userPlaylistStore = useuserPlaylistStore();
 
 const playing_list = ref<any[]>(listStore.playing_list);
 const playlist_length = ref(listStore.playing_list.length);
@@ -82,6 +93,10 @@ const showCurItem = () => {
 
 const clickToPlay = (index: number) => {
   listStore.playSong(listStore.getSongId(index));
+};
+
+const favoriteSong = (songId: string) => {
+  userPlaylistStore.showCollectFrame(String(songId));
 };
 
 const deleteFromPlayinglist = (index: number) => {
