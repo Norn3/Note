@@ -1,0 +1,175 @@
+@import '../../../mainStyle.scss';
+
+.comment_list{
+  .send_comment{
+    position: relative;
+      width: 95%;
+      margin: 0 auto;
+      .input_comment{
+        margin-bottom: 10px;
+      }
+      
+  }
+  .comments{
+    width: 95%;
+    margin: 50px auto;
+
+    .comment_item{
+      position: relative;
+      display: grid;
+      padding: 20px 0;
+      border-top: 1px solid #cfdce8;
+      grid-template-columns: 50px 1fr;
+      row-gap: 20px;
+      column-gap: 20px;
+      grid-template-areas: 
+      'avatar comment_content'
+      'avatar footer'
+      'reply reply';
+      .user_avatar{
+        grid-area: avatar;
+        position: absolute;
+        top: 0;
+        vertical-align: top;
+        width: 50px;
+        height: 50px;
+        background-color: $brandColor;
+        img{
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .comment_content{
+        grid-area: comment_content;
+
+        .user_comment, .be_replied{
+          text-align: left;
+          white-space: pre-line;
+  
+          .user_name{
+            color: $darkerBrandColor;
+          }
+        }
+
+        .be_replied{
+          background-color: rgb(237, 246, 255);
+          border-left: 1px solid rgb(211, 211, 211);
+          margin-left: 20px;
+          padding-left: 10px;
+        }
+      }
+     
+
+      .footer{
+        grid-area: footer;
+        display: flex;
+        justify-content: space-between;
+
+        .comment_time{
+          color: rgb(157, 157, 157);
+          font-size: 0.8em;
+        }
+
+        .features{
+          display: flex;
+          font-size: 0.9em;
+
+          @keyframes clickLikeButton
+          {
+              0%   {filter: contrast(0) brightness(130%);}
+              50%  {transform: rotate(-45deg); filter: none;}
+              100% {transform: rotate(0deg);}
+          }
+          
+          @-webkit-keyframes clickLikeButton /* Safari 与 Chrome */
+          {
+              0%   {filter: contrast(0) brightness(130%);}
+              50%  {transform: rotate(-45deg); filter: none;}
+              100% {transform: rotate(0deg);}
+          }
+
+          .delete_commment, .like_comment, .reply_comment{
+            padding: 0 5px;
+          }
+
+          .reply_comment{
+            display: flex;
+            align-items: start;
+            cursor: pointer;
+
+            &::before{
+              content: url('../../../assets/icons/bubbleDots.svg');
+              filter: brightness(110%);
+            }
+          }
+
+          .delete_commment{
+            display: none;
+            align-items: start;
+            border-right: 1px solid gray;
+            cursor: pointer;
+
+            &.hovering{
+              display: flex;
+            }
+
+            &::before{
+              content: url('../../../assets/icons/trash.svg');
+              filter: brightness(60%);
+              transform: scale(1.1);
+            }
+          }
+
+          .like_comment{
+            display: flex;
+            align-items: start;
+            border-right: 1px solid gray;
+            cursor: pointer;
+          
+
+            &::before{
+              content: url('../../../assets/icons/like.svg');
+              filter: contrast(0) brightness(130%);
+            }
+
+            &.clicked{
+              &::before{
+                filter: none;
+                animation: clickLikeButton 0.5s;
+              }
+            }
+          }
+        }
+      }
+
+      .reply_comment_form{
+        grid-area: reply;
+        // visibility: hidden;
+        display: none;
+
+        &.show_reply{
+          display: block;
+          // visibility: visible;
+
+        }
+      }
+    }
+  }
+}
+.submit_comment{
+  position: absolute;
+  right: 0;
+  display: block;
+  width: 100px;
+  background-color: aliceblue;
+  border: 1px solid rgb(199, 221, 240);
+  color: white;
+  background-color: $brandColor;
+  &:hover{
+      background-color: $darkerBrandColor;
+  }
+  &:focus{
+      outline: none;
+  }
+}

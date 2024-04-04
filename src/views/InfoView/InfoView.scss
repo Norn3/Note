@@ -1,0 +1,30 @@
+@import '../../mainStyle.scss';
+
+
+.info_view {
+    position: relative;
+    width: 75vw;
+    min-height: 92vh;
+    height: 100%;
+    padding: 0 0 50px 0;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 0 3px 0 #4e53548d;
+  
+    section {
+      position: relative;
+      min-height: 100vh;
+      height: 100%;
+      width: 70vw;
+      margin: 0 auto;
+  
+      .infoView_tabs{
+        .el-tabs__header{
+            margin: 20px;
+          .el-tabs__item{
+            font-size: 1.2em;
+          }
+        }
+      }
+    }
+  }
+  
