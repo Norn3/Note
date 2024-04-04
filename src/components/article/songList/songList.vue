@@ -14,9 +14,7 @@
       </li>
     </ul>
     <ul id="songs" class="songs"></ul>
-    <el-text v-if="already_getting" v-loading="already_getting" class="loading"
-      >Loading...</el-text
-    >
+    <loading-state :loading="already_getting"></loading-state>
     <el-backtop :right="60" :bottom="60" />
   </div>
 </template>
@@ -29,6 +27,7 @@ import { get } from '../../../axios/insatance';
 
 import './songList.scss';
 import songListItem from './songListItem/songListItem.vue';
+import loadingState from '../loadingState/loadingState.vue';
 import { useuserPlaylistStore } from '../../../stores/userPlaylist';
 
 import { address } from '../../../util/getSongListAddress';

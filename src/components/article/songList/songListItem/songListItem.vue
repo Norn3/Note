@@ -4,6 +4,8 @@
     :id="'songListItem' + listId"
     class="song_list_item"
     :key="'songListItem' + listId"
+    @mouseover="showFeature = true"
+    @mouseleave="showFeature = false"
   >
     <ul>
       <li
@@ -23,12 +25,7 @@
       >
         {{ name }}
       </li>
-      <li
-        id="duration"
-        class="duration"
-        @mouseover="showFeature = true"
-        @mouseleave="showFeature = false"
-      >
+      <li id="duration" class="duration">
         <span v-if="!showFeature" id="durationTime" class="duration_time">{{
           processSongDuration(durationTime as number)
         }}</span>
