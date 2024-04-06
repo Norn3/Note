@@ -109,6 +109,24 @@
         grid-area: features;
         display: flex;
 
+        .play_mode_icon{
+            position: relative;
+            width: 30px;
+            height: 100%;
+            margin-right: 20px;
+            cursor: pointer;
+
+            &.sequential{
+                background: url('../../../assets/icons/sequential.svg') no-repeat left;
+            }
+            &.singleloop{
+                background: url('../../../assets/icons/singleloop.svg') no-repeat left;
+            }
+            &.shuffle{
+                background: url('../../../assets/icons/shuffle.svg') no-repeat left;
+            }
+        }
+
         .lyrics_icon{
             position: relative;
             width: 30px;

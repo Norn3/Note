@@ -48,6 +48,11 @@
     <div id="time" class="time">{{ curTime + '/' + songDuration }}</div>
     <div id="features" class="features">
       <div
+        id="playModeIcon"
+        class="play_mode_icon"
+        @click="changePlayMode()"
+      ></div>
+      <div
         id="lyricsIcon"
         class="lyrics_icon"
         @click="toggleFeature('lyrics')"
@@ -177,6 +182,24 @@ const toggleFeature = (item: string) => {
     $('#audioPlayer').addClass('showing_feature');
   } else {
     $('#audioPlayer').removeClass('showing_feature');
+  }
+};
+
+// 改变播放模式
+const changePlayMode = () => {
+  const playModeIcon = $('#playModeIcon');
+  if (playModeIcon.hasClass('sequential')) {
+    listStore.changePlayMode('shuffle');
+    playModeIcon.removeClass('sequential');
+    playModeIcon.addClass('shuffle');
+  } else if (playModeIcon.hasClass('shuffle')) {
+    listStore.changePlayMode('singleloop');
+    playModeIcon.removeClass('shuffle');
+    playModeIcon.addClass('singleloop');
+  } else if (playModeIcon.hasClass('singleloop')) {
+    listStore.changePlayMode('sequential');
+    playModeIcon.removeClass('singleloop');
+    playModeIcon.addClass('sequential');
   }
 };
 
@@ -363,6 +386,7 @@ const showSongInfo = () => {
 
 // 挂载后执行
 onMounted(async () => {
+  $('#playModeIcon').addClass(listStore.getPlayMode());
   await preProcessNextSong(listStore.getSongId(listStore.current_song_index));
   switchToNext();
   listStore.getNextSong();

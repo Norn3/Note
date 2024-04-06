@@ -32,6 +32,8 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
       }
       // 加载所有数据，调用getNextSong更新nextSongId
       if(localStorage.getItem('play_mode')) {
+        console.log(String(localStorage.getItem('play_mode')));
+        
         play_mode.value = String(localStorage.getItem('play_mode'))
       }
       getNextSong();
@@ -257,9 +259,15 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
     const changePlayMode = (newPlayMode: string) => {
       // 通过传入的参数改变播放模式
       play_mode.value = newPlayMode;
+      console.log(play_mode.value );
+      
       localStorage.setItem('play_mode',newPlayMode);
       // 触发getNextSong获取新的next_song_index
       getNextSong();
+    }
+
+    const getPlayMode = () => {
+      return play_mode.value;
     }
 
     // 获取歌曲信息
@@ -268,5 +276,5 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
     }
 
 
-    return {current_playlist_id, playing_list, current_song_index, next_song_index, play_mode, cur_song_reset, getSongId, initializeStore, changeList, getNextSong, preCurIndex, nextCurIndex, resetCurSong, insertSong, deleteSong, playSong, getSongInfo, clearList}
+    return {current_playlist_id, playing_list, current_song_index, next_song_index, play_mode, cur_song_reset, getSongId, initializeStore, changeList, changePlayMode, getPlayMode, getNextSong, preCurIndex, nextCurIndex, resetCurSong, insertSong, deleteSong, playSong, getSongInfo, clearList}
 })
