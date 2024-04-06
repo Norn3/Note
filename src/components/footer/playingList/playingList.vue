@@ -15,16 +15,16 @@
         v-for="(item, index) in playing_list"
         :key="'playinglistItem' + index"
         @click="clickToPlay(index)"
-        @mouseover="hovering = true"
-        @mouseleave="hovering = false"
+        @mouseover="changeHovering(index, 'over')"
+        @mouseleave="changeHovering(index, 'leave')"
       >
         <div id="title" class="title">{{ item.name }}</div>
         <div id="creator" class="creator">
           {{ processCreatorName(item.ar) }}
         </div>
         <div id="duration" class="duration">
-          <span v-if="!hovering">{{ processSongDuration(item.dt) }}</span>
-          <ul v-else class="features">
+          <span id="durationTime">{{ processSongDuration(item.dt) }}</span>
+          <ul id="features" class="features">
             <li>
               <div
                 class="favorite_icon"
@@ -89,6 +89,17 @@ const processCreatorName = (item: any) => {
 const showCurItem = () => {
   $('.playinglist_item').removeClass('check');
   $(`#playinglistItem${listStore.current_song_index}`).addClass('check');
+};
+
+const changeHovering = (index: number, type: string) => {
+  const $listItem = $('#playinglistItem' + index);
+  if (type == 'leave') {
+    $listItem.find('#features').css('display', 'none');
+    $listItem.find('#durationTime').css('display', 'inline');
+  } else if (type == 'over') {
+    $listItem.find('#features').css('display', 'flex');
+    $listItem.find('#durationTime').css('display', 'none');
+  }
 };
 
 const clickToPlay = (index: number) => {
