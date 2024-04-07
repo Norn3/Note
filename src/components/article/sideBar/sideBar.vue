@@ -48,14 +48,10 @@ const props = defineProps({
     default: 'playlist',
   },
   checkId: String,
-  // itemNum: {
-  //   type: Number, // 数据类型
-  //   default: 0, // 未传值时的默认值
-  // },
-  // listItem: {
-  //   type: Array<PlaylistItem>,
-  //   default: () => [],
-  // },
+  listItem: {
+    type: Array<PlaylistItem>,
+    default: () => [],
+  },
 });
 
 const list_title1 = computed(() => {
@@ -104,8 +100,15 @@ const createItem = (listItem: Array<PlaylistItem>, listId: string) => {
 // 决定列表项的分割位置，然后将列表项加到对应列表中
 const addItemToList = () => {
   loading.value = true;
-  createItem(userPlaylistStore.getCreateList(), 'create');
-  createItem(userPlaylistStore.getLikeList(), 'like');
+  if (props.listType == 'playlist') {
+    createItem(userPlaylistStore.getCreateList(), 'create');
+    createItem(userPlaylistStore.getLikeList(), 'like');
+  } else if (props.listType == 'ranklist') {
+    const hotList = props.listItem.slice(0, 4);
+    const allList = props.listItem.slice(4, props.listItem.length);
+    createItem(hotList, 'create');
+    createItem(allList, 'like');
+  }
   // if ($('#create').children(':first').length != 0) {
   //   $('#create').children(':first').addClass('check');
   // } else if ($('#like').children(':first').length != 0) {
