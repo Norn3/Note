@@ -154,6 +154,13 @@ const getListFromResult = (result: any): Array<any> => {
 
 const searchItem = async () => {
   loading.value = true;
+  if (
+    String(route.query.keyword) == '' ||
+    String(route.query.keyword) == null
+  ) {
+    loading.value = false;
+    return;
+  }
   await get<any>(
     `/cloudsearch?keywords=${String(route.query.keyword)}&limit=20&offset=${
       (currentPage.value - 1) * 20
@@ -183,6 +190,7 @@ const renderResult = (result: Array<any>) => {
           h(songListItem, {
             type: 'search_result',
             listId: index++,
+            playlistId: '',
             songId: item.id,
             name: item.name,
             durationTime: item.dt,

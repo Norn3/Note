@@ -28,6 +28,14 @@
   }
 
   @media screen and (max-width:640px) {
-    display: none;
+    li.header_nav_item{
+      display: inline;
+      min-width: 30px;
+      font-size: 1em;
+      color: aliceblue;
+      padding: 10% 0.7em;
+      
+      cursor: pointer;
+    }
   }
 }

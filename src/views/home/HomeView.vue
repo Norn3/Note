@@ -13,6 +13,7 @@
 <style scoped lang="scss">
 @import '../../mainStyle.scss';
 .home_view {
+  position: relative;
   width: 100%;
 
   main {
@@ -21,7 +22,7 @@
     nav {
       position: fixed;
       left: 0;
-      width: 100vw;
+      width: $pageWidth;
       height: 5vh;
       z-index: $navbarZIndex;
       background-color: $subBrandColor;

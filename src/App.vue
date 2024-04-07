@@ -20,7 +20,7 @@
 <style lang="scss" scoped>
 @import './mainStyle.scss';
 .main_view {
-  width: 100vw;
+  width: $pageWidth;
   min-height: 100vh;
   height: auto;
   background-color: #ffffff;
@@ -28,7 +28,7 @@
   header {
     position: fixed;
     height: 8vh;
-    width: 100vw;
+    width: $pageWidth;
     display: flex;
     background-color: $brandColor;
     z-index: $headerZIndex;
@@ -46,7 +46,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100vw;
+    width: $pageWidth;
     height: 8vh;
     z-index: $footerZIndex;
     // 随着缩小，消失顺序：进度条、音量调节、封面、上一首、下一首，最后只剩播放图标
@@ -59,6 +59,11 @@
     }
     section {
       top: 40px;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    section {
+      width: $pageWidth;
     }
   }
   /*@media screen and (max-width: 768px) {

@@ -6,4 +6,9 @@
     min-height: 40px;
     min-width: $brandIconWidth;
     background: url(../../../assets/icons/brand_icon.svg) no-repeat center;
+
+    @media screen and (max-width: 570px) {
+        min-width: 40px;
+        margin: 0 35px 0 5px;
+    }
 }

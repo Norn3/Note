@@ -31,6 +31,18 @@
         width: 440px;
     }
     @media screen and (max-width: 600px){
-        width: 220px;
+
+        .playlist_container{
+            justify-content: center;
+            li{
+                width: 140px;
+                height: 180px;
+                transform: scale(0.7);
+
+                .play-list-container{
+                    margin: 0;
+                }
+            }
+        }
     }
 }

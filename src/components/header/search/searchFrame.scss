@@ -25,11 +25,25 @@
       vertical-align: middle;
       width: 50px;
       height: 35px;
+      cursor: pointer;
       
   }
 
   &.focus{
     width: 30vw;
+  }
+
+  @media screen and (max-width: 750px) {
+    right: 15vw;
+  }
+
+  @media screen and (max-width: 600px) {
+    right: 20vw;
+    z-index: 200;
+    &:hover, &.focus{
+      width: $searchIconSize;
+    }
+
   }
     
 }

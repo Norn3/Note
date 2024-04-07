@@ -79,13 +79,13 @@
       margin: 0 auto;
 
       .user_info_container {
+        position: relative;
         display: grid;
         padding: 0 5vw 5vh;
-        width: 800px;
+        width: calc(100% - 10vw);
         margin: 0 auto;
         text-align: left;
         grid-template-columns: 11vw 1fr;
-        // grid-template-rows: minmax(40px, 80px) repeat(7, 40px);
         grid-auto-rows: minmax(30px, auto);
         grid-column-gap: 60px;
         grid-row-gap: 20px;
@@ -98,7 +98,7 @@
 
         .user_avatar {
           grid-area: avatar;
-          width: 11vw;
+          width: 100%;
           filter: drop-shadow(1px 1px 3px rgb(80, 80, 80));
           background-position: center;
           background-repeat: no-repeat;
@@ -162,6 +162,7 @@
         .user_address_and_age {
           grid-area: address_and_age;
           display: flex;
+          flex-wrap: wrap;
           gap: 3%;
 
           .user_address {
@@ -177,6 +178,43 @@
 
         .user_listened_songs {
           grid-area: listened_songs;
+        }
+
+        @media screen and (max-width: 1000px) {
+          grid-template-columns: 20vw 1fr;
+        }
+
+        @media screen and (max-width: 650px) {
+          grid-template-columns: 30vw 1fr;
+          grid-column-gap: 30px;
+
+          .user_basic_info {
+            .user_name {
+              font-size: 1.2em;
+            }
+
+            .user_level {
+              padding: 1px 3px;
+            }
+
+            .user_gender {
+              width: 25px;
+              height: 25px;
+            }
+          }
+
+          .follow_info {
+            .user_follows,
+            .user_followeds {
+              padding: 5px 20px 5px 0;
+              .follow_num {
+                font-size: 1.2em;
+              }
+            }
+
+            .user_follows {
+            }
+          }
         }
       }
     }

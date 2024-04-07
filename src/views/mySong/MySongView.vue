@@ -20,7 +20,7 @@
 <style lang="scss" scoped>
 .play_view {
   position: relative;
-  width: 75vw;
+  width: 100%;
   min-height: 92vh;
   height: 100%;
   background-color: rgb(255, 255, 255);
@@ -46,7 +46,7 @@ main {
 aside {
   position: fixed;
   min-height: 92vh;
-  width: 15vw;
+  width: 20%;
   overflow-y: auto;
   overflow-x: hidden;
   &::-webkit-scrollbar {
@@ -59,8 +59,8 @@ aside {
 section {
   position: relative;
   height: 100%;
-  width: 60vw;
-  left: 15vw;
+  width: 80%;
+  left: 20%;
   margin: 0;
 
   .playListTitle {

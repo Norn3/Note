@@ -1,5 +1,5 @@
 <template>
-  <div id="search" class="search">
+  <div id="search" class="search" @click.self="jumpResult()">
     <el-autocomplete
       v-model="keyword"
       class="search_frame"
@@ -37,9 +37,9 @@ import './searchFrame.scss';
 import processSingerArray from '../../../util/processSingerArray';
 
 onMounted(() => {
-  const search = $('.search');
-  const input = search.find('input')[0];
-  const searchElement = search[0];
+  const $search = $('#search');
+  const input = $search.find('input')[0];
+  const searchElement = $search[0];
   input.addEventListener('focus', () => {
     searchElement.classList.add('focus');
   });
