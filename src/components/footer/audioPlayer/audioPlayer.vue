@@ -201,6 +201,7 @@ const changePlayMode = () => {
     playModeIcon.removeClass('singleloop');
     playModeIcon.addClass('sequential');
   }
+  preProcessNextSong(listStore.getSongId(listStore.next_song_index));
 };
 
 // 通过 $subscribe 订阅状态， subscribe()即可停止订阅
@@ -399,7 +400,6 @@ onBeforeUnmount(() => {
   if (audioRef.value) {
     // 卸载监听器
     audioRef.value.removeEventListener('loadedmetadata', songLoaded);
-
     audioRef.value.removeEventListener('ended', playNextSong);
   }
 });
