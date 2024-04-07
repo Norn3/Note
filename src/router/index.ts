@@ -67,11 +67,6 @@ const routes: Array<RouteRecordRaw> = [
 				component: () => import('../views/account/accountHomeView.vue'),	
 			},
 			{
-				path: 'message',
-				name: 'accountMessage',
-				component: () => import('../views/account/accountMessageView.vue'),	
-			},
-			{
 				path: 'setting',
 				name: 'accountSetting',
 				component: () => import('../views/account/accountSettingView.vue'),	
