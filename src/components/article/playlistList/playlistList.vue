@@ -45,7 +45,7 @@ const computedData = () => {
     }
     case 'personal': {
       title.value = '个性化推荐';
-      address.value = `/personalized?limit=4`;
+      address.value = `/recommend/resource`;
       break;
     }
     case 'myCreate': {
@@ -66,14 +66,19 @@ const createItem = async () => {
       .then((response) => {
         console.log(response);
         // 插入元素
-        response.result.forEach((element: any) => {
+        const playlists =
+          props.type == 'hot'
+            ? response.result
+            : response.recommend.slice(0, 4);
+        playlists.forEach((element: any) => {
           const li = createLiTag($ul);
           render(
             h(PlayList, {
               type: 'playlist',
               id: String(element.id),
               imgUrl: element.picUrl,
-              playCount: element.playCount,
+              playCount:
+                props.type == 'hot' ? element.playCount : element.playcount,
               title: element.name,
               creator: '',
               showCreator: false,

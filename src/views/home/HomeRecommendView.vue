@@ -1,6 +1,11 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import mainBanner from '../../components/article/HomeView/mainBanner/mainBanner.vue';
 import playlistList from '../../components/article/playlistList/playlistList.vue';
+import { useLoginStateStore } from '../../stores/loginState';
+
+const loginStore = useLoginStateStore();
+const loginState = computed(() => loginStore.getLoginState());
 </script>
 
 <template>
@@ -10,7 +15,7 @@ import playlistList from '../../components/article/playlistList/playlistList.vue
         <main-banner></main-banner>
         <div id="mianInfo" class="main_info">
           <playlistList type="hot"></playlistList>
-          <playlistList type="personal"></playlistList>
+          <playlistList v-if="loginState" type="personal"></playlistList>
         </div>
       </section>
     </main>
