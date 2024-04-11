@@ -10,7 +10,11 @@
         class="infoView_tabs"
         @tab-change="handleActiveNameChange"
       >
-        <el-tab-pane label="歌曲" name="songList">
+        <el-tab-pane
+          label="歌曲"
+          name="songList"
+          v-if="String(route.query.type) != 'song'"
+        >
           <song-list
             v-if="String(route.query.type) != 'song'"
             :type="String(route.query.type)"
@@ -38,13 +42,15 @@ import { useRoute } from 'vue-router';
 import InfoPage from '../../components/article/InfoPage/InfoPage.vue';
 import songList from '../../components/article/songList/songList.vue';
 import commentList from '../../components/article/commentList/commentList.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import './InfoView.scss';
 // 获取路由参数pid，用于获取歌单详情渲染页面
 const route = useRoute();
 
-const activeName = ref('songList');
+const activeName = computed(() =>
+  route.query.type != 'song' ? 'songList' : 'commentList'
+);
 
 const handleActiveNameChange = () => {
   // console.log(activeName.value);

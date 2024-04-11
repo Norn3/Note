@@ -1,7 +1,6 @@
 <template>
   <div id="playlistInfoContainer" class="info_container">
     <loading-state :loading="loading"></loading-state>
-
     <main id="playlistBasicInfo" class="basic_info" v-show="!loading">
       <img id="cover" class="cover" alt="封面" :src="coverImgUrl" />
       <title id="title" class="title">{{ name }}</title>
@@ -178,6 +177,8 @@ const foldButton = ref(false); // 是否显示展开/收起按钮
 // 观察简介长度，判断是否需要显示展开/收起按钮
 const handleFoldButton = () => {
   if (des_height.value) {
+    console.log(des_height.value.offsetHeight);
+
     if (des_height.value.offsetHeight > 150) {
       foldButton.value = true;
       showDescription.value = false;
@@ -264,7 +265,7 @@ const getInfo = async () => {
         creatorName.push({ id: singer.id, name: singer.name });
       });
       albumOfSong.value = song.al.name;
-      getLyrics();
+      await getLyrics();
 
       playCountText.value = '';
       console.log(isSubscribed.value);
