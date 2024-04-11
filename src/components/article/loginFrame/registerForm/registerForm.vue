@@ -69,6 +69,7 @@ import { useLoginStateStore } from '../../../../stores/loginState';
 
 import './registerForm.scss';
 import type { FormInstance, FormRules } from 'element-plus';
+import { ElMessage } from 'element-plus';
 
 import { Md5 } from 'ts-md5';
 import { get } from '../../../../axios/insatance';
@@ -212,7 +213,11 @@ const onSubmit = (formInstance: FormInstance | undefined) => {
     if (!valid) {
       return;
     } else {
-      alert('注册功能因接口原因暂不可用');
+      ElMessage({
+        message: '注册功能因接口原因暂不可用！',
+        type: 'error',
+        customClass: 'el_message',
+      });
       // // 定义MD5对象
       // const md5: any = new Md5();
       // md5.appendAsciiStr(register.password);

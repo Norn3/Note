@@ -43,6 +43,7 @@ import { useLoginStateStore } from '../../../../stores/loginState';
 
 import './passwordLoginForm.scss';
 import type { FormInstance, FormRules } from 'element-plus';
+import { ElMessage } from 'element-plus';
 
 import { Md5 } from 'ts-md5';
 
@@ -67,11 +68,8 @@ const validatePhone = (rule: any, value: any, callback: any) => {
   }
 };
 const validatePassword = (rule: any, value: any, callback: any) => {
-  const regex = /^(?=.*[a-zA-Z\d])(?=.*[a-zA-Z\W])(?=.*[\d\W]).{8,20}$/;
   if (value === '') {
     callback(new Error('请输入密码！'));
-  } else if (!regex.test(value)) {
-    callback(new Error('需要8-20位字符，至少包含字母/数字/符号的任意2种！'));
   } else {
     callback();
   }
@@ -102,6 +100,8 @@ const onSubmit = (formInstance: FormInstance | undefined) => {
         phoneAndPassword.phone,
         password
       );
+      console.log(login_result);
+
       // 登录成功
       if (login_result) {
         // 隐藏登录框
@@ -116,7 +116,13 @@ const onSubmit = (formInstance: FormInstance | undefined) => {
       }
       // 登录失败
       else {
-        alert('账号或密码不正确！');
+        console.log('失败');
+
+        ElMessage({
+          message: '账号或密码不正确！',
+          type: 'error',
+          customClass: 'el_message',
+        });
       }
     }
   });

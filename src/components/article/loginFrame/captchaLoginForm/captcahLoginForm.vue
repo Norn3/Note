@@ -52,6 +52,8 @@ import { useLoginStateStore } from '../../../../stores/loginState';
 
 import './captchaLoginForm.scss';
 import type { FormInstance, FormRules } from 'element-plus';
+import { ElMessage } from 'element-plus';
+
 import { get } from '../../../../axios/insatance';
 
 const router = useRouter();
@@ -168,7 +170,11 @@ const onSubmit = (formInstance: FormInstance | undefined) => {
       }
       // 登录失败
       else {
-        alert('手机号或验证码不正确！');
+        ElMessage({
+          message: '手机号或验证码不正确！',
+          type: 'error',
+          customClass: 'el_message',
+        });
       }
     }
   });
