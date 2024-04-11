@@ -1,8 +1,6 @@
 <template>
   <div id="mainBanner" class="mainBanner">
-    <el-text v-if="loading" v-loading="loading" class="loading"
-      >Loading...</el-text
-    >
+    <loading-state :loading="loading" class="loading"></loading-state>
     <swiper
       v-if="!loading"
       id="mySwiper"
@@ -23,6 +21,7 @@
         id="mySlide"
         v-for="(picture, index) in pictureList"
         :key="'mySlide' + index"
+        @click="jumpPage(picture)"
       >
         <div
           class="background"
@@ -32,6 +31,7 @@
             alt="Slide"
             :src="picture.src"
             :url="picture.url"
+            :targetType="picture.targetType"
             :targetId="picture.targetId"
           />
         </div>
@@ -45,6 +45,7 @@ import './mainBanner.scss';
 
 import { get } from '../../../../axios/insatance';
 import { onBeforeMount, reactive, ref } from 'vue';
+import loadingState from '../../loadingState/loadingState.vue';
 
 // import Swiper core and required modules
 import { Navigation, Pagination, A11y, Autoplay } from 'swiper/modules';
@@ -61,10 +62,8 @@ import router from '../../../../router';
 
 interface Picture {
   src: string;
-  url: {
-    type: string;
-    default: null;
-  };
+  url: string;
+  targetType: number;
   targetId: {
     type: number;
     default: 0;
@@ -75,11 +74,14 @@ const loading = ref(true);
 const getPicture = async () => {
   await get<any>('/banner')
     .then((response) => {
+      console.log(response);
+
       // 处理返回的用户数据
       response.banners.forEach((element: any) => {
         const picture: Picture = {
           src: element.imageUrl,
           url: element.url,
+          targetType: element.targetType,
           targetId: element.targetId,
         };
         pictureList.push(picture);
@@ -104,23 +106,35 @@ const onSlideChange = () => {
   // console.log('slide change');
 };
 
-$(document).on('click', '#mySlide', (e) => {
-  // e.target是DOM对象，只能用getAttribute而非attr方法
-  const url = e.target.getAttribute('url');
-  const target_id = e.target.getAttribute('targetId');
+const jumpPage = (slideItem: Picture) => {
+  console.log(slideItem);
 
-  console.log(url);
-
-  if (url != null && url != 'null') {
-    window.open(url, '_blank');
+  if (slideItem.url != null) {
+    window.open(slideItem.url as string, '_blank');
+  } else if (slideItem.targetId != null || slideItem.targetId != 0) {
+    let type = '';
+    switch (slideItem.targetType) {
+      case 1:
+        type = 'song';
+        break;
+      case 10:
+        type = 'album';
+        break;
+      case 100:
+        type = 'singer';
+        break;
+      case 1000:
+        type = 'playlist';
+        break;
+    }
+    if (type != '') {
+      router.push({
+        name: 'Info',
+        query: { type: type, id: Number(slideItem.targetId) },
+      });
+    }
   }
-  // else if (target_id != null && target_id != 0){
-  //   router.push({
-  //   name: 'songInfo',
-  //   query: { pid: target_id },
-  // });
-  // }
-});
+};
 
 const modules = [Navigation, Pagination, A11y, Autoplay];
 </script>
