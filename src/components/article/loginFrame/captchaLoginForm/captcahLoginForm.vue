@@ -83,10 +83,11 @@ const validatePhone = (rule: any, value: string, callback: any) => {
 };
 
 const validateCaptcha = (rule: any, value: string, callback: any) => {
+  const regex = /^\d+$/;
   if (value === '') {
     callback(new Error('请输入验证码！'));
   } else {
-    if (value.length > 6 || value.length < 4) {
+    if (value.length > 6 || value.length < 4 || !regex.test(value)) {
       callback(new Error('请输入正确的验证码！'));
     } else {
       get<any>(

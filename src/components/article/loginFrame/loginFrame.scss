@@ -44,9 +44,13 @@
             }
         }
 
-        .frame_content{
-
-            
+        .register_entry{
+            position: absolute;
+            bottom: 6.2vh;
+            right: 10px;
+            font-size: 0.7em;
+            color: $titleTextColor;
+            cursor: pointer;
         }
         .switch_login_way{
             position: absolute;

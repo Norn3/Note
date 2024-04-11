@@ -1,0 +1,47 @@
+@import '../../../../mainStyle.scss';
+
+.register_form{
+    max-width: 300px;
+    margin: 3vh auto 10vh;
+
+    .input{
+        width: 300px;
+    }
+
+    .captcha_input{
+        width: 168px;
+    }
+
+    div.keep_inline{
+        margin-right: 0;
+        
+        .get_captcha_button{
+            width: 100px;
+            color: white;
+            background-color: $brandColor;
+    
+            &:hover{
+                background-color: $darkerBrandColor;
+            }
+    
+            &:focus{
+                outline: none;
+            }
+        }
+    }
+
+    .submit_button{
+        width: 300px;
+        max-width: 300px;
+        color: white;
+        background-color: $brandColor;
+
+        &:hover{
+            background-color: $darkerBrandColor;
+        }
+
+        &:focus{
+            outline: none;
+        }
+    }
+}

@@ -20,6 +20,7 @@
         v-model="phoneAndPassword.password"
         placeholder="请输入密码"
         type="password"
+        show-password
         clearable
         @keyup.enter="onSubmit(passwordLoginFormRef)"
       />
@@ -66,8 +67,11 @@ const validatePhone = (rule: any, value: any, callback: any) => {
   }
 };
 const validatePassword = (rule: any, value: any, callback: any) => {
+  const regex = /^(?=.*[a-zA-Z\d])(?=.*[a-zA-Z\W])(?=.*[\d\W]).{8,20}$/;
   if (value === '') {
     callback(new Error('请输入密码！'));
+  } else if (!regex.test(value)) {
+    callback(new Error('需要8-20位字符，至少包含字母/数字/符号的任意2种！'));
   } else {
     callback();
   }
