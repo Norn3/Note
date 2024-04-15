@@ -71,6 +71,7 @@ import { get } from '../../../../axios/insatance';
 
 import { useCurrentPlayingListStore } from '../../../../stores/currentPlayingList';
 import { useuserPlaylistStore } from '../../../../stores/userPlaylist';
+import { useLoginStateStore } from '../../../../stores/loginState';
 
 import processSongDuration from '../../../../util/processSongDuration'; // 处理时长
 
@@ -117,6 +118,7 @@ const jumpPage = (type: string, id: number) => {
 
 const listStore = useCurrentPlayingListStore();
 const userPlaylistStore = useuserPlaylistStore();
+const loginStore = useLoginStateStore();
 
 // TODO：点击播放单曲，没有loading态而且过程很长
 const playSong = () => {
@@ -128,7 +130,11 @@ const addToPlayingList = () => {
 };
 
 const addToFavorite = () => {
-  userPlaylistStore.showCollectFrame(String(props.songId));
+  if (loginStore.getLoginState()) {
+    userPlaylistStore.showCollectFrame(String(props.songId));
+  } else {
+    loginStore.showLoginEntry();
+  }
 };
 
 const removeSongFromList = () => {

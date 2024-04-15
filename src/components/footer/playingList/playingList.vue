@@ -63,6 +63,7 @@ import processSongDuration from '../../../util/processSongDuration';
 
 import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
 import { useuserPlaylistStore } from '../../../stores/userPlaylist';
+import { useLoginStateStore } from '../../../stores/loginState';
 
 import './playingList.scss';
 
@@ -72,6 +73,7 @@ const hovering = ref(false);
 
 const listStore = useCurrentPlayingListStore();
 const userPlaylistStore = useuserPlaylistStore();
+const loginStore = useLoginStateStore();
 
 const playing_list = ref<any[]>(listStore.playing_list);
 const playlist_length = ref(listStore.playing_list.length);
@@ -107,7 +109,11 @@ const clickToPlay = (index: number) => {
 };
 
 const favoriteSong = (songId: string) => {
-  userPlaylistStore.showCollectFrame(String(songId));
+  if (loginStore.getLoginState()) {
+    userPlaylistStore.showCollectFrame(String(songId));
+  } else {
+    loginStore.showLoginEntry();
+  }
 };
 
 const deleteFromPlayinglist = (index: number) => {
