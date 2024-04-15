@@ -198,7 +198,14 @@
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-box-orient: vertical;
+
+        &.folded {
+          -webkit-line-clamp: 5;
+        }
       }
+
+
+
       .fold_description {
         position: relative;
         top: 30px;

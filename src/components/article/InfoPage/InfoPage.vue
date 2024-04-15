@@ -55,7 +55,11 @@
           播放
           <p id="playCount" class="play_count">{{ playCountText }}</p>
         </button>
-        <button class="like_playlist" @click="toggleSubscribe">
+        <button
+          v-if="type != 'album'"
+          class="like_playlist"
+          @click="toggleSubscribe"
+        >
           <img src="../../../assets/icons/favorites.svg" alt="" />
           <span v-if="!isSubscribed"> 收藏 </span>
           <span v-else> 已收藏 </span>
@@ -72,10 +76,7 @@
           >介绍：</strong
         >
         <div>
-          <p
-            ref="des_height"
-            :style="{ '-webkit-line-clamp': showDescription ? 'none' : 5 }"
-          >
+          <p ref="des_height">
             {{ description }}
           </p>
           <div
@@ -182,23 +183,29 @@ const handleFoldButton = () => {
     if (des_height.value.offsetHeight > 150) {
       foldButton.value = true;
       showDescription.value = false;
+      des_height.value.classList.add('folded');
     } else {
       foldButton.value = false;
       showDescription.value = true;
+      des_height.value.classList.remove('folded');
     }
   }
 };
 
 // 点击展开按钮
 const unfoldDescription = () => {
-  showDescription.value = !showDescription.value;
-  // 展开状态
-  if (showDescription.value) {
-    window.scrollTo(0, window.scrollY); // 将页面滚动位置还原，不随着内容的展开直接滚动到底
-  }
-  // 收起状态
-  else {
-    window.scrollTo(0, 0); // 回到最顶端
+  if (des_height.value) {
+    showDescription.value = !showDescription.value;
+    // 展开状态
+    if (showDescription.value) {
+      des_height.value.classList.remove('folded');
+      window.scrollTo(0, window.scrollY); // 将页面滚动位置还原，不随着内容的展开直接滚动到底
+    }
+    // 收起状态
+    else {
+      des_height.value.classList.add('folded');
+      window.scrollTo(0, 0); // 回到最顶端
+    }
   }
 };
 
@@ -230,6 +237,8 @@ const toggleSubscribe = async () => {
 const getInfo = async () => {
   try {
     const response = await get<any>(`${address(props.type)}`);
+    console.log(response);
+
     if (props.type == 'playlist') {
       let playlist = response.playlist;
       coverImgUrl.value = playlist.coverImgUrl;
