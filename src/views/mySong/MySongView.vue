@@ -136,7 +136,7 @@ const renderPage = (loginState: boolean) => {
     let pid = '';
     if (
       sessionStorage.getItem('lastPathName') == 'myPlaylistInfo' &&
-      sessionStorage.getItem('lastPathQuery') != null
+      JSON.parse(sessionStorage.getItem('lastPathQuery') as string).id != ''
     ) {
       pid = JSON.parse(sessionStorage.getItem('lastPathQuery') as string).id;
     } else {

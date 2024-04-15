@@ -235,10 +235,9 @@ const toggleSubscribe = async () => {
 // TODO：有时获取资源超时，需要改一下loading显示或解决超时错误
 // 获取资源信息
 const getInfo = async () => {
+  if (props.target_id == undefined || props.target_id == '') return;
   try {
     const response = await get<any>(`${address(props.type)}`);
-    console.log(response);
-
     if (props.type == 'playlist') {
       let playlist = response.playlist;
       coverImgUrl.value = playlist.coverImgUrl;
@@ -388,6 +387,7 @@ onMounted(() => {
 watch(
   () => props.target_id,
   (newId, oldId) => {
+    console.log(newId);
     renderInfo();
   }
 );

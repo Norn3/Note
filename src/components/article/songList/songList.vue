@@ -62,6 +62,7 @@ const firstGetSongs = async () => {
 
 // 获取歌单中的歌曲
 const getSongs = async () => {
+  if (props.target_id == undefined || props.target_id == '') return;
   await get<any>(
     `${address(props.type, props.target_id as string, limit, current_song_id)}`
   )
@@ -179,7 +180,6 @@ watch(
   [() => props.target_id, () => userPlaylistStore.createList],
   (newValue) => {
     // 保证页面内只有一个监听器
-
     window.removeEventListener('scroll', throttleReturn);
     window.addEventListener('scroll', throttleReturn);
     gotAllSongs.value = false;
