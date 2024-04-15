@@ -107,6 +107,7 @@ const singer_list = () => {
 };
 
 const jumpPage = (type: string, id: number) => {
+  if (id == 0) return;
   router.push({
     name: 'Info',
     query: {
