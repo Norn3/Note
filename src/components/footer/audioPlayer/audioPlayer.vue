@@ -49,12 +49,12 @@
     <div id="features" class="features">
       <div
         id="playModeIcon"
-        class="play_mode_icon"
+        class="play_mode_icon button"
         @click="changePlayMode()"
       ></div>
       <div
         id="lyricsIcon"
-        class="lyrics_icon"
+        class="lyrics_icon button"
         @click="toggleFeature('lyrics')"
       ></div>
       <lyrics-page
@@ -64,7 +64,7 @@
       ></lyrics-page>
       <div
         id="playinglistIcon"
-        class="playinglist_icon"
+        class="playinglist_icon button"
         @click="toggleFeature('playinglist')"
       ></div>
       <playingList id="playingList" class="playing_list"></playingList>
@@ -92,7 +92,7 @@
       <!-- 音量图标 -->
       <div
         id="volumeIcon"
-        class="volumeIcon not_muted"
+        class="volumeIcon button not_muted"
         ref="volumeButton"
       ></div>
     </div>

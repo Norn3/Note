@@ -124,6 +124,20 @@
             margin-top: $loadingMarginTop;
         }
     }
+    @media screen and (max-width: 600px) {
+        width: 200px;
+        font-size: 0.8em;
+        .playinglist_title{
+            width: 200px;
+        }
+        .songlist{
+            .playinglist_item{
+                .title, .creator{
+                    padding-left: 5px;
+                }
+            }
+        }
+    }
 }
 .show_playinglist{
     height: 40vh;

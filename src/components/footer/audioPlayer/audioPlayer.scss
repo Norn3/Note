@@ -12,7 +12,7 @@
     transition: height .5s ease-out;
     transform-origin: bottom;
     grid-template-columns: 4vw 4vw 3vw 6vw 50vw 11vw 12vw 10vw;
-    grid-auto-rows: 35% 65%;
+    grid-auto-rows: 40% 60%;
     grid-column-gap: 10px;
     grid-row-gap: 0px;
     grid-template-areas:
@@ -53,8 +53,9 @@
         img{
             width: 100%;
             height: 100%;
-            background-size: cover;
+            background-size: contain;
             background-repeat: no-repeat;
+            align-content: center;
         }
     }
     .song_title{
@@ -63,32 +64,35 @@
 
         .title{
             white-space: nowrap;
+            align-content: end;
+            overflow: hidden;
+
         }
         .creator{
             font-size: small;
-            vertical-align: bottom;
+            align-content: end;
+            margin-left: 7px;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
-            margin: 3.5px 0 0 7px;
         }
 
     }
     .time{
         grid-area: time;
+        height: 100%;
+        align-content: end;
+        overflow: hidden;
+
+
     }
     .progress_control{
         grid-area: progress_control;
         position: relative;
         top: 0;
-        width: 60vw;
-        min-width: 300px;
+        width: 96%;
         height: 100%;
         cursor: pointer;
-        
-        @media (max-width: 500px) {
-            display: none; // 窗口宽度小于1000px隐藏组件
-        }
 
         .progress{
             width: 100%;
@@ -110,11 +114,9 @@
         display: flex;
 
         .play_mode_icon{
-            position: relative;
             width: 30px;
             height: 100%;
             margin-right: 20px;
-            cursor: pointer;
 
             &.sequential{
                 background: url('../../../assets/icons/sequential.svg') no-repeat left;
@@ -128,12 +130,10 @@
         }
 
         .lyrics_icon{
-            position: relative;
             width: 30px;
             height: 100%;
             margin-right: 20px;
             background: url('../../../assets/icons/lyrics.svg') no-repeat left;
-            cursor: pointer;
         }
 
         .lyrics_page{
@@ -146,11 +146,9 @@
         }
 
         .playinglist_icon{
-            position: relative;
             width: 30px;
             height: 100%;
             background: url('../../../assets/icons/playinglist.svg') no-repeat left;
-            cursor: pointer;
         }
         .playing_list{
             position: absolute;
@@ -166,6 +164,7 @@
         grid-area: volume;
         position: relative;
         top: -$volumeHandlerHeight + $audioPlayerIconTop + $audioPlayerIconSize;
+        right: 1vw;
         width: $audioPlayerIconSize;
         height: 250%;
 
@@ -206,7 +205,6 @@
             top: 90px;
             width: $audioPlayerIconSize;
             height: 32%;
-            cursor: pointer; 
         }
 
     }
@@ -216,6 +214,92 @@
     }
     .muted{
         background: url('../../../assets/icons/muted.svg') no-repeat center;
+    }
+
+    @media screen and (max-width: 1200px) {
+        grid-template-columns: 4vw 4vw 3vw 6vw 45vw 11vw 14vw 13vw;
+       
+    }
+    @media screen and (max-width: 960px) {
+        grid-template-columns: 4vw 4vw 3vw 6vw 40vw 11vw 16vw 16vw;
+        .progress_control{
+            width: 98%;
+        }
+    }
+    @media screen and (max-width: 870px) {
+        grid-template-columns: 5vw 4vw 4vw 6vw 35vw 12vw 17vw 18vw;
+        .features{
+            .play_mode_icon, .lyrics_icon{
+                margin-right: 15px;
+            }
+        }
+        .button{
+            transform: scale(0.9);
+        }
+    }
+    @media screen and (max-width: 730px) {
+        grid-template-columns: 5.5vw 4.5vw 4.5vw 8vw 27vw 12vw 18.5vw 20vw;
+        .time{
+            font-size: 0.9em;
+        }
+        .features{
+            .play_mode_icon, .lyrics_icon{
+                margin-right: 10px;
+            }
+        }
+        .button{
+            transform: scale(0.8);
+        }
+    }
+    @media screen and (max-width: 600px) {
+        grid-template-columns: 6vw 5vw 6vw 11vw 23vw 13vw 18vw 18vw;
+        grid-column-gap: 5px;
+        .time{
+            font-size: 0.7em;
+        }
+        .song_title{
+            .title, .creator{
+                font-size: 0.7em;
+                margin-top: 0;
+            }
+        }
+        .button{
+            transform: scale(0.8);
+        }
+        .features{
+            .play_mode_icon, .lyrics_icon{
+                margin-right: 0;
+            }
+            .button{
+                transform: scale(0.7);
+                background-size: contain !important;
+            }
+        }
+       
+    }
+    @media screen and (max-width: 430px) {
+        grid-template-columns: 6vw 5vw 6vw 11vw 23vw 13vw 20vw 16vw;
+        grid-column-gap: 3px;
+        .volume{
+            right: 0;
+        }
+        .time{
+            font-size: 0.5em;
+        }
+        .song_title{
+            .title, .creator{
+                font-size: 0.5em;
+                margin-top: 0;
+            }
+        }
+        .button{
+            transform: scale(0.6);
+        }
+        .cover_img{
+            width: 100%;
+            height: auto;
+        }
+       
     }
 }
 .active {

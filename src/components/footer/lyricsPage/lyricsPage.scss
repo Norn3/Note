@@ -22,7 +22,7 @@
             margin: 0 auto;
             background-position: center;
             background-repeat: no-repeat;
-            background-size: cover;
+            background-size: contain;
         }
 
     }
@@ -49,12 +49,15 @@
                 width: 100%;
                 font-size: 1.2em;
                 color: rgb(215, 215, 215);
+                align-content: center;
             }
     
             .current_line {
                 color: $brandColor;
                 font-size: 1.7em;
                 font-weight: 700;
+                height: 140px;
+                align-content: center;
             }
 
             // 修改滚动条样式
@@ -74,8 +77,37 @@
         }
        
     }
+    @media screen and (max-width: 600px){
+        .cover_container{
+            width: 50%;
+        }
+        .lyrics_container{
+            width: 50%;
+            .lyrics{
+                overflow: auto;
+                transform: translateY(350px);
+                transition-duration: 0.5s;
+                .lyric{
+                    display: block;
+                    height: 80px;
+                    width: 100%;
+                    font-size: 1em;
+                    color: rgb(215, 215, 215);
+                    align-content: center;
+                }
+        
+                .current_line {
+                    color: $brandColor;
+                    font-size: 1.3em;
+                    font-weight: 700;
+                    height: 140px;
+                    align-content: center;
+                }
+            }
+        }
+    }
     
 }
 .show_lyrics{
-    height: 81.5vh;
+    height: 84vh;
 }
