@@ -88,7 +88,7 @@ $(document).on('mouseleave', '#account', () => {
 const accountMenuList = [
   { id: 0, text: '我的主页', address: 'accountHome' },
   // { id: 1, text: '我的信息', address: 'accountMessage' },
-  { id: 1, text: '个人设置', address: 'accountInformation' },
+  // { id: 1, text: '个人设置', address: 'accountSetting' },
   { id: 2, text: '退出', address: 'exit' },
 ];
 

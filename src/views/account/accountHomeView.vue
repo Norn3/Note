@@ -154,9 +154,6 @@
               font-size: 1.7em;
             }
           }
-
-          .user_follows {
-          }
         }
 
         .user_address_and_age {
@@ -164,12 +161,6 @@
           display: flex;
           flex-wrap: wrap;
           gap: 3%;
-
-          .user_address {
-          }
-
-          .user_age {
-          }
         }
 
         .user_create_days {
@@ -210,9 +201,6 @@
               .follow_num {
                 font-size: 1.2em;
               }
-            }
-
-            .user_follows {
             }
           }
         }
