@@ -6,15 +6,16 @@
     @mouseover="hovering = true"
     @mouseleave="hovering = false"
   >
-    <img :src="coverImgUrl" alt="" id="cover" class="cover" />
+    <div id="cover" class="cover">
+      <img :src="coverImgUrl" alt="" />
+      <div
+        id="deleteIcon"
+        class="delete_icon"
+        @click.stop="deletePlaylist"
+      ></div>
+    </div>
     <div id="name" class="name">{{ name }}</div>
     <div id="description" class="description">{{ description }}</div>
-    <div
-      v-if="hovering && listType == 'playlist' && String(pid) != likePlaylistId"
-      id="deleteIcon"
-      class="delete_icon"
-      @click.stop="deletePlaylist"
-    ></div>
   </div>
 </template>
 <style lang="scss" scoped></style>
