@@ -171,6 +171,12 @@
           }
         }
       }
+      .album_name{
+        &:hover{
+          cursor: pointer;
+          color: $brandColor;
+        }
+      }
       
     }
   

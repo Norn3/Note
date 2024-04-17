@@ -37,9 +37,13 @@
           <li @click="jumpCategory(tag)">{{ tag }}</li>
         </ul>
       </div>
-      <div v-else-if="props.type == 'song'" class="label_or_album text">
+      <div
+        v-else-if="props.type == 'song'"
+        class="label_or_album text"
+        @click="jumpAlbum(albumId)"
+      >
         <p>所属专辑：</p>
-        {{ albumOfSong }}
+        <span class="album_name">{{ albumOfSong }}</span>
       </div>
       <div
         v-else-if="props.type == 'album' && company != ''"
@@ -159,6 +163,7 @@ let name = ref(''),
 
 // song
 let albumOfSong = ref('');
+let albumId = ref('');
 
 // album
 let company = ref('');
@@ -273,6 +278,7 @@ const getInfo = async () => {
         creatorName.push({ id: singer.id, name: singer.name });
       });
       albumOfSong.value = song.al.name;
+      albumId.value = String(song.al.id);
       await getLyrics();
 
       playCountText.value = '';
@@ -364,6 +370,12 @@ const jumpCategory = (tag: string) => {
 const jumpArtistInfo = (id: number) => {
   if (props.type == 'song' || props.type == 'album') {
     router.push({ name: 'artistInfo', query: { id: id } });
+  }
+};
+
+const jumpAlbum = (id: string) => {
+  if (props.type == 'song') {
+    router.push({ name: 'Info', query: { type: 'album', id: id } });
   }
 };
 
