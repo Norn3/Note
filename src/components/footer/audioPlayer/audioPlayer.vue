@@ -342,11 +342,21 @@ const playPreviousSong = async () => {
   play(0);
 };
 
-const showSongInfo = () => {
-  const info = listStore.getSongInfo(listStore.current_song_index);
-  // TODO：初次打开或播放列表被清空的时候，无法加载出图片名称等信息
-  if (info == undefined) {
-    console.log('播放列表为空');
+const showSongInfo = async () => {
+  let info;
+  // 初次打开或播放列表被清空的时候，加载默认歌曲的图片名称等信息
+  if (!listStore.getSongInfo(listStore.current_song_index)) {
+    const response = await get<any>(
+      `/song/detail?ids=${listStore.getSongId(0)}`
+    );
+    info = response.songs[0];
+  }
+  // 获取到的当前歌曲信息不为空，则加载listStore里的内容
+  else {
+    info = listStore.getSongInfo(listStore.current_song_index);
+  }
+  if (!info) {
+    return;
   } else {
     coverImg.value = info.al.picUrl;
     lyricsStore.setCoverImg(coverImg.value);
