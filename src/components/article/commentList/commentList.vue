@@ -397,6 +397,10 @@ const deleteComment = async (index: number, commentId: number) => {
 };
 
 const likeComment = async (index: number, commentId: number) => {
+  if (!loginStore.getLoginState()) {
+    loginStore.showLoginEntry();
+    return;
+  }
   const $item = $('#commentItem' + index).find('#likeComment');
   // 由于等待接口返回再改变样式太慢，所以选择先改变样式，再由请求返回来判断是否需要撤回样式
   if ($item.hasClass('clicked')) {
