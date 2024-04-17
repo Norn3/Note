@@ -9,6 +9,9 @@
     <div id="cover" class="cover">
       <img :src="coverImgUrl" alt="" />
       <div
+        v-if="
+          hovering && listType == 'playlist' && String(pid) != likePlaylistId
+        "
         id="deleteIcon"
         class="delete_icon"
         @click.stop="deletePlaylist"
