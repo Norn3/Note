@@ -234,7 +234,7 @@ import { useuserPlaylistStore } from '../../stores/userPlaylist';
 import playlistList from '../../components/article/playlistList/playlistList.vue';
 import noData from '../../components/article/noData/noData.vue';
 
-const loginState = useLoginStateStore();
+const loginStore = useLoginStateStore();
 
 const userPlaylistStore = useuserPlaylistStore();
 
@@ -301,13 +301,13 @@ const getInfo = (uid: string) => {
 };
 
 onMounted(() => {
-  const uid = loginState.getProfile().userId;
+  const uid = loginStore.getProfile().userId;
   getInfo(uid);
   getPlaylists();
 });
 
 watch(
-  () => loginState.profile,
+  () => loginStore.profile,
   (newValue) => {
     getInfo(newValue);
     getPlaylists();

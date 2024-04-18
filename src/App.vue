@@ -115,11 +115,11 @@ const isLogin = ref(false);
 const isCollect = ref(false);
 
 const listStore = useCurrentPlayingListStore();
-const loginState = useLoginStateStore();
+const loginStore = useLoginStateStore();
 const userPlaylistStore = useuserPlaylistStore();
 
 // 初始化登录状态
-loginState.getLoginStatus();
+loginStore.getLoginStatus();
 
 // 初始化播放列表
 listStore.initializeStore();
@@ -162,7 +162,7 @@ else {
 }
 
 watch(
-  () => loginState.useLogin,
+  () => loginStore.useLogin,
   (newValue) => {
     isLogin.value = newValue;
     if (newValue) {
