@@ -41,7 +41,7 @@
         top: 2vh;
         display: none;
         border-radius: 10px;
-        background-color: rgb(253, 255, 241);
+        background-color: $decorationColor;
         ul{
             list-style-type: none;
             padding: 3%;
@@ -52,7 +52,7 @@
 
             li{
                 padding: 1vh 0.1vw;
-                border-bottom: 1px solid rgb(223, 204, 135);
+                border-bottom: 1px solid $brandColor;
                 cursor: pointer;
             }
         }

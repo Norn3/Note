@@ -53,7 +53,7 @@
         }
 
         .be_replied{
-          background-color: rgb(237, 246, 255);
+          background-color: $subBrandColor;
           border-left: 1px solid rgb(211, 211, 211);
           margin-left: 20px;
           padding-left: 10px;
@@ -145,16 +145,17 @@
 
       .reply_comment_form{
         grid-area: reply;
-        // visibility: hidden;
         display: none;
 
         &.show_reply{
           display: block;
-          // visibility: visible;
 
         }
       }
     }
+  }
+  .backtop{
+    color: $decorationColor;
   }
 }
 .submit_comment{

@@ -2,7 +2,7 @@
 
 .search_result_view {
     position: relative;
-    width: 75vw;
+    width: 100%;
     min-height: 92vh;
     height: 100%;
     padding: 0 0 50px 0;
@@ -13,16 +13,21 @@
       position: relative;
       min-height: 100vh;
       height: 100%;
-      width: 70vw;
+      width: 100%;
       margin: 0 auto;
   
       .new_search {
         position: relative;
         top: 0;
         right: 0;
+        padding: 5% 0;
         margin: 0 auto;
         width: 70%;
         height: 70px;
+
+        &::before{
+          display: none;
+        }
       }
   
       .search_result {
@@ -30,23 +35,66 @@
         
         .search_result_tabs {
           .el-tabs__header {
-            margin: 0;
+            margin: 0 10%;
+            .el-tabs__active-bar{
+              background-color: $decorationColor;
+            }
+            .el-tabs__item{
+              font-size: 1.1em;
+
+              &:hover{
+                color: $decorationColor;
+              }
+              &.is-active{
+                color: $decorationColor;
+              }
+            }
           }
           div.el-tabs__content  {
             padding: 47px 32px 32px;
             background-color: rgb(251, 253, 255);
+            @media screen and (max-width: 600px){
+              padding: 0;
+            }
           }
+          
         } 
 
         .pic_list {
           display: flex;
           flex-wrap: wrap;
           justify-content: center;
+          @media screen and (max-width: 600px){
+
+            li{
+                width: 140px;
+                height: 180px;
+                transform: scale(0.7);
+  
+                [class*="container"]{
+                    margin: 0;
+                }
+            }
+          }
         }
       }
 
       .result_pagination{
         justify-content: center;
+        .el-pager li{
+
+          &:hover {
+            color: $decorationColor;
+          }
+          &.is-active {
+            color: $decorationColor;
+          }
+
+          
+        }
+        @media screen and (max-width: 600px){
+          transform: scale(0.8);
+        }
       }
     }
   }

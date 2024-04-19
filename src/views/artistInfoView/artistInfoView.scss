@@ -130,6 +130,17 @@
       }
   
       .artist_tabs{
+        .el-tabs__active-bar{
+          background-color: $decorationColor;
+        }
+        .el-tabs__item{
+          &:hover{
+            color: $decorationColor;
+          }
+          &.is-active{
+            color: $decorationColor;
+          }
+        }
 
         .artist_album{
           display: flex;
@@ -138,6 +149,18 @@
         }
         .album_pagination{
           justify-content: center;
+          .el-pager li{
+
+            &:hover {
+              color: $decorationColor;
+            }
+            &.is-active {
+              color: $decorationColor;
+            }
+          }
+          @media screen and (max-width: 600px){
+            transform: scale(0.8);
+          }
         }
 
         .description_title{

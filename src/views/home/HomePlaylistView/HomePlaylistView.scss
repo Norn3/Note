@@ -23,7 +23,7 @@
       margin: 0 auto;
       .playlist_category {
         margin: 20px;
-        border-bottom: 2px solid $audioCurrentState;
+        border-bottom: 2px solid $decorationColor;
         display: flex;
 
         h1 {
@@ -41,7 +41,7 @@
           padding: 4px;
           margin: auto 10px auto;
           border: 1px solid #665f4f33;
-          background-color: #faff9b72;
+          background-color: $decorationColor;
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
@@ -52,7 +52,7 @@
           }
 
           &:hover {
-            background-color: #faff9b;
+            background-color: $subBrandColor;
           }
 
           &:focus {
@@ -75,10 +75,35 @@
         flex-wrap: wrap;
         justify-content: center;
         content-visibility: auto;
+        
+        @media screen and (max-width: 600px){
+
+          li{
+              width: 140px;
+              height: 180px;
+              transform: scale(0.7);
+
+              .play-list-container{
+                  margin: 0;
+              }
+          }
+        }
       }
 
       .result_pagination{
         justify-content: center;
+        .el-pager li{
+
+          &:hover {
+            color: $decorationColor;
+          }
+          &.is-active {
+            color: $decorationColor;
+          }
+        }
+        @media screen and (max-width: 600px){
+          transform: scale(0.8);
+        }
       }
     }
   }

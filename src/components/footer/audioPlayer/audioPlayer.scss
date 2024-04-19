@@ -6,6 +6,7 @@
     width: 100%;
     height: 0%;
     bottom: 0px;
+    color: white;
     background-color: $brandColor;
     margin-block-start: 0;
     padding-inline-start: 0;
@@ -103,7 +104,7 @@
             
             .current{
                 height: 100%;
-                background-color: $audioCurrentState;
+                background-color: $decorationColor;
                 border-radius: $progressBorderRadius;
     
             }
@@ -194,7 +195,7 @@
                     position: absolute;
                     width: 100%;
                     bottom: 0px;
-                    background-color: $audioCurrentState;
+                    background-color: $decorationColor;
                     border-radius: 5px;
                 }
             }

@@ -202,6 +202,7 @@ const getAlbums = async () => {
       console.log(response);
       totalAlbum.value = response.artist.albumSize;
       const $ul = $('#artistAlbum');
+      $ul.empty();
       response.hotAlbums.forEach((element: any) => {
         const li = createLiTag($ul);
         render(

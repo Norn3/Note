@@ -13,6 +13,12 @@
     .search_frame{
       width: 100%;
       overflow: hidden;
+
+      .el-input__wrapper{
+        &.is-focus{
+          box-shadow: 0 0 0 1px $decorationColor inset;
+        }
+      }
     }
     
     &:hover{

@@ -114,7 +114,7 @@
       </li>
     </ul>
     <loading-state :loading="already_getting"></loading-state>
-    <el-backtop :right="60" :bottom="60" />
+    <el-backtop :right="60" :bottom="60" class="backtop" />
   </div>
 </template>
 <style lang="scss"></style>
@@ -224,7 +224,7 @@ const firstGetComment = async () => {
   already_getting.value = false;
 };
 
-// 获取歌单中的歌曲
+// 获取评论
 const getComments = async (type: string) => {
   if (type == 'single') {
     const response = await get<any>(

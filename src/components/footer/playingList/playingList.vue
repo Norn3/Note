@@ -41,9 +41,7 @@
         </div>
       </li>
     </ul>
-    <el-text v-if="already_getting" v-loading="already_getting" class="loading"
-      >Loading...</el-text
-    >
+    <loading-state :loading="already_getting"></loading-state>
   </div>
 </template>
 <style lang="scss"></style>
@@ -60,6 +58,7 @@ import {
 } from 'vue';
 
 import processSongDuration from '../../../util/processSongDuration';
+import loadingState from '../../article/loadingState/loadingState.vue';
 
 import { useCurrentPlayingListStore } from '../../../stores/currentPlayingList';
 import { useuserPlaylistStore } from '../../../stores/userPlaylist';

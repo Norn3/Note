@@ -1,85 +1,88 @@
 @import '../../../mainStyle.scss';
 
 .song_list{
-    background-color: aliceblue;
-    border: 1px solid rgb(199, 221, 240);
-    margin: 0 20px;
-    .title{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+  background-color: $songListBackgroundColor;
+  border: 1px solid rgb(199, 221, 240);
+  margin: 0 20px;
+  .title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    width: 90%;
+    padding: 0 5%;
+    background-color: $brandColor;
+    font-weight: 700;
+    font-size: large;
+    color: #ffffff;
+    li{
+      text-align: left;
       height: 40px;
-      width: 90%;
-      padding: 0 5%;
-      background-color: $brandColor;
-      font-weight: 700;
-      font-size: large;
-      color: #ffffff;
-      li{
-        text-align: left;
-        height: 40px;
-        line-height: 40px;
-        align-items: center;
-        white-space: nowrap;        
-        &.serial_num {
-          width: 7.5%;
-          
-          @media screen and (max-width: 860px) {
-            width: 15%;
-          }
-        }
-
-        &.click_to_play{
-          width: 6.5%;
-          
-          @media screen and (max-width: 860px) {
-            width: 10%;
-          }
-        }
-  
-        &.name{
-          width: 30%;
-          @media screen and (max-width: 860px) {
-            width: 50%;
-          }
-          @media screen and (max-width: 430px) {
-            width: 70%;
-          }
-        }
+      line-height: 40px;
+      align-items: center;
+      white-space: nowrap;        
+      &.serial_num {
+        width: 7.5%;
         
-        &.duration{
-          width: 14%;
-          @media screen and (max-width: 860px) {
-            width: 25%;
-          }
-          @media screen and (max-width: 430px) {
-            display: none;
-          }
-        }
-  
-        &.singer, &.album{
-          width: 21%;
-
-          @media screen and (max-width: 860px) {
-            display: none;
-          }
+        @media screen and (max-width: 860px) {
+          width: 15%;
         }
       }
 
-    }
-    .songs{
-      li.song_item:nth-child(2n){
-        background-color: #fffffb;
+      &.click_to_play{
+        width: 6.5%;
+        
+        @media screen and (max-width: 860px) {
+          width: 10%;
+        }
+      }
+
+      &.name{
+        width: 30%;
+        @media screen and (max-width: 860px) {
+          width: 50%;
+        }
+        @media screen and (max-width: 430px) {
+          width: 70%;
+        }
+      }
+      
+      &.duration{
+        width: 14%;
+        @media screen and (max-width: 860px) {
+          width: 25%;
+        }
+        @media screen and (max-width: 430px) {
+          display: none;
+        }
+      }
+
+      &.singer, &.album{
+        width: 21%;
+
+        @media screen and (max-width: 860px) {
+          display: none;
+        }
       }
     }
-    .loading{
-      display: block;
-      height: 100px;
-      line-height: 100px;
-      background-color: white;
-      .el-loading-spinner{
-        top: 0;
-        margin-top: $loadingMarginTop;
-    }
+
+  }
+  .songs{
+    li.song_item:nth-child(2n){
+      background-color: #fffffb;
     }
   }
+  .loading{
+    display: block;
+    height: 100px;
+    line-height: 100px;
+    background-color: white;
+    .el-loading-spinner{
+      top: 0;
+      margin-top: $loadingMarginTop;
+    }
+  }
+  .backtop{
+    color: $decorationColor;
+  }
+}

@@ -2,7 +2,7 @@
 .playinglist{
     position: absolute;
     display: block;
-    background-color: aliceblue;
+    background-color: $songListBackgroundColor;
     width: 300px;
     height: 0;
     border-top-left-radius: 3px;
@@ -64,14 +64,15 @@
     .songlist{
         position: relative;
         top:30px;
+        color: black;
         .playinglist_item{
             display: flex;
             cursor: pointer;
             &:hover{
-                background-color: #bfe1fb;
+                background-color: $subBrandColor;
             }
             &.check{
-                background-color: #d0ebff;
+                background-color: $darkerBrandColor;
             }
             .title{
                 width: 60%;

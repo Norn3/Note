@@ -151,6 +151,7 @@ const loading = ref(true);
 // playlist
 let name = ref(''),
   coverImgUrl = ref(''),
+  // TODO：点击跳转到对应用户的个人主页
   creatorName: Array<any> = reactive([]),
   creatorAvatar = ref(''),
   createTime = ref(''),
@@ -282,7 +283,6 @@ const getInfo = async () => {
       await getLyrics();
 
       playCountText.value = '';
-      console.log(isSubscribed.value);
       subscribedText.value = '';
     } else if (props.type == 'album') {
       let album = response.album;

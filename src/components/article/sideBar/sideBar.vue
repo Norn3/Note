@@ -34,6 +34,7 @@ import PlaylistItem from '../../../class/PlaylistItemClass';
 import loadingState from '../loadingState/loadingState.vue';
 
 import { useuserPlaylistStore } from '../../../stores/userPlaylist';
+import { get } from '../../../axios/insatance';
 
 const userPlaylistStore = useuserPlaylistStore();
 
@@ -48,10 +49,6 @@ const props = defineProps({
     default: 'playlist',
   },
   checkId: String,
-  listItem: {
-    type: Array<PlaylistItem>,
-    default: () => [],
-  },
 });
 
 const list_title1 = computed(() => {
@@ -98,22 +95,22 @@ const createItem = (listItem: Array<PlaylistItem>, listId: string) => {
 };
 
 // 决定列表项的分割位置，然后将列表项加到对应列表中
-const addItemToList = () => {
+const addItemToList = async () => {
   loading.value = true;
   if (props.listType == 'playlist') {
     createItem(userPlaylistStore.getCreateList(), 'create');
     createItem(userPlaylistStore.getLikeList(), 'like');
   } else if (props.listType == 'ranklist') {
-    const hotList = props.listItem.slice(0, 4);
-    const allList = props.listItem.slice(4, props.listItem.length);
+    const response = await get<any>(`/toplist`);
+    const listItem: Array<PlaylistItem> = [];
+    response.list.forEach((element: PlaylistItem) => {
+      listItem.push(element);
+    });
+    const hotList = listItem.slice(0, 4);
+    const allList = listItem.slice(4, listItem.length);
     createItem(hotList, 'create');
     createItem(allList, 'like');
   }
-  // if ($('#create').children(':first').length != 0) {
-  //   $('#create').children(':first').addClass('check');
-  // } else if ($('#like').children(':first').length != 0) {
-  //   $('#like').children(':first').addClass('check');
-  // }
   loading.value = false;
 };
 

@@ -15,7 +15,7 @@
     </ul>
     <ul id="songs" class="songs"></ul>
     <loading-state :loading="already_getting"></loading-state>
-    <el-backtop :right="60" :bottom="60" />
+    <el-backtop :right="60" :bottom="60" class="backtop" />
   </div>
 </template>
 <style lang="scss"></style>

@@ -2,7 +2,7 @@
   <div class="home_rank_view">
     <main>
       <aside>
-        <side-bar :listItem="listItem" listType="ranklist"></side-bar>
+        <side-bar listType="ranklist"></side-bar>
       </aside>
       <section>
         <router-view></router-view>
@@ -14,7 +14,7 @@
 @import '../../mainStyle.scss';
 .home_rank_view {
   position: relative;
-  width: $pageWidth;
+  width: 100%;
   min-height: 92vh;
   height: 100%;
   background-color: rgb(255, 255, 255);
@@ -76,26 +76,5 @@ import $ from 'jquery';
 import { reactive, onBeforeMount } from 'vue';
 import { get } from '../../axios/insatance';
 
-import PlaylistItemClass from '../../class/PlaylistItemClass';
-
 import SideBar from '../../components/article/sideBar/sideBar.vue';
-
-let listItem: Array<PlaylistItemClass> = reactive([]);
-const getSideBar = async () => {
-  get<any>(`/toplist`)
-    .then((response) => {
-      response.list.forEach((element: PlaylistItemClass) => {
-        listItem.push(element);
-      });
-    })
-    .catch((error) => {
-      // 处理请求错误
-      console.log('请求失败');
-      console.log(error);
-    });
-};
-
-onBeforeMount(() => {
-  getSideBar();
-});
 </script>

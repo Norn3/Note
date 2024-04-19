@@ -4,7 +4,7 @@
   position: absolute;
   width: 100%;
   min-height: 100%;
-  background-color: #f4f9fe;
+  background-color: $sidebarBackgroundColor;
 
   .sidebar_title{
     position: relative;
@@ -13,7 +13,7 @@
     background-color: $sidebarTitleColor;
 
     &:hover{
-      background-color: #ffec40;
+      background-color: $sidebarTitleHoverColor;
     }
 
     h3{
@@ -73,10 +73,11 @@
       }
 
       &:hover{
-        background-color: #a4d0ee;
+        background-color: $decorationColor;
       }
       &.check{
-        background-color: #d0ebff;
+        background-color: $sidebarItemCheckColor;
+        color: white;
       }
   
 

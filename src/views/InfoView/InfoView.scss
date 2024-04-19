@@ -20,8 +20,17 @@
       .infoView_tabs{
         .el-tabs__header{
             margin: 20px;
+          .el-tabs__active-bar{
+            background-color: $decorationColor;
+          }
           .el-tabs__item{
             font-size: 1.2em;
+            &:hover{
+              color: $decorationColor;
+            }
+            &.is-active{
+              color: $decorationColor;
+            }
           }
         }
       }

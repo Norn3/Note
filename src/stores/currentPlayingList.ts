@@ -24,6 +24,7 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
         const pid = localStorage.getItem('current_playlist_id') ? JSON.parse(localStorage.getItem('current_playlist_id') as string) : '';
         const index = localStorage.getItem('current_song_index') ? Number(localStorage.getItem('current_song_index')) : 0;
         
+        // TODO：打开页面，本地播放列表为空时，给一首随机歌曲，另外，需要vip或者购买专辑的无法点播的歌曲，要有提示弹窗
         store.$patch({
           playing_list: JSON.parse(localStorage.getItem('playing_list') as string), 
           current_playlist_id: pid, 
@@ -44,6 +45,7 @@ export const useCurrentPlayingListStore = defineStore('currentPlayingList', () =
       if(playing_list.value.length > 0){
         return playing_list.value[index].id;
       }
+      // 当播放列表为空时，返回默认id
       else {
         return '2034187125';
       }
