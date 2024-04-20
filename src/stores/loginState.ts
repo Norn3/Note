@@ -15,7 +15,7 @@ export const useLoginStateStore = defineStore('loginState', () => {
     const userPlaylistStore = useuserPlaylistStore();
 
 
-    // 获取登录状态
+    // 获取网站登录状态
     const getLoginStatus = async () => {
         try {
             // 加时间戳防止接口数据缓存
@@ -33,7 +33,7 @@ export const useLoginStateStore = defineStore('loginState', () => {
           }
     }
 
-    // 获取登录状态
+    // 获取already_login状态
     const getLoginState = () => {
         return already_login.value;
     }

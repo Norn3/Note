@@ -137,7 +137,7 @@ const onSubmit = (formInstance: FormInstance | undefined) => {
     if (!valid) {
       return;
     } else {
-      userPlaylistStore.createPlaylist(createPlaylist.name);
+      await userPlaylistStore.createPlaylist(createPlaylist.name);
     }
   });
 };
@@ -151,10 +151,11 @@ onMounted(() => {
   createItem();
 });
 
-// TODO: 有延迟，短时间之内getCreateList()结果不变，再次打开还是显示原来的列表
 watch(
   () => userPlaylistStore.createList,
   () => {
+    // 创建完歌单后，保证再次展示收藏框时不再显示创建新歌单页面
+    showCreatePlaylistEntry.value = false;
     createItem();
   },
   { deep: true }

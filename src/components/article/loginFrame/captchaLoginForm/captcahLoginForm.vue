@@ -64,10 +64,6 @@ const loginStore = useLoginStateStore();
 const allow_send_captcha = ref(true);
 let send_button_text = ref('获取验证码');
 
-// // 命名settimeout和setinterval
-// let reset: any = null;
-// let countdown: any = null
-
 const captchaLoginFormRef = ref<FormInstance>();
 
 // TODO：未验证外国手机号

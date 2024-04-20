@@ -72,7 +72,7 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
 
           } catch (error) {
             // 处理请求错误
-            alert('创建歌单失败');
+            alert('删除歌单失败');
             console.log(error);
           }
     }
@@ -93,6 +93,7 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
         await get<any>(`/playlist/tracks?op=${type}&pid=${playlistId}&tracks=${collectingSongId.value}`)
         .then(async (response) => {
             console.log(response);
+            
             hideCollectFrame();
             await setUserPlaylist(loginStore.getProfile().userId);
         })

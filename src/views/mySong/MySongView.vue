@@ -3,7 +3,7 @@
     <div id="logoutSongView" class="logout_song_view" v-show="!isLogin">
       <div class="please_log_text">请先登录以查看更多内容</div>
       <!-- TODO：此处按钮应该换成自制的，目前样式还不够完美 -->
-      <el-button size="large" color="#9aceff" @click="showLoginEntry"
+      <el-button size="large" color="#2C6975" @click="showLoginEntry"
         >点击登录</el-button
       >
     </div>
