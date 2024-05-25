@@ -7,7 +7,7 @@
         <el-button
           class="re_get_code"
           @click="reGetCode"
-          v-if="qrcodeState == 800"
+          v-if="qrcodeState == 800 || qrcodeState == 802"
           >刷新二维码</el-button
         >
       </div>
@@ -113,6 +113,8 @@ watch(
           `/login/qr/check?key=${key.value}&timestamp=${Date.now()}`
         )
           .then(async (response) => {
+            console.log(response.code);
+
             switch (response.code) {
               case 800: {
                 qrcodeState.value = 800;

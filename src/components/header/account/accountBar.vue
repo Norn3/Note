@@ -35,12 +35,9 @@ const loginStore = useLoginStateStore();
 
 // 登录
 
-// TODO: 登录程序还没做
 // 点击登录标签，进入登录程序
 const showLoginEntry = async () => {
   loginStore.showLoginEntry();
-  // router.push({ name: 'recommend' });
-  // sessionStorage.setItem('lastPathName', 'recommend');
 };
 
 watch(
@@ -95,9 +92,11 @@ const accountMenuList = [
 const router = useRouter();
 const clickMenuItem = async (address: string) => {
   if (address == 'exit') {
-    await loginStore.processLogout();
-    $('#accountMenu')[0].style.display = 'none';
-    router.push({ name: 'recommend' });
+    const result = await loginStore.processLogout();
+    if (result) {
+      $('#accountMenu')[0].style.display = 'none';
+      router.push({ name: 'recommend' });
+    }
   } else {
     router.push({
       name: address,

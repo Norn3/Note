@@ -40,6 +40,31 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
             console.log(error);
           }
     }
+    
+    const showCollectFrame = (songId: string) => {
+        setCollectingSongId(songId);
+        use_Collect_Song.value = true;
+    }
+    const hideCollectFrame = () => {
+        setCollectingSongId('');
+        use_Collect_Song.value = false;
+    }
+
+    const processSongInPlaylist = async (type: string, playlistId: string) => {
+        await get<any>(`/playlist/tracks?op=${type}&pid=${playlistId}&tracks=${collectingSongId.value}`)
+        .then(async (response) => {
+            console.log(response);
+            hideCollectFrame();
+            await setUserPlaylist(loginStore.getProfile().userId);
+        })
+        .catch((error) => {
+            // 处理请求错误
+            alert('添加或移除歌曲失败');
+            hideCollectFrame();
+            console.log(error);
+        });
+        return;
+    }
 
     const getCreateList = () => {
         return createList.value;
@@ -89,31 +114,7 @@ export const useuserPlaylistStore = defineStore('userPlaylist', () => {
         }
     }
 
-    const processSongInPlaylist = async (type: string, playlistId: string) => {
-        await get<any>(`/playlist/tracks?op=${type}&pid=${playlistId}&tracks=${collectingSongId.value}`)
-        .then(async (response) => {
-            console.log(response);
-            
-            hideCollectFrame();
-            await setUserPlaylist(loginStore.getProfile().userId);
-        })
-        .catch((error) => {
-            // 处理请求错误
-            alert('添加或移除歌曲失败');
-            hideCollectFrame();
-            console.log(error);
-        });
-        return;
-    }
 
-    const showCollectFrame = (songId: string) => {
-        setCollectingSongId(songId);
-        use_Collect_Song.value = true;
-    }
-    const hideCollectFrame = () => {
-        setCollectingSongId('');
-        use_Collect_Song.value = false;
-    }
 
 
 

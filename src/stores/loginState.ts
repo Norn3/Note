@@ -83,17 +83,23 @@ export const useLoginStateStore = defineStore('loginState', () => {
     // 处理登出
     const processLogout = async () => {
         // 加时间戳防止缓存
-        await get<any>(`/logout?timestamp=${Date.now()}`)
+        const result = await get<any>(`/logout?timestamp=${Date.now()}`)
             .then(async (response) => {
                 console.log(response);
                 console.log('退出登录成功');
+                if(response.code == 200) return true;
+                else return false;
             })
             .catch((error) => {
                 // 处理请求错误
                 console.log('退出登录失败');
                 console.log(error);
+                return false;
             });
-        already_login.value = false;
+        if(result) {
+            already_login.value = false;
+        }
+        return result;
     }
 
 

@@ -123,11 +123,10 @@ onMounted(() => {
   showCurItem();
   watch(
     () => listStore.playing_list,
-    (newValue, oldValue) => {
-      console.log(newValue);
-
+    async (newValue, oldValue) => {
       playing_list.value = newValue;
       playlist_length.value = newValue.length;
+      await nextTick();
       showCurItem();
     },
     { deep: true }
@@ -137,5 +136,11 @@ onMounted(() => {
   });
 });
 
-watch(() => listStore.current_song_index, showCurItem);
+watch(
+  () => listStore.current_song_index,
+  async () => {
+    await nextTick();
+    showCurItem();
+  }
+);
 </script>

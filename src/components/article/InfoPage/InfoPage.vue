@@ -359,7 +359,8 @@ const getLyrics = async () => {
 // TODO：点击播放列表，没有loading态而且过程很长
 // 列表播放，调用listStore里的changeList方法，如果props.target_id与当前播放列表id一致，则从头播放
 const playList = async () => {
-  await listStore.changeList(props.type, props.target_id as string);
+  if (props.type == 'song') await listStore.playSong(String(props.target_id));
+  else await listStore.changeList(props.type, props.target_id as string);
 };
 
 // 点击歌单标签，跳转到歌单分类页面

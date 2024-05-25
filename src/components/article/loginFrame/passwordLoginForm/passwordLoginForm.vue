@@ -116,8 +116,6 @@ const onSubmit = (formInstance: FormInstance | undefined) => {
       }
       // 登录失败
       else {
-        console.log('失败');
-
         ElMessage({
           message: '账号或密码不正确！',
           type: 'error',

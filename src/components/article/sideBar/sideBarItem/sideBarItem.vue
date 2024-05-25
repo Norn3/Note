@@ -62,9 +62,4 @@ const deletePlaylist = () => {
     userPlaylistStore.processSubscribePlaylist(String(props.pid), '2');
   }
 };
-
-onMounted(async () => {
-  // 等待页面加载结束，再调用createItem创建列表项
-  await nextTick();
-});
 </script>
