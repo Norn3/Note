@@ -249,7 +249,7 @@ const getComments = async (type: string) => {
               content: item.beReplied[0].content,
             },
       canBeDelete:
-        item.user.userId == loginStore.getProfile().userId ? true : false,
+        item.user.userId == loginStore.getProfile()?.userId ? true : false,
     };
     current_comment_id++;
     commentList.value.unshift(comment);
@@ -286,7 +286,9 @@ const getComments = async (type: string) => {
                     content: item.beReplied[0].content,
                   },
             canBeDelete:
-              item.user.userId == loginStore.getProfile().userId ? true : false,
+              item.user.userId == loginStore.getProfile()?.userId
+                ? true
+                : false,
           };
           current_comment_id++;
           if (current_comment_id > 5000) {
