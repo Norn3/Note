@@ -232,6 +232,8 @@ const getSong = async (songId: string) => {
       const song: Song = response.data;
       nextSongItem = song[0].url;
       // 调用播放方法，从头播放
+
+      console.log(nextSongItem);
     })
     .catch((error) => {
       // 处理请求错误
@@ -367,10 +369,9 @@ const showSongInfo = async () => {
       else creatorName.value += '/' + item.name;
     });
     if (info.fee == '1') {
-      songDuration.value =
-        loginStore.getProfile().vipType == 0
-          ? '00:30'
-          : processSongDuration(info.dt);
+      songDuration.value = loginStore.getProfile()?.vipType
+        ? processSongDuration(info.dt)
+        : '00:30';
     } else if (info.fee == '4') {
       songDuration.value = '00:30';
     } else {
