@@ -3,7 +3,6 @@
 .mainBanner{
     position: relative;
     right: calc(($pageWidth - $sectionWidth) / 2);
-    display: flex;
     justify-content: space-around;
     // height: 300px;
     width: $pageWidth;
